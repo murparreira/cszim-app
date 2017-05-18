@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   before_action :authenticate_user
 
 	def index
-    @users = User.order(:nome).page(params[:page]).per(5)
+    @users = User.order(:nome)
   end
 
   def show

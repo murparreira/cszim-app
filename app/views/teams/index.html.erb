@@ -1,0 +1,38 @@
+<div class="container">
+  <div class="columns">
+    <div class="column is-2">
+      <%= link_to new_team_path, :class => 'button is-primary' do %>
+        <i class="fa fa-plus"></i>&nbsp;
+        Time
+      <% end %>
+    </div>
+    <div class="column">
+      Clique no botão ao lado para criar um novo Time.
+    </div>
+  </div>
+  <hr>
+  <table class="table is-narrow is-striped is-bordered">
+    <thead>
+      <th>Nome</th>
+      <th>Jogadores</th>
+      <th>Operações</th>
+    </thead>
+    <tbody>
+      <% @teams.each do |team| %>
+      <tr>
+        <td><%= team.nome %></td>
+        <td class="td-has-ul">
+          <ul>
+          <% team.users.each do |user| %>
+            <li><%= user.nome %></li>
+          <% end %>
+          </ul>
+        </td>
+        <td>
+          <%= link_to "Editar", edit_team_path(team), :class => 'button' %>
+        </td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

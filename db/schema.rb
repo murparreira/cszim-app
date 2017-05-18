@@ -50,8 +50,9 @@ ActiveRecord::Schema.define(version: 20170518033418) do
   create_table "rounds", force: :cascade do |t|
     t.integer  "tournament_id"
     t.integer  "map_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.integer  "pontos",        default: 3
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
     t.index ["map_id"], name: "index_rounds_on_map_id"
     t.index ["tournament_id"], name: "index_rounds_on_tournament_id"
   end

@@ -19,7 +19,55 @@ ActiveRecord::Base.transaction do
 	desertim = Map.create(nome: "Desertim", sigla: "de_desertcity_fixed")
 	asia = Map.create(nome: "Asia", sigla: "de_asia")
 
-	torneio = Tournament.create(nome: "Torneio de Maio")
+	###### Torneio de Março ######
+	torneio_marco = Tournament.create(nome: "Torneio de Março")
+
+	time_um_marco = Team.create(nome: "DNS")
+	time_um_marco.users << murillo
+	time_um_marco.users << danilo
+	time_um_marco.users << wemerson
+
+	time_dois_marco = Team.create(nome: "RUIM")
+	time_dois_marco.users << edilson
+	time_dois_marco.users << ricardo
+	time_dois_marco.users << naiara
+
+	torneio_marco.teams << time_um_marco
+	torneio_marco.teams << time_dois_marco
+
+	pontos = 0
+	1.upto(3) do |i|
+		if pontos < 6
+			pontos_round = 3
+			pontos += 3
+		else
+			pontos_round = 4
+			pontos += 4
+		end
+		round = Round.create(tournament_id: torneio_marco.id, pontos: pontos_round)
+		Winner.create(round_id: round.id, team_id: time_dois_marco.id)
+		Loser.create(round_id: round.id, team_id: time_um_marco.id)
+		torneio_marco.rounds << round
+	end
+
+	pontos = 0
+	1.upto(14) do |i|
+		if pontos < 33
+			pontos_round = 3
+			pontos += 3
+		else
+			pontos_round = 4
+			pontos += 4
+		end
+		round = Round.create(tournament_id: torneio_marco.id, pontos: pontos_round)
+		Winner.create(round_id: round.id, team_id: time_um_marco.id)
+		Loser.create(round_id: round.id, team_id: time_dois_marco.id)
+		torneio_marco.rounds << round
+	end
+	###############################
+
+	###### Torneio de Maio ######
+	torneio_maio = Tournament.create(nome: "Torneio de Maio")
 
 	time_um = Team.create(nome: "Joalheria")
 	time_um.users << murillo
@@ -31,10 +79,10 @@ ActiveRecord::Base.transaction do
 	time_dois.users << wemerson
 	time_dois.users << naiara
 
-	torneio.teams << time_um
-	torneio.teams << time_dois
+	torneio_maio.teams << time_um
+	torneio_maio.teams << time_dois
 
-	round_um = Round.create(tournament_id: torneio.id, map_id: aztec.id)
+	round_um = Round.create(tournament_id: torneio_maio.id, map_id: aztec.id)
 	winner_round_um = Winner.create(round_id: round_um.id, team_id: time_um.id, placar: 7, lado: "ct")
 	loser_round_um = Loser.create(round_id: round_um.id, team_id: time_dois.id, placar: 4, lado: "t")
 	Statistic.create(round_id: round_um.id, team_id: time_um.id, user_id: murillo.id, kills: 35, deaths: 7)
@@ -44,9 +92,9 @@ ActiveRecord::Base.transaction do
 	Statistic.create(round_id: round_um.id, team_id: time_dois.id, user_id: wemerson.id, kills: 2, deaths: 18)
 	Statistic.create(round_id: round_um.id, team_id: time_dois.id, user_id: naiara.id, kills: 10, deaths: 13)
 
-	torneio.rounds << round_um
+	torneio_maio.rounds << round_um
 
-	round_dois = Round.create(tournament_id: torneio.id, map_id: aztec.id)
+	round_dois = Round.create(tournament_id: torneio_maio.id, map_id: aztec.id)
 	winner_round_dois = Winner.create(round_id: round_dois.id, team_id: time_dois.id, placar: 7, lado: "ct")
 	loser_round_dois = Loser.create(round_id: round_dois.id, team_id: time_um.id, placar: 1, lado: "t")
 	Statistic.create(round_id: round_dois.id, team_id: time_um.id, user_id: murillo.id, kills: 22, deaths: 10)
@@ -54,6 +102,7 @@ ActiveRecord::Base.transaction do
 	Statistic.create(round_id: round_dois.id, team_id: time_dois.id, user_id: edilson.id, kills: 8, deaths: 10)
 	Statistic.create(round_id: round_dois.id, team_id: time_dois.id, user_id: danilo.id, kills: 8, deaths: 12)
 
-	torneio.rounds << round_dois
-	
+	torneio_maio.rounds << round_dois
+	###############################
+
 end

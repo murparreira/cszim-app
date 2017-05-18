@@ -1,0 +1,38 @@
+<div class="container">
+  <div class="columns">
+    <div class="column is-2">
+      <%= link_to new_tournament_path, :class => 'button is-primary' do %>
+        <i class="fa fa-plus"></i>&nbsp;
+        Torneio
+      <% end %>
+    </div>
+    <div class="column">
+      Clique no botão ao lado para criar um novo Torneio.
+    </div>
+  </div>
+  <hr>
+  <table class="table is-narrow is-striped is-bordered">
+    <thead>
+      <th>Nome</th>
+      <th>Times</th>
+      <th>Operações</th>
+    </thead>
+    <tbody>
+      <% @tournaments.each do |tournament| %>
+      <tr>
+        <td><%= link_to tournament.nome, tournament %></td>
+        <td class="td-has-ul">
+          <ul>
+          <% tournament.teams.each do |team| %>
+            <li><%= team.nome %></li>
+          <% end %>
+          </ul>
+        </td>
+        <td>
+          <%= link_to "Editar", edit_tournament_path(tournament), :class => 'button' %>
+        </td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

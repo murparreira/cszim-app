@@ -12,30 +12,18 @@
     <tbody>
       <% @users.each do |user| %>
       <tr>
-        <td><%= image_tag(avatar_url(user), class: 'image is-1by1') %></td>
+        <td><%= image_tag avatar_url(user), class: 'img-circle' %></td>
         <td><%= user.nome %></td>
         <td><%= user.email %></td>
         <td><%= user.steamid %></td>
         <td><%= user.login %></td>
         <td>
-          <%= link_to "Editar", edit_user_path(user), :class => 'button' %>
-          <% if user.id != current_user.id %>
-            <% if user.ativo %>
-              <%= link_to "Inativar", toggle_status_user_path(user), :method => :post, remote: true, :class => 'button' %>
-            <% else %>
-              <%= link_to "Ativar", toggle_status_user_path(user), :method => :post, remote: true, :class => 'button' %>
-            <% end %>
-            <%= link_to user_path(user), data: {:confirm => "Deseja remover o usuário?"}, :class => 'button is-danger', :method => :delete do %>
-                <i class="fa fa-trash-o"></i>&nbsp;
-                Remover
-            <% end %>
+          <% if user.id == current_user.id || current_user.admin %>
+            <%= link_to "Editar", edit_user_path(user), :class => 'button' %>
           <% end %>
         </td>
       </tr>
       <% end %>
     </tbody>
   </table>
-  <div class="column has-text-centered">
-    <%= paginate @users %>
-  </div>
 </div>

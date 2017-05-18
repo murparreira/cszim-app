@@ -1,0 +1,18 @@
+<% if @team.errors.any? %>
+  <div id="field_with_errors" class="message is-danger">
+  	<div class="message-header">Ocorreram erros ao tentar salvar o registro</div>
+  	<div class="message-body">
+	    <ul>
+	    <% @team.errors.full_messages.each do |msg| %>
+	      <li><%= msg %></li>
+	    <% end %>
+	    </ul>
+	   </div>
+  </div>
+<% end %>
+
+<h1 class="title">Editar Time</h1>
+<h2 class="subtitle">Preencha <strong>todos</strong> os campos abaixo</h2>
+<hr>
+
+<%= render :partial => 'form' %>

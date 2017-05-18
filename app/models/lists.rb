@@ -1,32 +1,10 @@
 class Lists
 
-  TIPOS_USUARIO = [:admin, :financeiro, :motorista]
-  TIPOS_OPERACAO = [:+, :-]
+  LADOS = ["ct", "t"]
 
-  def self.lista_tipos_usuario
-    list = TIPOS_USUARIO.map do |e|
-      case e
-      when :admin
-        ["Administrador", e]
-      when :financeiro
-        ["Financeiro", e]
-      when :motorista
-        ["Motorista", e]
-      end
-    end
-    list.unshift ["Selecione...", ""]
-    list
+  def self.lado_perdedor(lado_vencedor)
+    LADOS.delete(lado_vencedor)
+    LADOS[0]
   end
 
-  def self.lista_operacao
-    list = TIPOS_OPERACAO.map do |e|
-      case e
-      when :+
-        ["+", e]
-      when :-
-        ["-", e]
-      end
-    end
-    list
-  end
 end

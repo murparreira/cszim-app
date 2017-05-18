@@ -96,16 +96,15 @@ module ApplicationHelper
   def last_saturday
     last_saturday = DateTime.now - DateTime.now.wday-1
   end
-  
+
   def last_monday
     last_saturday = DateTime.now - DateTime.now.wday-1
     last_monday = last_saturday - 5
   end
 
   def avatar_url(user)
-    default_url = "#{root_url}images/guest.png"
     gravatar_id = Digest::MD5.hexdigest(user.email.downcase)
-    "http://gravatar.com/avatar/#{gravatar_id}.png?s=64&d=#{CGI.escape(default_url)}"
+    "http://gravatar.com/avatar/#{gravatar_id}.png?s=64&d=identicon"
   end
 
   def label_status(status)
@@ -113,14 +112,16 @@ module ApplicationHelper
       "<span class='tag is-success'>Ativo</span>".html_safe
     else
       "<span class='tag is-danger'>Ativo</span>".html_safe
-    end    
+    end
   end
 
   def translate_lado(lado)
     if lado == "ct"
       "<span class='tag is-info'>Contra-Terroristas</span>".html_safe
-    else
+    elsif lado == "t"
       "<span class='tag is-danger'>Terroristas</span>".html_safe
+    else
+      "<span class='tag'>Não Informado</span>".html_safe
     end
   end
 
