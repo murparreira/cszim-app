@@ -1,10 +1,9 @@
 Rails.application.routes.draw do
 
-  resources :losers
-  resources :winners
-  resources :statistics
-  resources :rounds
-  resources :tournaments
+  resources :tournaments do
+    resources :rounds
+  end
+
   resources :teams
   root to: 'dashboard#index'
 
@@ -13,16 +12,12 @@ Rails.application.routes.draw do
   get 'logout' => 'sessions#destroy'
   delete 'logout' => 'sessions#destroy'
 
-  resources :users do
-    member do
-      post :toggle_status
-    end
-  end
+  resources :users
   resources :maps do
     member do
       post :toggle_status
     end
   end
   resources :sessions
-  
+
 end

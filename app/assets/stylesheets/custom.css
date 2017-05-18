@@ -18,7 +18,19 @@
 		width: 0.1px;
 		height: 0.1px;
 		opacity: 0;
-		overflow: hidden;		
+		overflow: hidden;
 		z-index: -1;
     margin-top:10px;
+}
+.img-circle {
+    border-radius: 50%;
+}
+.has-text-centered-important {
+  text-align: center !important;
+}
+.td-has-ul {
+  padding-left: 30px !important;
+}
+.td-has-ul ul {
+  list-style-type: circle;
 }

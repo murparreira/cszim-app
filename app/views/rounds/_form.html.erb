@@ -1,0 +1,85 @@
+<%= form_for [@tournament, @round] do |f| %>
+	<div class="control">
+	  <div class="control">
+			<label class="control-label">Pontos</label>
+			<p class="control is-expanded">
+				<%= f.text_field(:pontos, class: 'input') %>
+	    </p>
+			<label class="control-label">Mapa</label>
+			<p class="control">
+				<%= f.select(:map_id, Map.all.collect {|c| [c.nome, c.id]}, { :prompt => 'Selecione...' }, { :class => 'input' }) %>
+	    </p>
+			<label class="control-label">Vencedor</label>
+			<p class="control is-expanded">
+				<%= select_tag(:winner_team_id, options_from_collection_for_select(@tournament.teams, "id", "nome"), { :prompt => 'Selecione...', :class => 'input' }) %>
+	    </p>
+			<label class="control-label">Lado Vencedor</label>
+			<p class="control is-expanded">
+				<%= select_tag(:lado_vencedor, options_for_select({"Contra-Terroristas" => "ct", "Terroristas" => "t"}), { :prompt => 'Selecione...', :class => 'input' }) %>
+	    </p>
+	  </div>
+	</div>
+
+	<div class="columns">
+	  <div class="column has-text-centered">
+	    Placar
+			<br>
+			Vencedor/Perdedor
+	  </div>
+	</div>
+	<hr>
+
+	<div class="control is-horizontal">
+	  <div class="control is-grouped">
+	    <p class="control is-expanded">
+	    	<%= text_field_tag "placar_vencedor", 0, class: 'input' %>
+	    </p>
+	    <p class="control is-expanded">
+	      <%= text_field_tag "placar_perdedor", 0, class: 'input' %>
+	    </p>
+	  </div>
+	</div>
+
+	<div class="columns">
+	  <div class="column has-text-centered">
+	    Estatísticas
+	  </div>
+	</div>
+	<hr>
+
+	<div class="columns">
+		<% @tournament.teams.each do |team| %>
+			<div class="column">
+					<table class="table is-narrow is-striped is-bordered">
+					<thead>
+						<tr>
+							<th colspan="3" class="has-text-centered-important"><%= team.nome %></th>
+						</tr>
+						<tr>
+							<th>Jogador</th>
+							<th>Kills</th>
+							<th>Deaths</th>
+						</tr>
+					</thead>
+					<tbody>
+					<% team.users.each do |user| %>
+							<tr>
+									<td><%= user.nome %></td>
+									<td><%= text_field_tag "statistics[#{team.id}[#{user.id}[kills]]]", 0, class: 'input' %></td>
+									<td><%= text_field_tag "statistics[#{team.id}[#{user.id}[deaths]]]", 0, class: 'input' %></td>
+							</tr>
+					<% end %>
+					</tbody>
+					</table>
+			</div>
+		<% end %>
+	</div>
+
+	<nav class="level">
+		<div class="level-left"></div>
+		<div class="level-right">
+	    <p class="level-item"><%= link_to root_path, class: 'button is-danger' do %>Cancelar<% end %></p>
+			<p class="level-item"><%= f.submit "Salvar", :class => 'button is-success' %></p>
+	  </div>
+	</nav>
+<% end %>

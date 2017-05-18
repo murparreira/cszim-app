@@ -1,0 +1,28 @@
+<%= form_for @team do |f| %>
+	<div class="control is-horizontal">
+	  <div class="control is-grouped">
+	    <p class="control is-expanded">
+	    	<%= f.text_field :nome, class: 'input', autocomplete: 'off', placeholder: 'Nome' %>
+	    </p>
+	  </div>
+	</div>
+	<div class="control is-horizontal">
+	  <%= link_to_add_association "<i class='fa fa-plus'></i>&nbsp;Adicionar Jogador".html_safe, f, :players,
+	      :data => {"association-insertion-method" => "after" },
+	      :class => 'button', :render_options => { :wrapper => 'inline' } %>
+  </div>
+  <div id='players'>
+    <%= f.fields_for :players do |player| %>
+      <%= render 'player_fields', f: player %>
+    <% end %>
+  </div>
+
+	<nav class="level">
+		<div class="level-left"></div>
+		<div class="level-right">
+	    <p class="level-item"><%= link_to root_path, class: 'button is-danger' do %>Cancelar<% end %></p>
+	    <p class="level-item"><%= link_to new_or_edit_path(@team), class: 'button' do %>Limpar<% end %></p>
+			<p class="level-item"><%= f.submit "Salvar", :class => 'button is-success' %></p>
+	  </div>
+	</nav>
+<% end %>
