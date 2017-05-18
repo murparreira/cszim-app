@@ -1,0 +1,21 @@
+<div class="control is-horizontal">  
+	<div class="control is-grouped nested-fields">	
+    <p class="control is-expanded">
+			<%= f.select(:product_id, Product.all.collect {|p| [p.nome << ' R$' << p.valor.to_s, p.id]}, { :prompt => 'Selecione...' }, { :class => 'input' }) %>
+    </p>
+    <p class="control is-expanded has-addons">
+		  <span class="select">
+	    	<%= f.select :operacao, Lists.lista_operacao, {} %>
+		  </span>
+	    <%= f.text_field :valor, class: 'input valor', autocomplete: 'off', placeholder: 'Valor Variável' %>
+		</p>
+    <p class="control is-expanded">
+  		<%= link_to_remove_association button_tag("<i class='fa fa-trash-o'></i>&nbsp; Remover".html_safe, type: "button", class: "button"), f %>
+  	</p>
+  </div>
+</div>
+<script type="text/javascript">
+$('.customer_products-container').on('cocoon:after-insert', function() {
+	$(".valor").mask("000.000.000.000.000,00", {reverse: true});
+});
+</script>

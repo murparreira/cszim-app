@@ -1,0 +1,24 @@
+.field_with_errors {
+  padding: 2px;
+  display: table;
+}
+.logo-nav {
+  max-height: 2.25rem !important;
+}
+.table-width-50 {
+	width: 50% !important;
+}
+.pull-center {
+	text-align: center !important;
+}
+.pull-right {
+	text-align: right !important;
+}
+.inputfile {
+		width: 0.1px;
+		height: 0.1px;
+		opacity: 0;
+		overflow: hidden;		
+		z-index: -1;
+    margin-top:10px;
+}

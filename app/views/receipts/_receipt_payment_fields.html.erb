@@ -1,0 +1,45 @@
+<div class="nested-fields">
+  <div class="control is-horizontal">
+  	<div class="control is-grouped">
+      <p class="control is-expanded">
+        <%= f.select(:payment_type_id, PaymentType.all.collect {|p| [p.nome, p.id]}, { :prompt => 'Selecione o Tipo de Pagamento...' }, { :class => 'input payment-type-select' }) %>
+      </p>
+      <p class="control is-expanded">
+        <%= f.text_field :valor_total, class: 'input valor', autocomplete: 'off', placeholder: 'Valor Total' %>
+      </p>
+      <p class="control is-expanded">
+        <%= f.text_field :data_pagamento, class: 'input data', autocomplete: 'off', placeholder: 'Data' %>
+      </p>
+      <p class="control is-expanded">
+    		<%= link_to_remove_association button_tag("<i class='fa fa-trash-o'></i>&nbsp; Remover".html_safe, type: "button", class: "button"), f %>
+    	</p>
+    </div>
+  </div>
+  <div class="control is-horizontal div-cheque">
+    <div class="control is-grouped">
+      <p class="control is-expanded">
+        <%= f.text_field :nome_cheque, class: 'input', autocomplete: 'off', placeholder: 'Portador do cheque' %>
+      </p>
+      <p class="control is-expanded">
+        <%= f.text_field :numero_cheque, class: 'input', autocomplete: 'off', placeholder: 'Número do cheque' %>
+      </p>
+    </div>
+  </div>
+  <script type="text/javascript">
+  $('.receipt_payments-container').on('cocoon:after-insert', function(e, adicionado) {
+    var i = adicionado.find('select').attr("id");
+    adicionado.find(".div-cheque").addClass(i).hide();
+    $(".data").flatpickr({});
+  	$(".valor").mask("000.000.000.000.000,00", {reverse: true});
+    $(".payment-type-select").on("click", function() {
+      var value = $(this).val();
+      if (value === "4") {
+        $("."+i).show();
+      } else {
+        $("."+i).hide();
+      }
+    });
+  });
+  </script>
+  <hr>
+</div>

@@ -1,0 +1,10 @@
+<div class="control is-horizontal">  
+	<div class="control is-grouped nested-fields">	
+    <p class="control is-expanded">
+			<%= f.select(:company_id, Company.all.collect {|c| [c.nome, c.id]}, { :prompt => 'Selecione...' }, { :class => 'input' }) %>
+    </p>	
+    <p class="control is-expanded">
+  		<%= link_to_remove_association button_tag("<i class='fa fa-trash-o'></i>&nbsp; Remover".html_safe, type: "button", class: "button"), f %>
+  	</p>
+  </div>
+</div>

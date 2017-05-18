@@ -1,0 +1,71 @@
+<%= form_for @receipt do |f| %>
+<div class="control is-horizontal">
+  <div class="control is-grouped">
+    <p class="control is-expanded">
+      <input id="tipo_recebimento" type="hidden" name="tipo_recebimento" value="customer">
+      <% if @receipt.new_record? %>
+        <%= f.select(:customer_id, Customer.all.collect {|c| [c.nome, c.id]}, { :prompt => 'Selecione o cliente...' }, { :class => 'input' }) %>
+      <% else %>
+        <label class="label">Cliente:</label> <%= @receipt.nome_cliente_empresa %>
+      <% end %>
+    </p>
+    <p class="control is-expanded" id="company-div" style="display: none">
+      <%= select_tag("company_id", "", { :prompt => 'Selecione a Empresa...', :class => 'input' }) %>
+    </p>
+    <div id="info-button" style="display: none">
+      <p class="control is-expanded">
+        <a class="button is-primary modal-button" id="customer_id_path" target="_blank">Caixa</a>
+        <a class="button is-primary modal-button" data-target="#historic">30 dias</a>
+        <a class="button is-primary modal-button" data-target="#week">Semana</a>
+      </p>
+    </div>
+  </div>
+</div>
+<div id="info-div" class="control is-horizontal" style="display: none">
+  <div class="control is-grouped">
+    <p class="control is-expanded">
+      <%= render :partial => "historic", :locals => { :f => f } %><br>
+      <%= render :partial => "week", :locals => { :f => f } %><br>
+      <%= render :partial => "resume", :locals => { :f => f } %>
+    </p>
+  </div>
+</div>
+
+<div class="receipt_payments-container">
+  <div class="control is-horizontal">
+    <%= link_to_add_association "<i class='fa fa-plus'></i>&nbsp;Adicionar Pagamento".html_safe, f, :receipt_payments,
+        :data => {"association-insertion-method" => "after" },
+        :class => 'button', :render_options => { :wrapper => 'inline' } %>
+  </div>
+</div>
+<div id='receipt_payments'>
+  <%= f.fields_for :receipt_payments do |receipt_payment| %>
+    <%= render 'receipt_payment_fields', f: receipt_payment %>
+  <% end %>
+</div>
+
+<hr>
+<div class="control is-horizontal">  
+  <div class="control is-grouped">
+    <div class="column is-one-quarter">
+      <p class="control is-expanded">
+        <%= f.text_field :data_recebimento, class: 'input', autocomplete: 'off', placeholder: 'Data de Recebimento' %>
+      </p>
+    </div>
+    <div class="column">
+      <p class="control is-expanded">
+        <%= f.text_area :observacao, class: 'textarea', autocomplete: 'off', placeholder: 'Observações' %>
+      </p>
+    </div>
+  </div>
+</div>
+
+<nav class="level">
+  <div class="level-left"></div>
+  <div class="level-right">
+    <p class="level-item"><%= link_to root_path, class: 'button is-danger' do %>Cancelar<% end %></p>
+    <p class="level-item"><%= link_to new_or_edit_path(@receipt), class: 'button' do %>Limpar<% end %></p>
+    <p class="level-item"><%= f.submit "Salvar", :class => 'button is-success' %></p>
+  </div>
+</nav>
+<% end %>

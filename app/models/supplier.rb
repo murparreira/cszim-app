@@ -1,0 +1,2 @@
+class Supplier < Person
+end
