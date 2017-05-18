@@ -1,0 +1,2 @@
+class LosersController < ApplicationController
+end

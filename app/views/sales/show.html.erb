@@ -1,0 +1,85 @@
+<div class="container">
+  <div class="columns">
+    <div class="column">
+      <h2 class="title is-2">Detalhes da Venda</h2>
+    </div>
+  </div>
+  <hr>
+  <table class="table is-narrow is-striped is-bordered">
+    <tbody>
+      <tr>
+        <td>Data</td><td><%= format_date @sale.data_venda %></td>
+      </tr>
+      <tr>
+        <td>Nome do Cliente</td><td><%= @sale.customer.nome %></td>
+      </tr>
+      <tr>
+        <td>Valor Total da Venda</td><td><%= humanized_money_with_symbol @sale.valor_total %></td>
+      </tr>
+      <tr>
+        <td>Observação</td><td><%= @sale.observacao %></td>
+      </tr>
+      <tr>
+        <td>Responsável</td><td><%= @sale.user.person.nome %></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="columns">
+    <div class="column">
+      Detalhamento dos produtos
+    </div>
+  </div>
+  <hr>
+  <table class="table is-narrow is-striped is-bordered">
+    <thead>
+    <th>Nome do Produto</th>
+    <th>Quantidade</th>
+    <th>Valor do Produto</th>
+    <th>Valor Calculado</th>
+    <th>Variação</th>
+    <th>Valor Real</th>
+    </thead>
+    <tbody>
+    <% total_quantidade = 0 %>
+    <% total_valor_real_produto = 0 %>
+    <% total_valor_calculado_produto = 0 %>
+    <% total_valor_variacao = 0 %>
+    <% total_valor_real = 0 %>
+    <% @sale.product_sales.each do |product_sale| %>
+      <tr>
+        <td><%= product_sale.product.nome %></td>
+        <td><%= product_sale.quantidade.to_i %></td>
+        <td><%= humanized_money_with_symbol product_sale.product.valor.to_money %></td>
+        <td><%= humanized_money_with_symbol product_sale.product.valor.to_money * product_sale.quantidade.to_i %></td>
+        <% if CustomerProduct.find_by(customer_id: @sale.customer_id, product_id: product_sale.product.id).nil? %>
+          <td>Sem variação</td>
+          <td><%= humanized_money_with_symbol (product_sale.product.valor.to_money * product_sale.quantidade.to_i) %></td>
+        <% else %>
+          <% customer_product = CustomerProduct.find_by(customer_id: @sale.customer_id, product_id: product_sale.product.id) %>
+          <td><%= customer_product.operacao %> <%= customer_product.valor.to_money * product_sale.quantidade.to_i %></td>
+          <td><%= humanized_money_with_symbol (product_sale.product.valor.to_money * product_sale.quantidade.to_i).send(customer_product.operacao, customer_product.valor.to_money * product_sale.quantidade.to_i) %></td>
+        <% end %>
+      </tr>
+        <% total_quantidade += product_sale.quantidade.to_i %>
+        <% total_valor_real_produto += product_sale.product.valor.to_money %>
+        <% total_valor_calculado_produto += product_sale.product.valor.to_money * product_sale.quantidade.to_i %>
+        <% if CustomerProduct.find_by(customer_id: @sale.customer_id, product_id: product_sale.product.id).nil? %>
+          <% total_valor_real += (product_sale.product.valor.to_money * product_sale.quantidade.to_i) %>
+        <% else %>
+          <% total_valor_variacao = total_valor_variacao.send(customer_product.operacao, customer_product.valor.to_money * product_sale.quantidade.to_i) %>
+          <% total_valor_real += (product_sale.product.valor.to_money * product_sale.quantidade.to_i).send(customer_product.operacao, customer_product.valor.to_money * product_sale.quantidade.to_i) %>
+        <% end %>
+    <% end %>
+    <tr>
+      <td><strong>Totalizador</strong></td>
+      <td><strong><%= total_quantidade %></strong></td>
+      <td><strong><%= humanized_money_with_symbol total_valor_real_produto %></strong></td>
+      <td><strong><%= humanized_money_with_symbol total_valor_calculado_produto %></strong></td>
+      <td><strong><%= total_valor_variacao %></strong></td>
+      <td><strong><%= humanized_money_with_symbol total_valor_real %></strong></td>
+    </tr>
+    </tbody>
+  </table>
+
+</div>

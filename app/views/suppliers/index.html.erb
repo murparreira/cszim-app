@@ -1,0 +1,37 @@
+<div class="container">
+  <div class="columns">
+    <div class="column is-2">
+      <%= link_to new_supplier_path, :class => 'button is-primary' do %>
+        <i class="fa fa-plus"></i>&nbsp;
+        Fornecedor
+      <% end %>
+    </div>
+    <div class="column">
+      Clique no botão ao lado para criar um novo Fornecedor.
+    </div>
+  </div>
+  <hr>
+  <table class="table is-narrow is-striped is-bordered">
+    <thead>
+      <th>Nome</th>
+      <th>Telefone</th>
+      <th>Documento</th>
+      <th>Operações</th>
+    </thead>
+    <tbody>
+      <% @suppliers.each do |supplier| %>
+      <tr>
+        <td><%= supplier.nome %></td>
+        <td><%= format_phone supplier.telefone %></td>
+        <td><%= format_documento supplier.documento %></td>
+        <td>
+          <%= link_to "Editar", edit_supplier_path(supplier), :class => 'button' %>
+        </td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <div class="column has-text-centered">
+    <%= paginate @suppliers %>
+  </div>
+</div>

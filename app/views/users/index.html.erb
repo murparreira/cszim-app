@@ -1,0 +1,41 @@
+<div class="container">
+  <hr>
+  <table class="table is-narrow is-striped is-bordered">
+    <thead>
+      <th>#</th>
+      <th>Nome</th>
+      <th>Email</th>
+      <th>ID da Steam</th>
+      <th>Login</th>
+      <th>Operações</th>
+    </thead>
+    <tbody>
+      <% @users.each do |user| %>
+      <tr>
+        <td><%= image_tag(avatar_url(user), class: 'image is-1by1') %></td>
+        <td><%= user.nome %></td>
+        <td><%= user.email %></td>
+        <td><%= user.steamid %></td>
+        <td><%= user.login %></td>
+        <td>
+          <%= link_to "Editar", edit_user_path(user), :class => 'button' %>
+          <% if user.id != current_user.id %>
+            <% if user.ativo %>
+              <%= link_to "Inativar", toggle_status_user_path(user), :method => :post, remote: true, :class => 'button' %>
+            <% else %>
+              <%= link_to "Ativar", toggle_status_user_path(user), :method => :post, remote: true, :class => 'button' %>
+            <% end %>
+            <%= link_to user_path(user), data: {:confirm => "Deseja remover o usuário?"}, :class => 'button is-danger', :method => :delete do %>
+                <i class="fa fa-trash-o"></i>&nbsp;
+                Remover
+            <% end %>
+          <% end %>
+        </td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <div class="column has-text-centered">
+    <%= paginate @users %>
+  </div>
+</div>

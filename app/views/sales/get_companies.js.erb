@@ -1,0 +1,9 @@
+<% if @companies.any? %>
+  $("#tipo_venda").val("company");
+  $("#company-div").show();
+  $("#company_id").empty().append("<%= escape_javascript(render(:partial => @companies)) %>");
+<% else %>
+  $("#tipo_venda").val("customer");
+  $("#company-div").hide();
+  $("#company_id").empty();
+<% end %>

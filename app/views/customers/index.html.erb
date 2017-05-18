@@ -1,0 +1,54 @@
+<div class="container">
+  <div class="columns">
+    <div class="column is-2">
+      <%= link_to new_customer_path, :class => 'button is-primary' do %>
+        <i class="fa fa-plus"></i>&nbsp;
+        Cliente
+      <% end %>
+    </div>
+    <div class="column">
+      Clique no botão ao lado para criar um novo Cliente.
+    </div>
+    <div class="column">
+      <%= form_tag customers_path, method: :get do %>
+      <div class="field has-addons">
+        <p class="control">
+          <%= text_field_tag "search_param", nil, class: "input" %>
+        </p>
+        <p class="control">
+          <%= link_to customers_path, {}, class: "button is-info" %>
+        </p>
+      </div>
+      <% end %>
+    </div>
+  </div>
+  <hr>
+  <table class="table is-narrow is-striped is-bordered">
+    <thead>
+      <th>Nome</th>
+      <th>Número</th>
+      <th>Data Nascimento</th>
+      <th>Telefone</th>
+      <th>Documento</th>
+      <th>Operações</th>
+    </thead>
+    <tbody>
+      <% @customers.each do |customer| %>
+      <tr>
+        <td><%= customer.nome %></td>
+        <td><%= customer.numero_cliente %></td>
+        <td><%= format_date customer.data_nascimento %></td>
+        <td><%= format_phone customer.telefone %></td>
+        <td><%= format_documento customer.documento %></td>
+        <td>
+          <%= link_to "Editar", edit_customer_path(customer), :class => 'button' %>
+          <%= link_to "Caixa", bill_customer_path(customer), :class => 'button' %>
+        </td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <div class="column has-text-centered">
+    <%= paginate @customers %>
+  </div>
+</div>

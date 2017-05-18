@@ -1,0 +1,48 @@
+<%= form_for @employee do |f| %>
+	<div class="control is-horizontal">  
+	  <div class="control is-grouped">
+	    <p class="control is-expanded">
+	    	<%= f.text_field :nome, class: 'input', autocomplete: 'off', placeholder: 'Nome' %>
+	    </p>
+	    <p class="control is-expanded">
+	      <%= f.text_field :documento, class: 'input', autocomplete: 'off', placeholder: 'Documento (CPF/CNPJ)' %>
+	    </p>
+	  </div>
+	</div>
+	<div class="control is-horizontal">  
+		<div class="control is-grouped">
+	    <p class="control is-expanded">
+	    	<%= f.text_field :telefone, class: 'input', autocomplete: 'off', placeholder: 'Telefone' %>
+	    </p>
+	    <p class="control is-expanded">
+	      <%= f.text_field :data_nascimento, class: 'input', autocomplete: 'off', placeholder: 'Data de Nacimento' %>
+	    </p>
+	  </div>
+	</div>
+	<div class="control is-horizontal">  
+		<div class="control is-grouped">
+	    <p class="control is-expanded">
+	    	<%= f.text_area :endereco, class: 'textarea', autocomplete: 'off', placeholder: 'Endereço' %>
+	    </p>
+	  </div>
+	</div>
+	<div class="control is-horizontal">  
+		<div class="control is-grouped">
+	    <p class="control is-expanded">
+	    	<%= f.text_field :matricula, class: 'input', autocomplete: 'off', placeholder: 'Matrícula' %>
+	    </p>
+	    <p class="control is-expanded">
+	      <%= f.text_field :salario, class: 'input', autocomplete: 'off', placeholder: 'Salário' %>
+	    </p>
+	  </div>
+	</div>
+	
+	<nav class="level">
+		<div class="level-left"></div>
+		<div class="level-right">
+	    <p class="level-item"><%= link_to root_path, class: 'button is-danger' do %>Cancelar<% end %></p>
+	    <p class="level-item"><%= link_to new_or_edit_path(@employee), class: 'button' do %>Limpar<% end %></p>
+			<p class="level-item"><%= f.submit "Salvar", :class => 'button is-success' %></p>
+	  </div>
+	</nav>
+<% end %>

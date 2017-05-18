@@ -1,0 +1,39 @@
+<div class="container">
+  <div class="columns">
+    <div class="column is-2">
+      <%= link_to new_sale_path, :class => 'button is-primary' do %>
+        <i class="fa fa-plus"></i>&nbsp;
+        Venda
+      <% end %>
+    </div>
+    <div class="column">
+      Clique no botão ao lado para criar uma nova Venda.
+    </div>
+  </div>
+  <hr>
+  <table class="table is-narrow is-striped is-bordered">
+    <thead>
+      <th>Data da Venda</th>
+      <th>Vendedor</th>
+      <th>Valor Total</th>
+      <th>Cliente/Empresa</th>
+      <th>Operações</th>
+    </thead>
+    <tbody>
+      <% @sales.each do |sale| %>
+      <tr>
+        <td><%= format_date sale.data_venda %></td>
+        <td><%= sale.user.person.nome %></td>
+        <td><%= humanized_money_with_symbol sale.valor_total %></td>
+        <td><%= sale.customer.nome %></td>
+        <td>
+          <%= link_to "Visualizar", sale_path(sale), :class => 'button' %>
+        </td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <div class="column has-text-centered">
+    <%= paginate @sales %>
+  </div>
+</div>

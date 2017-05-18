@@ -1,0 +1,41 @@
+<div class="container">
+  <div class="columns">
+    <div class="column is-2">
+      <%= link_to new_map_path, :class => 'button is-primary' do %>
+        <i class="fa fa-plus"></i>&nbsp;
+        Mapa
+      <% end %>
+    </div>
+    <div class="column">
+      Clique no botão ao lado para criar um novo Mapa.
+    </div>
+  </div>
+  <hr>
+  <table class="table is-narrow is-striped is-bordered">
+    <thead>
+      <th>Nome</th>
+      <th>Sigla</th>
+      <th>Imagem</th>
+      <th>Status</th>
+      <th>Operações</th>
+    </thead>
+    <tbody>
+      <% @maps.each do |map| %>
+      <tr>
+        <td><%= map.nome %></td>
+        <td><%= map.sigla %></td>
+        <td><%= image_tag map.imagem.thumb('400x200#').url if map.imagem_stored? %></td>
+        <td><%= label_status map.ativo %></td>
+        <td>
+          <%= link_to "Editar", edit_map_path(map), :class => 'button' %>
+          <% if map.ativo %>
+            <%= link_to "Inativar", toggle_status_map_path(map), :method => :post, remote: true, :class => 'button' %>
+          <% else %>
+            <%= link_to "Ativar", toggle_status_map_path(map), :method => :post, remote: true, :class => 'button' %>
+          <% end %>
+        </td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

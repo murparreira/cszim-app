@@ -1,0 +1,19 @@
+<% if @employee.errors.any? %>
+  <div id="field_with_errors" class="message is-danger">
+  	<div class="message-header">Ocorreram erros ao tentar salvar o registro</div>
+  	<div class="message-body">
+	    <ul>
+	    <% @employee.errors.full_messages.each do |msg| %>
+	      <li><%= msg %></li>
+	    <% end %>
+	    </ul>
+	   </div>
+  </div>
+<% end %>
+
+<h1 class="title">Novo Funcionário</h1>
+<h2 class="subtitle">Preencha <strong>todos</strong> os campos abaixo</h2>
+<h3 class="subtitle">Será criado um usuário <strong>inativo</strong> automaticamente com a senha e perfil padrão do sistema.</h3>
+<hr>
+
+<%= render :partial => 'form' %>

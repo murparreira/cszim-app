@@ -1,0 +1,85 @@
+<div class="columns">
+  <div class="column is-2 has-text-centered">
+    <%= Tournament.last.nome %>    
+  </div>
+  <div class="column">
+    <%= link_to new_map_path, :class => 'button is-primary' do %>
+        <i class="fa fa-plus"></i>&nbsp;
+        Novo Round
+    <% end %>
+  </div>
+</div>
+<hr>
+<% Tournament.last.rounds.each do |round| %>
+    <div class="columns">
+        <div class="column">
+            Round <%= round.id %>
+        </div>
+        <div class="column">
+            Mapa: <strong><%= round.map.nome %> - <%= round.map.sigla %></strong>
+        </div>
+    </div>
+
+    <div class="columns">
+        <div class="column">
+            Vencedor: <strong><%= round.winner.team.nome %></strong>
+            <br>
+            Placar: <strong><%= round.winner.placar %></strong>
+            <br>
+            Lado: <strong><%= translate_lado round.winner.lado %></strong>
+        </div>
+        <div class="column">
+             Perdedor: <strong><%= round.loser.team.nome if round.loser %></strong>
+             <br>
+             Placar: <strong><%= round.loser.placar %></strong>
+             <br>
+             Lado: <strong><%= translate_lado round.loser.lado %></strong>
+        </div>
+    </div>
+
+    <div class="columns">
+        <div class="column is-half is-offset-one-quarter has-text-centered">
+            Estatísticas
+        </div>
+    </div>
+
+    <div class="columns">
+        <div class="column">
+            <table class="table is-narrow is-striped is-bordered">
+            <thead>
+                <th>Jogador</th>
+                <th>Kills</th>
+                <th>Deaths</th>
+            </thead>
+            <tbody>
+            <% Statistic.where(team_id: round.winner.team.id, round_id: round.id).order(kills: :desc).each do |statistic| %>
+                <tr>
+                    <td><%= statistic.user.nome %></td>
+                    <td><%= statistic.kills %></td>
+                    <td><%= statistic.deaths %></td>
+                </tr>
+            <% end %>
+            </tbody>
+            </table>
+        </div>
+        <div class="column">
+             <table class="table is-narrow is-striped is-bordered">
+            <thead>
+                <th>Jogador</th>
+                <th>Kills</th>
+                <th>Deaths</th>
+            </thead>
+            <tbody>
+            <% Statistic.where(team_id: round.loser.team.id, round_id: round.id).order(kills: :desc).each do |statistic| %>
+                <tr>
+                    <td><%= statistic.user.nome %></td>
+                    <td><%= statistic.kills %></td>
+                    <td><%= statistic.deaths %></td>
+                </tr>
+            <% end %>
+            </tbody>
+            </table>
+        </div>
+    </div>
+    <hr>
+<% end %>

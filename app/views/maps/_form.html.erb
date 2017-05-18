@@ -1,0 +1,30 @@
+<%= form_for @map do |f| %>
+	<div class="control is-horizontal">  
+	  <div class="control is-grouped">
+	    <p class="control is-expanded">
+	    	<%= f.text_field :nome, class: 'input', autocomplete: 'off', placeholder: 'Nome' %>
+	    </p>
+	    <p class="control is-expanded">
+	      <%= f.text_field :sigla, class: 'input', autocomplete: 'off', placeholder: 'Sigla' %>
+	    </p>
+	  </div>
+	</div>
+
+	<label class="label">Imagem</label>
+	<div class="control is-horizontal">  
+	  <div class="control is-grouped">
+	    <p class="control is-expanded">
+	    	<%= f.file_field :imagem %>
+	    </p>
+	  </div>
+	</div>
+
+	<nav class="level">
+		<div class="level-left"></div>
+		<div class="level-right">
+	    <p class="level-item"><%= link_to root_path, class: 'button is-danger' do %>Cancelar<% end %></p>
+	    <p class="level-item"><%= link_to new_or_edit_path(@map), class: 'button' do %>Limpar<% end %></p>
+			<p class="level-item"><%= f.submit "Salvar", :class => 'button is-success' %></p>
+	  </div>
+	</nav>
+<% end %>

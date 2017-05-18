@@ -1,0 +1,60 @@
+<% if @sale.errors.any? %>
+    <div id="field_with_errors" class="message is-danger">
+      <div class="message-header">Ocorreram erros ao tentar salvar o registro</div>
+      <div class="message-body">
+        <ul>
+          <% @sale.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+<% end %>
+
+<h1 class="title">Nova Venda</h1>
+<h2 class="subtitle">Preencha <strong>todos</strong> os campos abaixo</h2>
+<hr>
+
+<%= form_for @sale do |f| %>
+<div class="control is-horizontal">
+  <div class="control is-grouped">
+    <p class="control is-expanded">
+      <%= f.select(:customer_id, Customer.all.collect {|p| [p.nome, p.id]}, { :prompt => 'Selecione o Cliente...' }, { :class => 'input' }) %>
+    </p>
+    <p class="control is-expanded">
+      <%= f.text_field :data_venda, class: 'input', autocomplete: 'off', placeholder: 'Data' %>
+    </p>
+    <p class="control is-expanded"></p>
+  </div>
+</div>
+
+<h3 class="title is-3 has-text-centered">Produtos</h3>
+<table class="table is-bordered">
+  <% @products.each do |product| %>
+  <tr>
+    <td><%= product.nome %></td>
+    <td>
+      <input type="hidden" name="product_sales[][product_id]" value="<%= product.id %>">
+      <input class="input" autocomplete="off" placeholder="Quantidade" type="text" name="product_sales[][quantidade]">
+    </td>
+  </tr>
+  <% end %>
+</table>
+
+<div class="control is-horizontal">  
+  <div class="control is-grouped">
+    <p class="control is-expanded">
+      <%= f.text_area :observacao, class: 'textarea', autocomplete: 'off', placeholder: 'Observações' %>
+    </p>
+  </div>
+</div>
+
+<nav class="level">
+  <div class="level-left"></div>
+  <div class="level-right">
+    <p class="level-item"><%= link_to root_path, class: 'button is-danger' do %>Cancelar<% end %></p>
+    <p class="level-item"><%= link_to new_or_edit_path(@sale), class: 'button' do %>Limpar<% end %></p>
+    <p class="level-item"><%= f.submit "Salvar", :class => 'button is-success' %></p>
+  </div>
+</nav>
+<% end %>

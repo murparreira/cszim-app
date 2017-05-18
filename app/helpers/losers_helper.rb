@@ -1,0 +1,2 @@
+module LosersHelper
+end
