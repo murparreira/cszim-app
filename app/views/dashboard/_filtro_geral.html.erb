@@ -13,7 +13,7 @@
     <% @dataGeral.each do |statistic| %>
       <tr>
         <% user = User.find(statistic.user_id) %>
-        <td><%= image_tag avatar_url(user), class: 'img-circle image is-24x24' %> <%= user.nome %></td>
+        <td><%= image_tag avatar_url(user), class: 'img-circle image anti-image-block is-24x24' %> <%= user.nome %></td>
         <td><%= statistic.kills %></td>
         <td><%= statistic.deaths %></td>
       </tr>

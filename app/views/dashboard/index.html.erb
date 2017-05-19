@@ -35,12 +35,40 @@
 <table class="table is-narrow is-striped is-bordered">
   <tbody>
       <tr>
-        <td width="30%">Rounds ganhos como Contra-Terroristas</td>
-        <td><%= Winner.joins(:round).where(lado: "ct").sum(:placar) %></td>
+        <td width="30%">Vitórias Gerais como CT</td>
+        <td><%= Winner.joins(:round).where(lado: "ct").count %></td>
       </tr>
       <tr>
-        <td>Rounds ganhos como Terroristas</td>
-        <td><%= Winner.joins(:round).where(lado: "t").sum(:placar) %></td>
+        <td>Vitórias Gerais como T</td>
+        <td><%= Winner.joins(:round).where(lado: "t").count %></td>
+      </tr>
+      <tr>
+        <td>Estatísticas de Mapa</td>
+        <td>
+          <table>
+            <thead>
+              <th>Mapa</th>
+              <th>Rounds Ganhos</th>
+              <th>Vitórias como CT</th>
+              <th>Vitórias como T</th>
+            </thead>
+            <tbody>
+              <% Round.group(:map_id).count.each do |map_id, value| %>
+                <% if map_id %>
+                  <tr>
+                    <% map = Map.find(map_id) %>
+                    <% vitorias_ct = Map.joins(rounds: :winner).where(["maps.id = ? AND winners.lado = 'ct'", map_id]).count %>
+                    <% vitorias_t = Map.joins(rounds: :winner).where(["maps.id = ? AND winners.lado = 't'", map_id]).count %>
+                    <td><%= map.sigla %></td>
+                    <td><%= value %></td>
+                    <td><%= vitorias_ct %></td>
+                    <td><%= vitorias_t %></td>
+                  </tr>
+                <% end %>
+              <% end %>
+            </tbody>
+          </table>
+        </td>
       </tr>
   </tbody>
 </table>

@@ -24,22 +24,24 @@
     <% end %>
   </div>
   <div class="column is-third">
-    <h2 class="title">Mapas Sorteados (<%= session[:chosen_maps].size %>)</h2>
-      <% session[:chosen_maps].each_with_index do |chosen_map_id, i| %>
-        <% previous_chosen_map = Map.find(chosen_map_id) %>
-        <% if i == 0 %>
-          <div class="columns">
-        <% end %>
-        <div class="column is-3">
-          <%= previous_chosen_map.nome %>
-          <br>
-          <a data-fancybox='gallery' href='<%= imagem_mapa_url(previous_chosen_map) %>' data-caption='<%= previous_chosen_map.nome %> - <%= previous_chosen_map.sigla %>'>
-            <%= image_tag(imagem_mapa_url(previous_chosen_map), class: "image is-64x64") %>
-          </a>
-        </div>
-        <% if i > 0 && (i + 1) % 3 == 0 %>
+    <h2 class="title">Mapas Sorteados (<%= session[:chosen_maps].try(:size) || 0 %>)</h2>
+      <% if session[:chosen_maps] %>
+        <% session[:chosen_maps].each_with_index do |chosen_map_id, i| %>
+          <% previous_chosen_map = Map.find(chosen_map_id) %>
+          <% if i == 0 %>
+            <div class="columns">
+          <% end %>
+          <div class="column is-3">
+            <%= previous_chosen_map.nome %>
+            <br>
+            <a data-fancybox='gallery' href='<%= imagem_mapa_url(previous_chosen_map) %>' data-caption='<%= previous_chosen_map.nome %> - <%= previous_chosen_map.sigla %>'>
+              <%= image_tag(imagem_mapa_url(previous_chosen_map), class: "image is-64x64") %>
+            </a>
           </div>
-          <div class="columns">
+          <% if i > 0 && (i + 1) % 3 == 0 %>
+            </div>
+            <div class="columns">
+          <% end %>
         <% end %>
       <% end %>
     </div>
