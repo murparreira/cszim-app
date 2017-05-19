@@ -36,11 +36,24 @@
   <tbody>
       <tr>
         <td width="30%">Rounds ganhos como Contra-Terroristas</td>
-        <td><%= Winner.joins(:round).where(lado: "ct").sum(:placar) %></td>
+        <td><%= Winner.joins(:round).where(lado: "ct").count %></td>
       </tr>
       <tr>
         <td>Rounds ganhos como Terroristas</td>
-        <td><%= Winner.joins(:round).where(lado: "t").sum(:placar) %></td>
+        <td><%= Winner.joins(:round).where(lado: "t").count %></td>
+      </tr>
+      <tr>
+        <td>Mapas mais jogados</td>
+        <td>
+          <ul>
+          <% Round.group(:map_id).count.each do |map_id, value| %>
+            <% if map_id %>
+              <% map = Map.find(map_id) %>
+              <li><%= map.sigla %> - <%= value %> round(s)</li>
+            <% end %>
+          <% end %>
+          </ul>
+        </td>
       </tr>
   </tbody>
 </table>
