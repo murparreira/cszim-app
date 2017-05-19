@@ -48,3 +48,6 @@
 .space-20-bottom {
   margin-bottom: 20px;
 }
+.anti-image-block {
+  display: inline !important;
+}
