@@ -1,22 +1,22 @@
 <%= form_for @map do |f| %>
-	<div class="control is-horizontal">  
-	  <div class="control is-grouped">
-	    <p class="control is-expanded">
-	    	<%= f.text_field :nome, class: 'input', autocomplete: 'off', placeholder: 'Nome' %>
-	    </p>
-	    <p class="control is-expanded">
-	      <%= f.text_field :sigla, class: 'input', autocomplete: 'off', placeholder: 'Sigla' %>
-	    </p>
-	  </div>
-	</div>
-
-	<label class="label">Imagem</label>
-	<div class="control is-horizontal">  
-	  <div class="control is-grouped">
-	    <p class="control is-expanded">
-	    	<%= f.file_field :imagem %>
-	    </p>
-	  </div>
+	<div class="columns">
+		<div class="column is-third">
+			<div class="field">
+			  <label class="label">Nome</label>
+			  <p class="control">
+			    <%= f.text_field :nome, class: 'input', autocomplete: 'off', placeholder: 'Nome' %>
+			  </p>
+			</div>
+		</div>
+		<div class="column is-third">
+			<div class="field">
+			  <label class="label">Sigla</label>
+			  <p class="control">
+			    <%= f.text_field :sigla, class: 'input', autocomplete: 'off', placeholder: 'Sigla' %>
+			  </p>
+			</div>
+		</div>
+		<div class="column is-third"></div>
 	</div>
 
 	<nav class="level">

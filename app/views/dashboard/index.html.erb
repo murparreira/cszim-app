@@ -1,6 +1,6 @@
 <div class="columns">
   <div class="column has-text-centered">
-    <h1 class="title">Torneios</h1>
+    <h1 class="title">Placar Geral</h1>
   </div>
 </div>
 <table class="table is-narrow is-striped is-bordered">
@@ -11,20 +11,42 @@
   <tbody>
     <% Tournament.all.each do |tournament| %>
       <tr>
-        <td><%= tournament.nome %>
+        <td><%= link_to tournament.nome, tournament %></td>
         <% tournament.teams.each do |team| %>
           <td>
             <%= team.nome %>
           </td>
           <td>
-            <%= Winner.joins(:round).where(team_id: team.id).sum("rounds.pontos") %>
+            <%= Winner.joins(:round).where(team_id: team.id).sum("rounds.pontos") %> pontos - <%= Winner.joins(:round).where(team_id: team.id).sum(:placar) %> rounds ganhos
           </td>
         <% end %>
       </tr>
     <% end %>
   </tbody>
 </table>
+
 <hr>
+
+<div class="columns">
+  <div class="column has-text-centered">
+    <h1 class="title">Estatísticas Gerais</h1>
+  </div>
+</div>
+<table class="table is-narrow is-striped is-bordered">
+  <tbody>
+      <tr>
+        <td>Rounds ganhos como Contra-Terroristas</td>
+        <td><%= Winner.joins(:round).where(lado: "ct").sum(:placar) %></td>
+      </tr>
+      <tr>
+        <td>Rounds ganhos como Terroristas</td>
+        <td><%= Winner.joins(:round).where(lado: "t").sum(:placar) %></td>
+      </tr>
+  </tbody>
+</table>
+
+<hr>
+
 <div class="columns">
   <div class="column has-text-centered">
     <h1 class="title">Artilharia do CSZIM</h1>

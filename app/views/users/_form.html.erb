@@ -1,33 +1,56 @@
 <%= form_for @user do |f| %>
-	<div class="control is-horizontal">  
-	  <div class="control is-grouped">
-	    <p class="control is-expanded">
-	    	<%= f.text_field :nome, class: 'input', autocomplete: 'off', placeholder: 'Nome' %>
-	    </p>
-	    <p class="control is-expanded">
-	      <%= f.text_field :login, class: 'input', autocomplete: 'off', placeholder: 'Login' %>
-	    </p>
-	  </div>
+	<div class="columns">
+		<div class="column is-third">
+			<div class="field">
+				<label class="label">Nome</label>
+				<p class="control">
+					<%= f.text_field :nome, class: 'input', autocomplete: 'off', placeholder: 'Nome' %>
+				</p>
+			</div>
+		</div>
+		<div class="column is-third">
+			<div class="field">
+				<label class="label">Login</label>
+				<p class="control">
+					<%= f.text_field :login, class: 'input', autocomplete: 'off', placeholder: 'Login' %>
+				</p>
+			</div>
+		</div>
+		<div class="column is-third">
+			<div class="field">
+				<label class="label">ID da Steam</label>
+				<p class="control">
+					<%= f.text_field :steamid, class: 'input', autocomplete: 'off', placeholder: 'ID da Steam' %>
+				</p>
+			</div>
+		</div>
 	</div>
-	<div class="control is-horizontal">
-		<div class="control is-grouped">
-	    <p class="control is-expanded">
-	      <%= f.password_field :password, class: 'input', placeholder: 'Senha' %>
-	    </p>
-	    <p class="control is-expanded">
-	      <%= f.password_field :password_confirmation, class: 'input', placeholder: 'Confirmação de Senha' %>
-	    </p>
-	  </div>
-	</div>
-	<div class="control is-horizontal">  
-	  <div class="control is-grouped">
-	    <p class="control is-expanded">
-	    	<%= f.text_field :steamid, class: 'input', autocomplete: 'off', placeholder: 'ID da Steam' %>
-	    </p>
-	    <p class="control is-expanded">
-	      <%= f.text_field :email, class: 'input', autocomplete: 'off', placeholder: 'Email' %>
-	    </p>
-	  </div>
+
+	<div class="columns">
+		<div class="column is-third">
+			<div class="field">
+				<label class="label">Senha</label>
+				<p class="control">
+					<%= f.password_field :password, class: 'input', placeholder: 'Senha' %>
+				</p>
+			</div>
+		</div>
+		<div class="column is-third">
+			<div class="field">
+				<label class="label">Confirmação de Senha</label>
+				<p class="control">
+					<%= f.password_field :password_confirmation, class: 'input', placeholder: 'Confirmação de Senha' %>
+				</p>
+			</div>
+		</div>
+		<div class="column is-third">
+			<div class="field">
+				<label class="label">Email</label>
+				<p class="control">
+					<%= f.text_field :email, class: 'input', autocomplete: 'off', placeholder: 'Email' %>
+				</p>
+			</div>
+		</div>
 	</div>
 
 	<nav class="level">

@@ -31,4 +31,15 @@
       <% end %>
     </li>
   </ul>
+  <p class="menu-label">
+    Utilitários
+  </p>
+  <ul class="menu-list">
+    <li>
+      <%= link_to root_path, class: "#{'is-active' if params[:controller] == 'dashboard'}" do %>
+        <span class="icon is-small"><i class="fa fa-random"></i></span>&nbsp;
+        Randomizador
+      <% end %>
+    </li>
+  </ul>
 </aside>
