@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSZIM-APP | Acesso ao Sistema</title>
+  <%= csrf_meta_tags %>
+  <%= stylesheet_link_tag "application", :media => "all" %>
+  <%= javascript_include_tag "application" %>
+</head>
+<body>
+  <section class="section">
+    <div class="container">
+      <div class="heading">
+        <div class="has-text-centered">
+          <h1 class="title">CSZIM-APP</h1>
+        </div>
+      </div>
+      <div class="columns">
+        <div class="column"></div>
+        <div class="column has-text-centered">
+          <h3>Aqui a faca passa no lombo!</h3>
+          <p>Realize o login para começar.</p>
+          <%= custom_bootstrap_flash %>
+          <%= yield %>
+        </div>
+        <div class="column"></div>
+      </div>
+    </div>
+  </section>
+  <script type="text/javascript">
+    $(function() {
+      $("#session_login").focus();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<%= form_for @user do |f| %>
+	<div class="columns">
+		<div class="column is-third">
+			<div class="field">
+				<label class="label">Nome</label>
+				<p class="control">
+					<%= f.text_field :nome, class: 'input', autocomplete: 'off', placeholder: 'Nome' %>
+				</p>
+			</div>
+		</div>
+		<div class="column is-third">
+			<div class="field">
+				<label class="label">Login</label>
+				<p class="control">
+					<%= f.text_field :login, class: 'input', autocomplete: 'off', placeholder: 'Login' %>
+				</p>
+			</div>
+		</div>
+		<div class="column is-third">
+			<div class="field">
+				<label class="label">ID da Steam</label>
+				<p class="control">
+					<%= f.text_field :steamid, class: 'input', autocomplete: 'off', placeholder: 'ID da Steam' %>
+				</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="columns">
+		<div class="column is-third">
+			<div class="field">
+				<label class="label">Senha</label>
+				<p class="control">
+					<%= f.password_field :password, class: 'input', placeholder: 'Senha' %>
+				</p>
+			</div>
+		</div>
+		<div class="column is-third">
+			<div class="field">
+				<label class="label">Confirmação de Senha</label>
+				<p class="control">
+					<%= f.password_field :password_confirmation, class: 'input', placeholder: 'Confirmação de Senha' %>
+				</p>
+			</div>
+		</div>
+		<div class="column is-third">
+			<div class="field">
+				<label class="label">Email</label>
+				<p class="control">
+					<%= f.text_field :email, class: 'input', autocomplete: 'off', placeholder: 'Email' %>
+				</p>
+			</div>
+		</div>
+	</div>
+
+	<nav class="level">
+		<div class="level-left"></div>
+		<div class="level-right">
+	    <p class="level-item"><%= link_to root_path, class: 'button is-danger' do %>Cancelar<% end %></p>
+	    <p class="level-item"><%= link_to new_or_edit_path(@user), class: 'button' do %>Limpar<% end %></p>
+			<p class="level-item"><%= f.submit "Salvar", :class => 'button is-success' %></p>
+	  </div>
+	</nav>
+<% end %>

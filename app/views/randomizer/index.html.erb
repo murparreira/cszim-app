@@ -1,0 +1,60 @@
+<div class="columns">
+  <div class="column is-third">
+    <h2 class="title">Mapas Disponíveis</h2>
+    <ul class="ul-mapas-randomizer">
+      <% session[:maps].each do |map_id| %>
+        <% map = Map.find(map_id) %>
+        <li><%= map.nome %> - <%= map.sigla %></li>
+      <% end %>
+    </ul>
+    <%= link_to "Escolher Fase", randomizer_path(random: true), class: "button" %>
+    <%= link_to "Resetar Aplicativo", randomizer_path(reset: true), class: "button is-danger" %>
+  </div>
+  <div class="column is-third">
+    <h2 class="title">Fase Escolhida</h2>
+    <% if session[:chosen_map] %>
+      <% chosen_map = Map.find(session[:chosen_map]) %>
+      <%= chosen_map.nome %> - <%= chosen_map.sigla %>
+      <br>
+      <%= image_tag(imagem_mapa_url(chosen_map), class: "image is-256x256") %>
+      <br>
+      <a class="button is-info" href="steam://rungameid/240// +map <%= chosen_map.sigla %>">
+        Abrir o Mapa Automaticamente
+      </a>
+    <% end %>
+  </div>
+  <div class="column is-third">
+    <h2 class="title">Mapas Sorteados (<%= session[:chosen_maps].size %>)</h2>
+      <% session[:chosen_maps].each_with_index do |chosen_map_id, i| %>
+        <% previous_chosen_map = Map.find(chosen_map_id) %>
+        <% if i == 0 %>
+          <div class="columns">
+        <% end %>
+        <div class="column is-3">
+          <%= previous_chosen_map.nome %>
+          <br>
+          <a data-fancybox='gallery' href='<%= imagem_mapa_url(previous_chosen_map) %>' data-caption='<%= previous_chosen_map.nome %> - <%= previous_chosen_map.sigla %>'>
+            <%= image_tag(imagem_mapa_url(previous_chosen_map), class: "image is-64x64") %>
+          </a>
+        </div>
+        <% if i > 0 && (i + 1) % 3 == 0 %>
+          </div>
+          <div class="columns">
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="columns space-50-top">
+  <div class="column is-4">
+    <h1 class="title">Matadores:</h1>
+  </div>
+  <div class="column">
+    <% User.all.each do |user| %>
+      <a href="<%= user.steamid %>" target="_blank">
+        <%= image_tag avatar_url(user), class: 'img-circle' %>
+      </a>
+    <% end %>
+  </div>
+</div>
