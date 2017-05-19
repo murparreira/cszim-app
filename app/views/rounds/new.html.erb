@@ -1,0 +1,21 @@
+<% if @round.errors.any? %>
+  <div id="field_with_errors" class="message is-danger">
+  	<div class="message-header">Ocorreram erros ao tentar salvar o registro</div>
+  	<div class="message-body">
+	    <ul>
+	    <% @round.errors.full_messages.each do |msg| %>
+	      <li><%= msg %></li>
+	    <% end %>
+	    </ul>
+	   </div>
+  </div>
+<% end %>
+
+<div class="columns">
+  <div class="column has-text-centered">
+    <h1 class="title"><%= @tournament.nome %> - Novo Round</h1>
+  </div>
+</div>
+<hr>
+
+<%= render :partial => 'form' %>

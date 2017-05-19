@@ -1,0 +1,82 @@
+<div class="columns">
+  <div class="column has-text-centered">
+    <h1 class="title">Placar Geral</h1>
+  </div>
+</div>
+<table class="table is-narrow is-striped is-bordered">
+  <thead>
+      <th>Nome do Torneio</th>
+      <th colspan="4">Resultado</th>
+  </thead>
+  <tbody>
+    <% Tournament.all.each do |tournament| %>
+      <tr>
+        <td><%= link_to tournament.nome, tournament %></td>
+        <% tournament.teams.each do |team| %>
+          <td>
+            <%= team.nome %>
+          </td>
+          <td>
+            <%= Winner.joins(:round).where(team_id: team.id).sum("rounds.pontos") %> pontos - <%= Winner.joins(:round).where(team_id: team.id).sum(:placar) %> rounds ganhos
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<hr>
+
+<div class="columns">
+  <div class="column has-text-centered">
+    <h1 class="title">Estatísticas Gerais</h1>
+  </div>
+</div>
+<table class="table is-narrow is-striped is-bordered">
+  <tbody>
+      <tr>
+        <td width="30%">Rounds ganhos como Contra-Terroristas</td>
+        <td><%= Winner.joins(:round).where(lado: "ct").sum(:placar) %></td>
+      </tr>
+      <tr>
+        <td>Rounds ganhos como Terroristas</td>
+        <td><%= Winner.joins(:round).where(lado: "t").sum(:placar) %></td>
+      </tr>
+  </tbody>
+</table>
+
+<hr>
+
+<div class="columns">
+  <div class="column has-text-centered">
+    <h1 class="title">Artilharia do CSZIM</h1>
+  </div>
+</div>
+<hr>
+<div class="columns">
+  <div class="column has-text-centered">
+    <% filtro_geral = "" %>
+    <% filtro_torneio = "" %>
+    <% filtro_mapa = "" %>
+    <% filtro_geral = "is-primary" if params[:filtro].nil? %>
+    <%= link_to "Geral", root_path, class: "button #{filtro_geral}" %>
+    <% filtro_torneio = "is-primary" if params[:filtro] == 'torneio' %>
+    <%= link_to "Por Torneio", root_path(filtro: "torneio"), class: "button #{filtro_torneio}" %>
+    <% filtro_mapa = "is-primary" if params[:filtro] == 'mapa' %>
+    <%= link_to "Por Mapa", root_path(filtro: "mapa"), class: "button #{filtro_mapa}" %>
+  </div>
+</div>
+
+<hr>
+
+<% if params[:filtro].nil? %>
+  <%= render partial: "filtro_geral" %>
+<% end %>
+
+<% if params[:filtro] == 'torneio' %>
+  <%= render partial: "filtro_torneio" %>
+<% end %>
+
+<% if params[:filtro] == 'mapa' %>
+  <%= render partial: "filtro_mapa" %>
+<% end %>

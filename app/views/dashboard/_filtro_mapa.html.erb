@@ -1,0 +1,30 @@
+<div class="columns">
+  <div class="column has-text-centered">
+    <h2 class="subtitle">Por Mapa</h2>
+  </div>
+</div>
+
+<% Map.all.each do |map| %>
+  <div class="columns">
+    <div class="column has-text-centered">
+      <%= image_tag(imagem_mapa_url(map), class: "image is-128x128") %> <h3 class="subtitle"><%= map.nome %> - <%= map.sigla %></h3>
+    </div>
+  </div>
+  <table class="table is-narrow is-striped is-bordered">
+    <thead>
+        <th>Jogador</th>
+        <th>Kills</th>
+        <th>Deaths</th>
+    </thead>
+    <tbody>
+      <% Statistic.joins(:round).select("SUM(kills) AS kills, SUM(deaths) AS deaths, user_id").where(["rounds.map_id = ?", map.id]).group(:user_id).order("kills DESC").each do |statistic| %>
+        <tr>
+          <% user = User.find(statistic.user_id) %>
+          <td><%= image_tag avatar_url(user), class: 'img-circle image is-24x24' %> <%= user.nome %></td>
+          <td><%= statistic.kills %></td>
+          <td><%= statistic.deaths %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

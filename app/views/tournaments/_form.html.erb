@@ -1,0 +1,34 @@
+<%= form_for @tournament do |f| %>
+	<div class="columns">
+		<div class="column is-third">
+			<div class="field">
+				<label class="label">Nome</label>
+				<p class="control">
+					<%= f.text_field :nome, class: 'input', autocomplete: 'off', placeholder: 'Nome' %>
+				</p>
+			</div>
+		</div>
+		<div class="column is-third"></div>
+		<div class="column is-third"></div>
+	</div>
+
+	<div class="control space-20-bottom">
+	  <%= link_to_add_association "<i class='fa fa-plus'></i>&nbsp;Adicionar Time".html_safe, f, :participants,
+	      :data => {"association-insertion-method" => "after" },
+	      :class => 'button', :render_options => { :wrapper => 'inline' } %>
+  </div>
+  <div id='participants'>
+    <%= f.fields_for :participants do |participant| %>
+      <%= render 'participant_fields', f: participant %>
+    <% end %>
+  </div>
+
+	<nav class="level">
+		<div class="level-left"></div>
+		<div class="level-right">
+	    <p class="level-item"><%= link_to root_path, class: 'button is-danger' do %>Cancelar<% end %></p>
+	    <p class="level-item"><%= link_to new_or_edit_path(@tournament), class: 'button' do %>Limpar<% end %></p>
+			<p class="level-item"><%= f.submit "Salvar", :class => 'button is-success' %></p>
+	  </div>
+	</nav>
+<% end %>
