@@ -21,6 +21,6 @@
     <% end %>
   </tbody>
 </table>
-<% if !data_geral.blank? %>
+<% if data_geral.present? %>
   <%= high_chart("chart", Chart.chart(data_geral)) %>
 <% end %>
