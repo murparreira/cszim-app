@@ -26,7 +26,7 @@
           <td><%= statistic.deaths %></td>
         </tr>
       <% end %>
-      <% if !data_torneio.blank? %>
+      <% if data_torneio.present? %>
         <tr>
           <td colspan="3" width="100%">
             <div class="chart-title"><%= link_to '<i class="fa fa-bar-chart"></i> Gráfico'.html_safe, '#', class: 'button is-info is-small' %>
