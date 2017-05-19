@@ -21,6 +21,7 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'pundit'
 gem 'kaminari'
 gem 'cocoon'
+gem 'lazy_high_charts'
 
 group :development, :test do
   gem 'byebug', platform: :mri
