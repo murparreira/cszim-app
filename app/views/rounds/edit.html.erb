@@ -72,7 +72,7 @@
 			<div class="field">
 				<label class="label">Placar Vencedor</label>
 				<p class="control">
-					<%= text_field_tag "placar_vencedor", 0, class: 'input', value: @round.winner.placar if @round.winner %>
+					<%= text_field_tag "placar_vencedor", @round.winner ? @round.winner.placar : 0, class: 'input' %>
 				</p>
 			</div>
 		</div>
@@ -80,7 +80,7 @@
 			<div class="field">
 				<label class="label">Placar Perdedor</label>
 				<p class="control">
-					<%= text_field_tag "placar_perdedor", 0, class: 'input', value: @round.loser.placar if @round.loser %>
+					<%= text_field_tag "placar_perdedor", @round.loser ? @round.loser.placar : 0, class: 'input' %>
 				</p>
 			</div>
 		</div>
