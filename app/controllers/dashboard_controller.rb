@@ -3,12 +3,12 @@ class DashboardController < ApplicationController
 
   def index
   	@data_geral = Statistic.select("SUM(kills) AS kills, SUM(deaths) AS deaths, user_id").group(:user_id).order("kills DESC")
-  	nome = Array.new
-    kill = Array.new
-    death = Array.new
-    line = Array.new
-    pie_kill = Array.new
-    pie_death = Array.new
+  	nome = []
+    kill = []
+    death = []
+    line = []
+    pie_kill = []
+    pie_death = []
 		@data_geral.each do |statistic|
 			user = User.find(statistic.user_id)
 			ratio = (statistic.kills.to_f/statistic.deaths.to_f).round(2)
