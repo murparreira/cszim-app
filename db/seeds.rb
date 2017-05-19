@@ -8,12 +8,12 @@
 ActiveRecord::Base.transaction do
 
 	murillo = User.create(nome: "Murillo Parreira", email: "murparreira@gmail.com", login: "admin", password: "admin", admin: true, ativo: true, steamid: "http://steamcommunity.com/id/murifox")
-	ricardo = User.create(nome: "Ricardo Pulice", email: "rpulice@gmail.com", login: "rpulice", password: "rpulice", ativo: true, steamid: "")
+	ricardo = User.create(nome: "Ricardo Pulice", email: "ricardopulice@gmail.com", login: "rpulice", password: "rpulice", ativo: true, steamid: "")
 
 	edilson = User.create(nome: "Edilson Borges", email: "edilsonfb@gmail.com", login: "edilsonfb", password: "edilsonfb", ativo: true, steamid: "http://steamcommunity.com/id/edilson")
-	danilo = User.create(nome: "Danilo Lopes", email: "dalinolopesdemoraes@gmail.com", login: "bileite", password: "bileite", ativo: true, steamid: "http://steamcommunity.com/profiles/76561198044844552")
+	danilo = User.create(nome: "Danilo Lopes", email: "danilolopesdemoraes@gmail.com", login: "bileite", password: "bileite", ativo: true, steamid: "http://steamcommunity.com/profiles/76561198044844552")
 	wemerson = User.create(nome: "Wemerson Souto", email: "wpsouto@gmail.com", login: "amigao", password: "amigao", ativo: true, steamid: "http://steamcommunity.com/id/wpsouto")
-	naiara = User.create(nome: "Naiara Fatima", email: "nnaiara7@gmail.com", login: "naiara", password: "naiara", ativo: true, steamid: "http://steamcommunity.com/profiles/76561198158451974")
+	naiara = User.create(nome: "Naiara Fatima", email: "nnayara.pedrozo@gmail.com", login: "naiara", password: "naiara", ativo: true, steamid: "http://steamcommunity.com/profiles/76561198158451974")
 
 	de_desertcityfixed = Map.create(nome: "Desertim", sigla: "de_desertcityfixed")
 	de_abbotabad = Map.create(nome: "Abbotabad", sigla: "de_abbotabad")
