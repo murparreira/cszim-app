@@ -7,13 +7,27 @@ class RoundsController < ApplicationController
   end
 
   def update
-    @tournament = Round.find(params[:id])
-    if @tournament.update_attributes(tournament_params)
-      flash[:success] = 'Round atualizado com sucesso!'
-      redirect_to tournaments_url
+    tournament = Tournament.find(params[:tournament_id])
+    round = Round.find(params[:id])
+
+    if round.winner
+      round.winner.update_attributes(placar: params[:placar_vencedor], lado: params[:lado_vencedor])
     else
-      render 'edit'
+      Winner.create(team_id: params[:winner_team_id], round_id: round.id, placar: params[:placar_vencedor], lado: params[:lado_vencedor])
     end
+
+    if round.loser
+      round.loser.update_attributes(placar: params[:placar_perdedor], lado: Lists.lado_perdedor(params[:lado_vencedor]))
+    else
+      Loser.create(team_id: round.loser_team_id(params[:winner_team_id]), round_id: round.id, placar: params[:placar_perdedor], lado: Lists.lado_perdedor(params[:lado_vencedor]))
+    end
+
+    params[:statistics].each do |id, statistic_values|
+      statistic = Statistic.find(id)
+      statistic.update_attributes(statistic_values)
+    end
+
+    redirect_to tournament
   end
 
   def new
