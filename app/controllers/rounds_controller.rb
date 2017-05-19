@@ -13,13 +13,13 @@ class RoundsController < ApplicationController
     if round.winner
       round.winner.update_attributes(placar: params[:placar_vencedor], lado: params[:lado_vencedor])
     else
-      Winner.create(team_id: params[:winner_team_id], round_id: round.id, placar: params[:placar_vencedor], lado: params[:lado_vencedor])
+      Winner.create(team_id: params[:winner_team_id], round_id: round.id, placar: params[:placar_vencedor], lado: params[:lado_vencedor]) if params[:winner_team_id].present?
     end
 
     if round.loser
       round.loser.update_attributes(placar: params[:placar_perdedor], lado: Lists.lado_perdedor(params[:lado_vencedor]))
     else
-      Loser.create(team_id: round.loser_team_id(params[:winner_team_id]), round_id: round.id, placar: params[:placar_perdedor], lado: Lists.lado_perdedor(params[:lado_vencedor]))
+      Loser.create(team_id: round.loser_team_id(params[:winner_team_id]), round_id: round.id, placar: params[:placar_perdedor], lado: Lists.lado_perdedor(params[:lado_vencedor])) if params[:winner_team_id].present?
     end
 
     params[:statistics].each do |id, statistic_values|
@@ -41,11 +41,13 @@ class RoundsController < ApplicationController
     round.save
 
     tournament = Tournament.find(params[:tournament_id])
-    tournament.teams.each do |team|
-      if params[:winner_team_id].to_i == team.id
-        Winner.create(team_id: team.id, round_id: round.id, placar: params[:placar_vencedor], lado: params[:lado_vencedor])
-      else
-        Loser.create(team_id: team.id, round_id: round.id, placar: params[:placar_perdedor], lado: Lists.lado_perdedor(params[:lado_vencedor]))
+    if params[:winner_team_id].present?
+      tournament.teams.each do |team|
+        if params[:winner_team_id].to_i == team.id
+          Winner.create(team_id: team.id, round_id: round.id, placar: params[:placar_vencedor], lado: params[:lado_vencedor])
+        else
+          Loser.create(team_id: team.id, round_id: round.id, placar: params[:placar_perdedor], lado: Lists.lado_perdedor(params[:lado_vencedor]))
+        end
       end
     end
 
