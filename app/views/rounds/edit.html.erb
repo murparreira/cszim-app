@@ -1,9 +1,9 @@
-<% if @company.errors.any? %>
+<% if @round.errors.any? %>
   <div id="field_with_errors" class="message is-danger">
   	<div class="message-header">Ocorreram erros ao tentar salvar o registro</div>
   	<div class="message-body">
 	    <ul>
-	    <% @company.errors.full_messages.each do |msg| %>
+	    <% @round.errors.full_messages.each do |msg| %>
 	      <li><%= msg %></li>
 	    <% end %>
 	    </ul>
@@ -11,8 +11,123 @@
   </div>
 <% end %>
 
-<h1 class="title">Editar Empresa</h1>
+<h1 class="title"><%= @tournament.nome %> - Editar Round</h1>
 <h2 class="subtitle">Preencha <strong>todos</strong> os campos abaixo</h2>
 <hr>
 
-<%= render :partial => 'form' %>
+<%= form_for [@tournament, @round] do |f| %>
+	<div class="columns">
+		<div class="column is-quarter"></div>
+		<div class="column is-quarter">
+			<div class="field">
+				<label class="label">Mapa</label>
+				<p class="control">
+					<%= f.select(:map_id, Map.all.collect {|c| [c.nome, c.id]}, { :prompt => 'Selecione...' }, { :class => 'input' }) %>
+				</p>
+			</div>
+		</div>
+		<div class="column is-quarter">
+			<div class="field">
+				<label class="label">Pontos</label>
+				<p class="control">
+					<%= f.text_field(:pontos, class: 'input') %>
+				</p>
+			</div>
+		</div>
+		<div class="column is-quarter"></div>
+	</div>
+
+	<div class="columns">
+		<div class="column is-quarter"></div>
+		<div class="column is-quarter">
+			<div class="field">
+				<label class="label">Time Vencedor</label>
+				<p class="control">
+					<%= select_tag(:winner_team_id, options_from_collection_for_select(@tournament.teams, "id", "nome"), { :prompt => 'Selecione...', :class => 'input' }) %>
+				</p>
+			</div>
+		</div>
+		<div class="column is-quarter">
+			<div class="field">
+				<label class="label">Lado Vencedor</label>
+				<p class="control">
+					<%= select_tag(:lado_vencedor, options_for_select({"Contra-Terroristas" => "ct", "Terroristas" => "t"}, @round.winner ? @round.winner.lado : ""), { :prompt => 'Selecione...', :class => 'input' }) %>
+				</p>
+			</div>
+		</div>
+		<div class="column is-quarter"></div>
+	</div>
+
+	<hr>
+
+	<div class="columns">
+	  <div class="column has-text-centered">
+	    <h3 class="subtitle">Placar</h3>
+	  </div>
+	</div>
+
+	<div class="columns">
+		<div class="column is-quarter"></div>
+		<div class="column is-quarter">
+			<div class="field">
+				<label class="label">Placar Vencedor</label>
+				<p class="control">
+					<%= text_field_tag "placar_vencedor", 0, class: 'input', value: @round.winner.placar if @round.winner %>
+				</p>
+			</div>
+		</div>
+		<div class="column is-quarter">
+			<div class="field">
+				<label class="label">Placar Perdedor</label>
+				<p class="control">
+					<%= text_field_tag "placar_perdedor", 0, class: 'input', value: @round.loser.placar if @round.loser %>
+				</p>
+			</div>
+		</div>
+		<div class="column is-quarter"></div>
+	</div>
+
+	<hr>
+
+	<div class="columns">
+	  <div class="column has-text-centered">
+	    <h3 class="subtitle">Estatísticas</h3>
+	  </div>
+	</div>
+
+	<div class="columns">
+		<% @tournament.teams.each do |team| %>
+			<div class="column">
+					<table class="table is-narrow is-striped is-bordered">
+					<thead>
+						<tr>
+							<th colspan="3" class="has-text-centered-important"><%= team.nome %></th>
+						</tr>
+						<tr>
+							<th>Jogador</th>
+							<th>Kills</th>
+							<th>Deaths</th>
+						</tr>
+					</thead>
+					<tbody>
+					<% team.users.each do |user| %>
+							<tr>
+									<td><%= user.nome %></td>
+									<td><%= text_field_tag "statistics[#{Statistic.find_by(round_id: @round.id, team_id: team.id, user_id: user.id).id}[kills]]", 0, class: 'input', value: Statistic.find_by(round_id: @round.id, team_id: team.id, user_id: user.id).kills %></td>
+									<td><%= text_field_tag "statistics[#{Statistic.find_by(round_id: @round.id, team_id: team.id, user_id: user.id).id}[deaths]]", 0, class: 'input', value: Statistic.find_by(round_id: @round.id, team_id: team.id, user_id: user.id).deaths %></td>
+							</tr>
+					<% end %>
+					</tbody>
+					</table>
+			</div>
+		<% end %>
+	</div>
+
+	<nav class="level">
+		<div class="level-left"></div>
+		<div class="level-right">
+	    <p class="level-item"><%= link_to tournament_path(@tournament), class: 'button is-danger' do %>Cancelar<% end %></p>
+			<p class="level-item"><%= f.submit "Salvar", :class => 'button is-success' %></p>
+	  </div>
+	</nav>
+<% end %>

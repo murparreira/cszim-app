@@ -32,7 +32,6 @@ class TeamsController < ApplicationController
 
   def create
     @team = Team.new(team_params)
-    @team.ativo = true
     if @team.save
       flash[:success] = 'Time criado com sucesso!'
       redirect_to teams_url

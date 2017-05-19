@@ -11,6 +11,12 @@
 </div>
 <hr>
 <% @tournament.rounds.order("rounds.id DESC").each do |round| %>
+  <div class="columns">
+      <div class="column"></div>
+      <div class="column is-1">
+          <%= link_to "Editar", edit_tournament_round_path(@tournament, round), class: "button" %>
+      </div>
+  </div>
     <div class="columns">
         <div class="column">
             Round <%= round.id %> - Pontos: <%= round.pontos %>
@@ -22,22 +28,22 @@
 
     <div class="columns">
         <div class="column">
-            Vencedor: <strong><%= round.winner.team.nome %></strong>
+            Vencedor: <strong><%= round.nome_vencedor %></strong>
             <br>
-            Placar: <strong><%= round.winner.valor_placar %></strong>
+            Placar: <strong><%= round.placar_vencedor %></strong>
             <br>
-            Lado: <strong><%= translate_lado round.winner.lado %></strong>
+            Lado: <strong><%= translate_lado round.lado_vencedor %></strong>
         </div>
         <div class="column">
-             Perdedor: <strong><%= round.loser.team.nome if round.loser %></strong>
+             Perdedor: <strong><%= round.nome_perdedor %></strong>
              <br>
-             Placar: <strong><%= round.loser.valor_placar %></strong>
+             Placar: <strong><%= round.placar_perdedor %></strong>
              <br>
-             Lado: <strong><%= translate_lado round.loser.lado %></strong>
+             Lado: <strong><%= translate_lado round.lado_perdedor %></strong>
         </div>
     </div>
 
-    <% statistics = Statistic.where(team_id: round.winner.team.id, round_id: round.id).order(kills: :desc) %>
+    <% statistics = Statistic.where(team_id: round.try(:winner).try(:team).try(:id), round_id: round.id).order(kills: :desc) %>
 
     <% if statistics.empty? %>
       <div class="columns">
