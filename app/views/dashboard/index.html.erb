@@ -35,7 +35,7 @@
 <table class="table is-narrow is-striped is-bordered">
   <tbody>
       <tr>
-        <td>Rounds ganhos como Contra-Terroristas</td>
+        <td width="30%">Rounds ganhos como Contra-Terroristas</td>
         <td><%= Winner.joins(:round).where(lado: "ct").sum(:placar) %></td>
       </tr>
       <tr>
