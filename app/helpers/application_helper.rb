@@ -125,4 +125,12 @@ module ApplicationHelper
     end
   end
 
+  def imagem_mapa_url(map)
+    if map.imagem_stored?
+      map.imagem.url
+    else
+      "http://cszim.com.br/img/#{map.sigla}.jpg"
+    end
+  end
+
 end

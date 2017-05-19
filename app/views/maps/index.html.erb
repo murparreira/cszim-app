@@ -13,8 +13,7 @@
   <hr>
   <table class="table is-narrow is-striped is-bordered">
     <thead>
-      <th>Nome</th>
-      <th>Sigla</th>
+      <th>Nome/Sigla</th>
       <th>Imagem</th>
       <th>Status</th>
       <th>Operações</th>
@@ -22,9 +21,13 @@
     <tbody>
       <% @maps.each do |map| %>
       <tr>
-        <td><%= map.nome %></td>
-        <td><%= map.sigla %></td>
-        <td><%= image_tag map.imagem.thumb('400x200#').url if map.imagem_stored? %></td>
+        <td class="td-has-ul">
+          <ul>
+            <li><%= map.nome %></li>
+            <li><%= map.sigla %></li>
+          </ul>
+        </td>
+        <td><%= image_tag(imagem_mapa_url(map), class: "image is-128x128") %></td>
         <td><%= label_status map.ativo %></td>
         <td>
           <%= link_to "Editar", edit_map_path(map), :class => 'button' %>

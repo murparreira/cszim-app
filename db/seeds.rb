@@ -7,17 +7,31 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 ActiveRecord::Base.transaction do
 
-	murillo = User.create(nome: "Murillo Parreira", email: "murparreira@gmail.com", steamid: "", login: "admin", password: "admin", admin: true, ativo: true)
-	ricardo = User.create(nome: "Ricardo Pulice", email: "rpulice@gmail.com", steamid: "", login: "rpulice", password: "rpulice", ativo: true)
+	murillo = User.create(nome: "Murillo Parreira", email: "murparreira@gmail.com", login: "admin", password: "admin", admin: true, ativo: true, steamid: "http://steamcommunity.com/id/murifox")
+	ricardo = User.create(nome: "Ricardo Pulice", email: "rpulice@gmail.com", login: "rpulice", password: "rpulice", ativo: true, steamid: "")
 
-	edilson = User.create(nome: "Edilson Borges", email: "edilsonfb@gmail.com", steamid: "", login: "edilsonfb", password: "edilsonfb", ativo: true)
-	danilo = User.create(nome: "Danilo Lopes", email: "dalinolopesdemoraes@gmail.com", steamid: "", login: "bileite", password: "bileite", ativo: true)
-	wemerson = User.create(nome: "Wemerson Souto", email: "wemerson.souto@gmail.com", steamid: "", login: "amigao", password: "amigao", ativo: true)
-	naiara = User.create(nome: "Naiara Fatima", email: "nnaiara7@gmail.com", steamid: "", login: "naiara", password: "naiara", ativo: true)
+	edilson = User.create(nome: "Edilson Borges", email: "edilsonfb@gmail.com", login: "edilsonfb", password: "edilsonfb", ativo: true, steamid: "http://steamcommunity.com/id/edilson")
+	danilo = User.create(nome: "Danilo Lopes", email: "dalinolopesdemoraes@gmail.com", login: "bileite", password: "bileite", ativo: true, steamid: "http://steamcommunity.com/profiles/76561198044844552")
+	wemerson = User.create(nome: "Wemerson Souto", email: "wpsouto@gmail.com", login: "amigao", password: "amigao", ativo: true, steamid: "http://steamcommunity.com/id/wpsouto")
+	naiara = User.create(nome: "Naiara Fatima", email: "nnaiara7@gmail.com", login: "naiara", password: "naiara", ativo: true, steamid: "http://steamcommunity.com/profiles/76561198158451974")
 
-	aztec = Map.create(nome: "Aztec", sigla: "de_aztec")
-	desertim = Map.create(nome: "Desertim", sigla: "de_desertcity_fixed")
-	asia = Map.create(nome: "Asia", sigla: "de_asia")
+	de_desertcityfixed = Map.create(nome: "Desertim", sigla: "de_desertcityfixed")
+	de_abbotabad = Map.create(nome: "Abbotabad", sigla: "de_abbotabad")
+	de_roma_aimstyle = Map.create(nome: "Roma", sigla: "de_roma_aimstyle")
+	de_cpl_strike = Map.create(nome: "Mirage", sigla: "de_cpl_strike")
+	cs_hacienda = Map.create(nome: "Mansão dos Refém", sigla: "cs_hacienda")
+	de_villa = Map.create(nome: "Villa", sigla: "de_villa")
+	de_asia = Map.create(nome: "Asia", sigla: "de_asia")
+	cs_compound = Map.create(nome: "Compound", sigla: "cs_compound")
+	de_cpl_mill = Map.create(nome: "Tuscan", sigla: "de_cpl_mill")
+	de_tides = Map.create(nome: "Tides", sigla: "de_tides")
+	de_aztec = Map.create(nome: "Aztec", sigla: "de_aztec")
+	de_outlaws = Map.create(nome: "Velho Oeste", sigla: "de_outlaws")
+	de_winter_village = Map.create(nome: "Vila de Inverno", sigla: "de_winter_village")
+	de_cevo_diesel = Map.create(nome: "Diesel", sigla: "de_cevo_diesel")
+	de_slummi = Map.create(nome: "Slummi", sigla: "de_slummi")
+	de_yacer_v3 = Map.create(nome: "Deserto da Feira", sigla: "de_yacer_v3")
+	de_bit_gallery = Map.create(nome: "Galeria", sigla: "de_bit_gallery")
 
 	###### Torneio de Março ######
 	torneio_marco = Tournament.create(nome: "Torneio de Março")
@@ -52,7 +66,7 @@ ActiveRecord::Base.transaction do
 
 	pontos = 0
 	1.upto(14) do |i|
-		if pontos < 33
+		if pontos < 36
 			pontos_round = 3
 			pontos += 3
 		else
@@ -63,6 +77,37 @@ ActiveRecord::Base.transaction do
 		Winner.create(round_id: round.id, team_id: time_um_marco.id)
 		Loser.create(round_id: round.id, team_id: time_dois_marco.id)
 		torneio_marco.rounds << round
+	end
+	###############################
+
+	###### Torneio de Abril ######
+	torneio_abril = Tournament.create(nome: "Torneio de Abril")
+
+	time_um_abril = Team.create(nome: "Igreja Católica")
+	time_um_abril.users << murillo
+	time_um_abril.users << edilson
+
+	time_dois_abril = Team.create(nome: "Candomblé")
+	time_dois_abril.users << danilo
+	time_dois_abril.users << ricardo
+	time_dois_abril.users << naiara
+	time_dois_abril.users << wemerson
+
+	torneio_abril.teams << time_um_abril
+	torneio_abril.teams << time_dois_abril
+
+	1.upto(11) do |i|
+		round = Round.create(tournament_id: torneio_abril.id, pontos: 3)
+		Winner.create(round_id: round.id, team_id: time_dois_abril.id)
+		Loser.create(round_id: round.id, team_id: time_um_abril.id)
+		torneio_abril.rounds << round
+	end
+
+	1.upto(15) do |i|
+		round = Round.create(tournament_id: torneio_abril.id, pontos: 3)
+		Winner.create(round_id: round.id, team_id: time_um_abril.id)
+		Loser.create(round_id: round.id, team_id: time_dois_abril.id)
+		torneio_abril.rounds << round
 	end
 	###############################
 
@@ -82,27 +127,53 @@ ActiveRecord::Base.transaction do
 	torneio_maio.teams << time_um
 	torneio_maio.teams << time_dois
 
-	round_um = Round.create(tournament_id: torneio_maio.id, map_id: aztec.id)
-	winner_round_um = Winner.create(round_id: round_um.id, team_id: time_um.id, placar: 7, lado: "ct")
-	loser_round_um = Loser.create(round_id: round_um.id, team_id: time_dois.id, placar: 4, lado: "t")
-	Statistic.create(round_id: round_um.id, team_id: time_um.id, user_id: murillo.id, kills: 35, deaths: 7)
-	Statistic.create(round_id: round_um.id, team_id: time_um.id, user_id: ricardo.id, kills: 8, deaths: 15)
-	Statistic.create(round_id: round_um.id, team_id: time_dois.id, user_id: edilson.id, kills: 4, deaths: 15)
-	Statistic.create(round_id: round_um.id, team_id: time_dois.id, user_id: danilo.id, kills: 7, deaths: 17)
-	Statistic.create(round_id: round_um.id, team_id: time_dois.id, user_id: wemerson.id, kills: 2, deaths: 18)
-	Statistic.create(round_id: round_um.id, team_id: time_dois.id, user_id: naiara.id, kills: 10, deaths: 13)
+	round_um = Round.create(tournament_id: torneio_maio.id, map_id: de_cevo_diesel.id)
+	winner_round_um = Winner.create(round_id: round_um.id, team_id: time_um.id, placar: 7, lado: "t")
+	loser_round_um = Loser.create(round_id: round_um.id, team_id: time_dois.id, placar: 4, lado: "ct")
+	Statistic.create(round_id: round_um.id, team_id: time_um.id, user_id: murillo.id, kills: 27, deaths: 5)
+	Statistic.create(round_id: round_um.id, team_id: time_um.id, user_id: ricardo.id, kills: 12, deaths: 8)
+	Statistic.create(round_id: round_um.id, team_id: time_dois.id, user_id: edilson.id, kills: 11, deaths: 8)
+	Statistic.create(round_id: round_um.id, team_id: time_dois.id, user_id: naiara.id, kills: 7, deaths: 9)
+	Statistic.create(round_id: round_um.id, team_id: time_dois.id, user_id: danilo.id, kills: 3, deaths: 9)
+	Statistic.create(round_id: round_um.id, team_id: time_dois.id, user_id: wemerson.id, kills: 1, deaths: 10)
 
 	torneio_maio.rounds << round_um
 
-	round_dois = Round.create(tournament_id: torneio_maio.id, map_id: aztec.id)
+	round_dois = Round.create(tournament_id: torneio_maio.id, map_id: de_desertcityfixed.id)
 	winner_round_dois = Winner.create(round_id: round_dois.id, team_id: time_dois.id, placar: 7, lado: "ct")
 	loser_round_dois = Loser.create(round_id: round_dois.id, team_id: time_um.id, placar: 1, lado: "t")
-	Statistic.create(round_id: round_dois.id, team_id: time_um.id, user_id: murillo.id, kills: 22, deaths: 10)
-	Statistic.create(round_id: round_dois.id, team_id: time_um.id, user_id: ricardo.id, kills: 3, deaths: 8)
-	Statistic.create(round_id: round_dois.id, team_id: time_dois.id, user_id: edilson.id, kills: 8, deaths: 10)
-	Statistic.create(round_id: round_dois.id, team_id: time_dois.id, user_id: danilo.id, kills: 8, deaths: 12)
+	Statistic.create(round_id: round_dois.id, team_id: time_um.id, user_id: murillo.id, kills: 9, deaths: 8)
+	Statistic.create(round_id: round_dois.id, team_id: time_um.id, user_id: ricardo.id, kills: 3, deaths:7)
+	Statistic.create(round_id: round_dois.id, team_id: time_dois.id, user_id: naiara.id, kills: 7, deaths: 2)
+	Statistic.create(round_id: round_dois.id, team_id: time_dois.id, user_id: edilson.id, kills: 7, deaths: 3)
+	Statistic.create(round_id: round_dois.id, team_id: time_dois.id, user_id: danilo.id, kills: 3, deaths: 3)
+	Statistic.create(round_id: round_dois.id, team_id: time_dois.id, user_id: wemerson.id, kills: 1, deaths: 4)
 
 	torneio_maio.rounds << round_dois
+
+	round_tres = Round.create(tournament_id: torneio_maio.id, map_id: de_slummi.id)
+	winner_round_tres = Winner.create(round_id: round_tres.id, team_id: time_dois.id, placar: 7, lado: "ct")
+	loser_round_tres = Loser.create(round_id: round_tres.id, team_id: time_um.id, placar: 4, lado: "t")
+	Statistic.create(round_id: round_tres.id, team_id: time_um.id, user_id: murillo.id, kills: 21, deaths: 7)
+	Statistic.create(round_id: round_tres.id, team_id: time_um.id, user_id: ricardo.id, kills: 5, deaths: 10)
+	Statistic.create(round_id: round_tres.id, team_id: time_dois.id, user_id: edilson.id, kills: 8, deaths: 5)
+	Statistic.create(round_id: round_tres.id, team_id: time_dois.id, user_id: danilo.id, kills: 6, deaths: 7)
+	Statistic.create(round_id: round_tres.id, team_id: time_dois.id, user_id: naiara.id, kills: 4, deaths: 6)
+	Statistic.create(round_id: round_tres.id, team_id: time_dois.id, user_id: wemerson.id, kills: 2, deaths: 5)
+
+	torneio_maio.rounds << round_tres
+
+	round_quatro = Round.create(tournament_id: torneio_maio.id, map_id: de_yacer_v3.id)
+	winner_round_quatro = Winner.create(round_id: round_quatro.id, team_id: time_dois.id, placar: 7, lado: "t")
+	loser_round_quatro = Loser.create(round_id: round_quatro.id, team_id: time_um.id, placar: 2, lado: "ct")
+	Statistic.create(round_id: round_quatro.id, team_id: time_um.id, user_id: murillo.id, kills: 22, deaths: 8)
+	Statistic.create(round_id: round_quatro.id, team_id: time_um.id, user_id: ricardo.id, kills: 6, deaths: 8)
+	Statistic.create(round_id: round_quatro.id, team_id: time_dois.id, user_id: edilson.id, kills: 6, deaths: 5)
+	Statistic.create(round_id: round_quatro.id, team_id: time_dois.id, user_id: naiara.id, kills: 5, deaths: 6)
+	Statistic.create(round_id: round_quatro.id, team_id: time_dois.id, user_id: wemerson.id, kills: 3, deaths: 5)
+	Statistic.create(round_id: round_quatro.id, team_id: time_dois.id, user_id: danilo.id, kills: 2, deaths: 6)
+
+	torneio_maio.rounds << round_quatro
 	###############################
 
 end
