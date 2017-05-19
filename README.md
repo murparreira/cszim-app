@@ -19,3 +19,21 @@
 * Logue com o seu usuário (Informações dos usuários podem ser vistas no arquivo db/seeds.rb):  
     * login: admin
     * senha: admin
+
+### Como contribuir? ###
+
+### 1. Fork no projeto e clone o seu fork:
+
+    git clone git@github.com:YOUR-USERNAME/YOUR-FORKED-REPO.git
+
+### 2. Adicione o projeto principal como remote para o seu fork 
+
+    cd seu/repositorio/clonado
+    git remote add upstream git@github.com:murparreira/cszim-app.git
+    git fetch upstream
+
+### 3. Atualize sempre o seu fork com o código original para evitar conflitos e ter sempre as atualizações:
+
+    git pull upstream master
+
+### 4. Ao terminar as modificaçes, abra um pull request para incorporar o seu código no repositório principal.
