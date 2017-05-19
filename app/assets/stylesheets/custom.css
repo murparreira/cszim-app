@@ -51,3 +51,6 @@
 .anti-image-block {
   display: inline !important;
 }
+.chart-content {
+  display: none;
+}
