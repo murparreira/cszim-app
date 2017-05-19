@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   resources :teams
   root to: 'dashboard#index'
 
+  get 'randomizer' => 'randomizer#index'
+
   get 'login' => 'sessions#new'
   post 'login' => 'sessions#create'
   get 'logout' => 'sessions#destroy'

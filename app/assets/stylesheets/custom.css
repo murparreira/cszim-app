@@ -31,11 +31,19 @@
 .td-has-ul {
   padding-left: 30px !important;
 }
+.ul-mapas-randomizer {
+  margin-bottom: 20px;
+  margin-left: 20px;
+  list-style-type: decimal;
+}
 .td-has-ul ul {
   list-style-type: circle;
 }
 .space-20-top {
   margin-top: 20px;
+}
+.space-50-top {
+  margin-top: 50px;
 }
 .space-20-bottom {
   margin-bottom: 20px;

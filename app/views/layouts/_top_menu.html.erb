@@ -1,8 +1,8 @@
 <nav class="nav has-shadow">
   <div class="nav-left">
-    <a class="nav-item">
+    <%= link_to root_path, class: "nav-item" do %>
       <h1 class="title">CSZIM-APP</h1>
-    </a>
+    <% end %>
   </div>
   <div class="nav-right nav-menu">
     <%= link_to edit_user_path(current_user), class: "nav-item is-tab" do %>
