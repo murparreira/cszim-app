@@ -10,7 +10,7 @@
       <th>Deaths</th>
   </thead>
   <tbody>
-    <% Statistic.select("SUM(kills) AS kills, SUM(deaths) AS deaths, user_id").group(:user_id).order("kills DESC").each do |statistic| %>
+    <% @dataGeral.each do |statistic| %>
       <tr>
         <% user = User.find(statistic.user_id) %>
         <td><%= image_tag avatar_url(user), class: 'img-circle image is-24x24' %> <%= user.nome %></td>
@@ -20,3 +20,4 @@
     <% end %>
   </tbody>
 </table>
+<%= high_chart("pie", @chartGeral) %>
