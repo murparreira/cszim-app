@@ -10,7 +10,7 @@
   </div>
 </div>
 <hr>
-<% @tournament.rounds.each do |round| %>
+<% @tournament.rounds.order("rounds.id DESC").each do |round| %>
     <div class="columns">
         <div class="column">
             Round <%= round.id %> - Pontos: <%= round.pontos %>

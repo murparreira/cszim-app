@@ -127,6 +127,20 @@ ActiveRecord::Base.transaction do
 	torneio_maio.teams << time_um
 	torneio_maio.teams << time_dois
 
+	1.upto(24) do |i|
+		round = Round.create(tournament_id: torneio_maio.id, pontos: 3)
+		Winner.create(round_id: round.id, team_id: time_dois.id)
+		Loser.create(round_id: round.id, team_id: time_um.id)
+		torneio_maio.rounds << round
+	end
+
+	1.upto(12) do |i|
+		round = Round.create(tournament_id: torneio_maio.id, pontos: 3)
+		Winner.create(round_id: round.id, team_id: time_um.id)
+		Loser.create(round_id: round.id, team_id: time_dois.id)
+		torneio_maio.rounds << round
+	end
+
 	round_um = Round.create(tournament_id: torneio_maio.id, map_id: de_cevo_diesel.id)
 	winner_round_um = Winner.create(round_id: round_um.id, team_id: time_um.id, placar: 7, lado: "t")
 	loser_round_um = Loser.create(round_id: round_um.id, team_id: time_dois.id, placar: 4, lado: "ct")
@@ -174,6 +188,103 @@ ActiveRecord::Base.transaction do
 	Statistic.create(round_id: round_quatro.id, team_id: time_dois.id, user_id: danilo.id, kills: 2, deaths: 6)
 
 	torneio_maio.rounds << round_quatro
+
+	round_cinco = Round.create(tournament_id: torneio_maio.id, map_id: de_abbotabad.id)
+	winner_round_cinco = Winner.create(round_id: round_cinco.id, team_id: time_dois.id, placar: 7, lado: "ct")
+	loser_round_cinco = Loser.create(round_id: round_cinco.id, team_id: time_um.id, placar: 6, lado: "t")
+	Statistic.create(round_id: round_cinco.id, team_id: time_um.id, user_id: murillo.id, kills: 34, deaths: 8)
+	Statistic.create(round_id: round_cinco.id, team_id: time_um.id, user_id: ricardo.id, kills: 7, deaths: 11)
+	Statistic.create(round_id: round_cinco.id, team_id: time_dois.id, user_id: edilson.id, kills: 12, deaths: 9)
+	Statistic.create(round_id: round_cinco.id, team_id: time_dois.id, user_id: naiara.id, kills: 8, deaths: 7)
+	Statistic.create(round_id: round_cinco.id, team_id: time_dois.id, user_id: danilo.id, kills: 5, deaths: 11)
+	Statistic.create(round_id: round_cinco.id, team_id: time_dois.id, user_id: wemerson.id, kills: 3, deaths: 11)
+
+	torneio_maio.rounds << round_cinco
+
+	round_sexto = Round.create(tournament_id: torneio_maio.id, map_id: de_aztec.id)
+	winner_round_sexto = Winner.create(round_id: round_sexto.id, team_id: time_dois.id, placar: 7, lado: "ct")
+	loser_round_sexto = Loser.create(round_id: round_sexto.id, team_id: time_um.id, placar: 0, lado: "t")
+	Statistic.create(round_id: round_sexto.id, team_id: time_um.id, user_id: murillo.id, kills: 12, deaths: 7)
+	Statistic.create(round_id: round_sexto.id, team_id: time_um.id, user_id: ricardo.id, kills: 3, deaths: 7)
+	Statistic.create(round_id: round_sexto.id, team_id: time_dois.id, user_id: naiara.id, kills: 10, deaths: 4)
+	Statistic.create(round_id: round_sexto.id, team_id: time_dois.id, user_id: danilo.id, kills: 8, deaths: 3)
+	Statistic.create(round_id: round_sexto.id, team_id: time_dois.id, user_id: edilson.id, kills: 7, deaths: 3)
+	Statistic.create(round_id: round_sexto.id, team_id: time_dois.id, user_id: wemerson.id, kills: 1, deaths: 5)
+
+	torneio_maio.rounds << round_sexto
+
+	round_sete = Round.create(tournament_id: torneio_maio.id, map_id: de_aztec.id)
+	winner_round_sete = Winner.create(round_id: round_sete.id, team_id: time_dois.id, placar: 7, lado: "ct")
+	loser_round_sete = Loser.create(round_id: round_sete.id, team_id: time_um.id, placar: 5, lado: "t")
+	Statistic.create(round_id: round_sete.id, team_id: time_um.id, user_id: murillo.id, kills: 20, deaths: 7)
+	Statistic.create(round_id: round_sete.id, team_id: time_um.id, user_id: ricardo.id, kills: 7, deaths: 10)
+	Statistic.create(round_id: round_sete.id, team_id: time_dois.id, user_id: naiara.id, kills: 7, deaths: 6)
+	Statistic.create(round_id: round_sete.id, team_id: time_dois.id, user_id: danilo.id, kills: 7, deaths: 8)
+	Statistic.create(round_id: round_sete.id, team_id: time_dois.id, user_id: wemerson.id, kills: 4, deaths: 7)
+	Statistic.create(round_id: round_sete.id, team_id: time_dois.id, user_id: edilson.id, kills: 2, deaths: 6)
+
+	torneio_maio.rounds << round_sete
+
+	round_oito = Round.create(tournament_id: torneio_maio.id, map_id: de_cpl_strike.id)
+	winner_round_oito = Winner.create(round_id: round_oito.id, team_id: time_dois.id, placar: 7, lado: "t")
+	loser_round_oito = Loser.create(round_id: round_oito.id, team_id: time_um.id, placar: 0, lado: "ct")
+	Statistic.create(round_id: round_oito.id, team_id: time_um.id, user_id: murillo.id, kills: 5, deaths: 7)
+	Statistic.create(round_id: round_oito.id, team_id: time_um.id, user_id: ricardo.id, kills: 3, deaths: 7)
+	Statistic.create(round_id: round_oito.id, team_id: time_dois.id, user_id: edilson.id, kills: 7, deaths: 1)
+	Statistic.create(round_id: round_oito.id, team_id: time_dois.id, user_id: naiara.id, kills: 3, deaths: 3)
+	Statistic.create(round_id: round_oito.id, team_id: time_dois.id, user_id: wemerson.id, kills: 2, deaths: 2)
+	Statistic.create(round_id: round_oito.id, team_id: time_dois.id, user_id: danilo.id, kills: 2, deaths: 2)
+
+	torneio_maio.rounds << round_oito
+
+	round_nove = Round.create(tournament_id: torneio_maio.id, map_id: de_outlaws.id)
+	winner_round_nove = Winner.create(round_id: round_nove.id, team_id: time_um.id, placar: 7, lado: "t")
+	loser_round_nove = Loser.create(round_id: round_nove.id, team_id: time_dois.id, placar: 3, lado: "ct")
+	Statistic.create(round_id: round_nove.id, team_id: time_um.id, user_id: murillo.id, kills: 30, deaths: 3)
+	Statistic.create(round_id: round_nove.id, team_id: time_um.id, user_id: ricardo.id, kills: 3, deaths: 6)
+	Statistic.create(round_id: round_nove.id, team_id: time_dois.id, user_id: naiara.id, kills: 6, deaths: 8)
+	Statistic.create(round_id: round_nove.id, team_id: time_dois.id, user_id: edilson.id, kills: 6, deaths: 8)
+	Statistic.create(round_id: round_nove.id, team_id: time_dois.id, user_id: wemerson.id, kills: 0, deaths: 7)
+	Statistic.create(round_id: round_nove.id, team_id: time_dois.id, user_id: danilo.id, kills: 0, deaths: 10)
+
+	torneio_maio.rounds << round_nove
+
+	round_dez = Round.create(tournament_id: torneio_maio.id, map_id: de_roma_aimstyle.id)
+	winner_round_dez = Winner.create(round_id: round_dez.id, team_id: time_um.id, placar: 7, lado: "ct")
+	loser_round_dez = Loser.create(round_id: round_dez.id, team_id: time_dois.id, placar: 3, lado: "t")
+	Statistic.create(round_id: round_dez.id, team_id: time_um.id, user_id: murillo.id, kills: 41, deaths: 4)
+	Statistic.create(round_id: round_dez.id, team_id: time_um.id, user_id: ricardo.id, kills: 8, deaths: 8)
+	Statistic.create(round_id: round_dez.id, team_id: time_dois.id, user_id: danilo.id, kills: 5, deaths: 9)
+	Statistic.create(round_id: round_dez.id, team_id: time_dois.id, user_id: naiara.id, kills: 4, deaths: 8)
+	Statistic.create(round_id: round_dez.id, team_id: time_dois.id, user_id: wemerson.id, kills: 3, deaths: 8)
+	Statistic.create(round_id: round_dez.id, team_id: time_dois.id, user_id: edilson.id, kills: 3, deaths: 9)
+
+	torneio_maio.rounds << round_dez
+
+	round_onze = Round.create(tournament_id: torneio_maio.id, map_id: de_villa.id)
+	winner_round_onze = Winner.create(round_id: round_onze.id, team_id: time_um.id, placar: 7, lado: "t")
+	loser_round_onze = Loser.create(round_id: round_onze.id, team_id: time_dois.id, placar: 5, lado: "ct")
+	Statistic.create(round_id: round_onze.id, team_id: time_um.id, user_id: murillo.id, kills: 26, deaths: 6)
+	Statistic.create(round_id: round_onze.id, team_id: time_um.id, user_id: ricardo.id, kills: 11, deaths: 9)
+	Statistic.create(round_id: round_onze.id, team_id: time_dois.id, user_id: edilson.id, kills: 6, deaths: 6)
+	Statistic.create(round_id: round_onze.id, team_id: time_dois.id, user_id: naiara.id, kills: 6, deaths: 9)
+	Statistic.create(round_id: round_onze.id, team_id: time_dois.id, user_id: wemerson.id, kills: 5, deaths: 10)
+	Statistic.create(round_id: round_onze.id, team_id: time_dois.id, user_id: danilo.id, kills: 3, deaths: 9)
+
+	torneio_maio.rounds << round_onze
+
+	round_doze = Round.create(tournament_id: torneio_maio.id, map_id: de_winter_village.id)
+	winner_round_doze = Winner.create(round_id: round_doze.id, team_id: time_dois.id, placar: 7, lado: "t")
+	loser_round_doze = Loser.create(round_id: round_doze.id, team_id: time_um.id, placar: 5, lado: "ct")
+	Statistic.create(round_id: round_doze.id, team_id: time_um.id, user_id: murillo.id, kills: 25, deaths: 9)
+	Statistic.create(round_id: round_doze.id, team_id: time_um.id, user_id: ricardo.id, kills: 12, deaths: 10)
+	Statistic.create(round_id: round_doze.id, team_id: time_dois.id, user_id: naiara.id, kills: 6, deaths: 7)
+	Statistic.create(round_id: round_doze.id, team_id: time_dois.id, user_id: edilson.id, kills: 6, deaths: 8)
+	Statistic.create(round_id: round_doze.id, team_id: time_dois.id, user_id: danilo.id, kills: 5, deaths: 9)
+	Statistic.create(round_id: round_doze.id, team_id: time_dois.id, user_id: wemerson.id, kills: 2, deaths: 10)
+
+	torneio_maio.rounds << round_doze
+
 	###############################
 
 end
