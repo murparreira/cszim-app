@@ -2494,7 +2494,7 @@ a.box:active {
 }
 
 .image {
-  display: block;
+  /*display: block;*/
   position: relative;
 }
 
