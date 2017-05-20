@@ -7,7 +7,7 @@ class Chart
     pie_death = []
     data.each do |statistic|
       user = User.find(statistic.user_id)
-      ratio = (statistic.kills.to_f/statistic.deaths.to_f).round(2)
+      ratio = statistic.ratio
       media = (statistic.kills.to_f+statistic.deaths.to_f)/2
       nome << user.nome + '<br>' + ratio.to_s
       kill << statistic.kills
@@ -23,9 +23,9 @@ class Chart
       f.labels(items: [{html: 'Kills', style: {left: '180px', top: '2px', color: 'black'}},{html: 'Deaths', style: {left: '380px', top: '2px', color: 'black'}}])
       f.series(type: 'column', name: "Kills", data: kill, color: '#23d160')
       f.series(type: 'column', name: "Deaths", data: death, color: '#ff3860')
-      f.series(type: 'pie', name: 'Kill', data: pie_kill, center: [250, 20], size: 100, showInLegend: false, dataLabels: {enabled: false,}, 
+      f.series(type: 'pie', name: 'Kill', data: pie_kill, center: [250, 20], size: 100, showInLegend: false, dataLabels: {enabled: false,},
           tooltip: {pointFormat: '{series.name}: {point.y} - <b>{point.percentage:.1f}%</b>'})
-      f.series(type: 'pie', name: 'Death', data: pie_death, center: [450, 20], size: 100, showInLegend: false, dataLabels: {enabled: false}, 
+      f.series(type: 'pie', name: 'Death', data: pie_death, center: [450, 20], size: 100, showInLegend: false, dataLabels: {enabled: false},
           tooltip: {pointFormat: '{series.name}: {point.y} - <b>{point.percentage:.1f}%</b>'})
       f.yAxis [
         {plotLines: [{color: '#ff3860', value: line_death, width: 2},
