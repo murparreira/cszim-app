@@ -6,8 +6,9 @@
 <table class="table is-narrow is-striped is-bordered">
   <thead>
       <th>Jogador</th>
-      <th>Kills</th>
-      <th>Deaths</th>
+      <th width="10%">Kills</th>
+      <th width="10%">Deaths</th>
+      <th width="10%">Ratio</th>
   </thead>
   <tbody>
     <% data_geral = Statistic.select("SUM(kills) AS kills, SUM(deaths) AS deaths, user_id").group(:user_id).order("kills DESC, deaths ASC") %>
@@ -17,6 +18,7 @@
         <td><%= image_tag avatar_url(user), class: 'img-circle image anti-image-block is-24x24' %> <%= user.nome %></td>
         <td><%= statistic.kills %></td>
         <td><%= statistic.deaths %></td>
+        <td><%= statistic.ratio %></td>
       </tr>
     <% end %>
   </tbody>

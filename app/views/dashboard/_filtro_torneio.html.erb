@@ -4,7 +4,7 @@
   </div>
 </div>
 
-<% Tournament.all.each do |tournament| %>
+<% Tournament.joins(rounds: :statistics).group(:tournament_id).each do |tournament| %>
   <div class="columns">
     <div class="column has-text-centered">
       <h3 class=""><%= tournament.nome %></h3>
@@ -12,9 +12,10 @@
   </div>
   <table class="table is-narrow is-striped is-bordered">
     <thead>
-        <th>Jogador</th>
-        <th>Kills</th>
-        <th>Deaths</th>
+      <th>Jogador</th>
+      <th width="10%">Kills</th>
+      <th width="10%">Deaths</th>
+      <th width="10%">Ratio</th>
     </thead>
     <tbody>
       <% data_torneio = Statistic.joins(:round).select("SUM(kills) AS kills, SUM(deaths) AS deaths, user_id").where(["rounds.tournament_id = ?", tournament.id]).group(:user_id).order("kills DESC, deaths ASC") %>
@@ -24,11 +25,12 @@
           <td><%= image_tag avatar_url(user), class: 'img-circle image anti-image-block is-24x24' %> <%= user.nome %></td>
           <td><%= statistic.kills %></td>
           <td><%= statistic.deaths %></td>
+          <td><%= statistic.ratio %></td>
         </tr>
       <% end %>
       <% if data_torneio.present? %>
         <tr>
-          <td colspan="3" width="100%">
+          <td colspan="4" width="100%">
             <div class="chart-title"><%= link_to '<i class="fa fa-bar-chart"></i> Gráfico'.html_safe, '#', class: 'button is-info is-small' %>
               <div class="chart-content">
                 <%= high_chart(tournament.id.to_s, Chart.chart(data_torneio)) %>
