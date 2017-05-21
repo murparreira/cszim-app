@@ -5,7 +5,7 @@ class Round < ApplicationRecord
     has_one :winner
     has_one :loser
 
-    has_many :statistics
+    has_many :statistics, dependent: :destroy
 
     def nome_mapa
       if map

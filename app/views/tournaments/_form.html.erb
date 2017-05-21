@@ -1,4 +1,4 @@
-<%= form_for @tournament do |f| %>
+<%= form_for @tournament, remote: true do |f| %>
 	<div class="columns">
 		<div class="column is-third">
 			<div class="field">
@@ -8,20 +8,51 @@
 				</p>
 			</div>
 		</div>
-		<div class="column is-third"></div>
+    <div class="column is-third"></div>
+    <div class="column is-third"></div>
+  </div>
+  <div class="columns">
+		<div class="column">
+			<div class="field">
+				<label class="label"></label>
+				<p class="control">
+					<label class="checkbox">
+			       <%= check_box_tag 'automatico', true, false, class: 'checkbox' %>
+			       Gerar Rounds Automaticamente
+			     </label>
+				</p>
+			</div>
+		</div>
 		<div class="column is-third"></div>
 	</div>
 
-	<div class="control space-20-bottom">
-	  <%= link_to_add_association "<i class='fa fa-plus'></i>&nbsp;Adicionar Time".html_safe, f, :participants,
-	      :data => {"association-insertion-method" => "after" },
-	      :class => 'button', :render_options => { :wrapper => 'inline' } %>
-  </div>
-  <div id='participants'>
-    <%= f.fields_for :participants do |participant| %>
-      <%= render 'participant_fields', f: participant %>
+  <%= f.fields_for :participants do |participant| %>
+    <%= participant.fields_for :team do |team| %>
+      <div class="columns">
+    		<div class="column is-third">
+    			<div class="field">
+            <label class="label">Nome do Time</label>
+            <p class="control">
+              <%= team.text_field :nome, class: 'input' %>
+            </p>
+          </div>
+        </div>
+        <div class="column is-third"></div>
+        <div class="column is-third"></div>
+      </div>
+			<div class="control space-20-bottom">
+			  <%= link_to_add_association "<i class='fa fa-plus'></i>&nbsp;Adicionar Jogador".html_safe, team, :players,
+			      :data => {"association-insertion-method" => "after" },
+			      :class => 'button', :render_options => { :wrapper => 'inline' } %>
+		  </div>
+		  <div id='players'>
+		    <%= team.fields_for :players do |player| %>
+		      <%= render 'player_fields', f: player %>
+		    <% end %>
+		  </div>
+      <hr>
     <% end %>
-  </div>
+  <% end %>
 
 	<nav class="level">
 		<div class="level-left"></div>
