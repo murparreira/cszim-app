@@ -14,10 +14,10 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require cocoon
-//= require_tree .
-
 //= require highcharts/highcharts
 //= require highcharts/highcharts-more
+//= require_tree .
+
 Flatpickr.localize(Flatpickr.l10ns.pt);
 Flatpickr.defaultConfig.altInput = true;
 Flatpickr.defaultConfig.altFormat = "d/m/Y"
