@@ -2,7 +2,7 @@ class TournamentsController < ApplicationController
     before_action :authenticate_user
 
 	def index
-		@tournaments = Tournament.order(:nome)
+		@tournaments = Tournament.order(id: :desc)
 	end
 
 	def edit

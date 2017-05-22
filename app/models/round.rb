@@ -70,9 +70,7 @@ class Round < ApplicationRecord
 
     def loser_team_id(winner_team_id)
       array = tournament.teams.pluck(:id)
-      puts array
       array.delete(winner_team_id)
-      puts array
       array[0]
     end
 
