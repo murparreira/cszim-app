@@ -1,13 +1,13 @@
 <div class="columns nested-fields">
-	<div class="column is-half">
+	<div class="column is-third">
 		<div class="field">
 			<p class="control">
-				<%= f.select(:user_id, User.all.collect {|c| [c.nome, c.id]}, { :prompt => 'Selecione...' }, { :class => 'input' }) %>
+				<%= f.select(:map_id, Map.where(ativo: true).collect {|c| [c.nome, c.id]}, { :prompt => 'Selecione...' }, { :class => 'input' }) %>
 			</p>
 		</div>
 	</div>
-	<div class="column is-quarter">
+	<div class="column is-third">
 		<%= link_to_remove_association button_tag("<i class='fa fa-trash-o'></i>&nbsp; Remover".html_safe, type: "button", class: "button"), f %>
 	</div>
-	<div class="column is-quarter"></div>
+	<div class="column is-third"></div>
 </div>

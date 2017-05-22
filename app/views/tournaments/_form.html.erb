@@ -11,48 +11,67 @@
     <div class="column is-third"></div>
     <div class="column is-third"></div>
   </div>
-  <div class="columns">
-		<div class="column">
-			<div class="field">
-				<label class="label"></label>
-				<p class="control">
-					<label class="checkbox">
-			       <%= check_box_tag 'automatico', true, false, class: 'checkbox' %>
-			       Gerar Rounds Automaticamente
-			     </label>
-				</p>
-			</div>
-		</div>
-		<div class="column is-third"></div>
-	</div>
 
-  <%= f.fields_for :participants do |participant| %>
-    <%= participant.fields_for :team do |team| %>
-      <div class="columns">
-    		<div class="column is-third">
-    			<div class="field">
-            <label class="label">Nome do Time</label>
-            <p class="control">
-              <%= team.text_field :nome, class: 'input' %>
-            </p>
-          </div>
-        </div>
-        <div class="column is-third"></div>
-        <div class="column is-third"></div>
-      </div>
-			<div class="control space-20-bottom">
-			  <%= link_to_add_association "<i class='fa fa-plus'></i>&nbsp;Adicionar Jogador".html_safe, team, :players,
-			      :data => {"association-insertion-method" => "after" },
-			      :class => 'button', :render_options => { :wrapper => 'inline' } %>
-		  </div>
-		  <div id='players'>
-		    <%= team.fields_for :players do |player| %>
-		      <%= render 'player_fields', f: player %>
-		    <% end %>
-		  </div>
-      <hr>
-    <% end %>
-  <% end %>
+	<% if @tournament.new_record? %>
+	  <div class="columns">
+			<div class="column">
+				<div class="field">
+					<label class="label"></label>
+					<p class="control">
+						<label class="checkbox">
+				       <%= check_box_tag 'automatico', true, false, class: 'checkbox' %>
+				       Gerar Rounds Automaticamente
+				     </label>
+					</p>
+				</div>
+			</div>
+			<div class="column is-third"></div>
+		</div>
+	<% end %>
+
+	<div class="columns">
+	  <%= f.fields_for :participants do |participant| %>
+	    <%= participant.fields_for :team do |team| %>
+	  		<div class="column is-half has-text-centered">
+					<div class="columns">
+						<div class="column is-half">
+		    			<div class="field">
+		            <label class="label">Nome do Time</label>
+		            <p class="control">
+		              <%= team.text_field :nome, class: 'input' %>
+		            </p>
+		          </div>
+		        </div>
+	        	<div class="column is-half"></div>
+					</div>
+					<div class="control space-20-bottom">
+					  <%= link_to_add_association "<i class='fa fa-plus'></i>&nbsp;Adicionar Jogador".html_safe, team, :players,
+					      :data => {"association-insertion-method" => "after" },
+					      :class => 'button', :render_options => { :wrapper => 'inline' } %>
+				  </div>
+				  <div id='players'>
+				    <%= team.fields_for :players do |player| %>
+				      <%= render 'player_fields', f: player %>
+				    <% end %>
+				  </div>
+				</div>
+	    <% end %>
+	  <% end %>
+	</div>
+	<hr>
+
+	<div class="map_bans" style="display: none;">
+		<div class="control space-20-bottom">
+			<%= link_to_add_association "<i class='fa fa-plus'></i>&nbsp;Adicionar Mapas Banidos".html_safe, f, :map_bans,
+					:data => {"association-insertion-method" => "after" },
+					:class => 'button', :render_options => { :wrapper => 'inline' } %>
+		</div>
+		<div id='map_bans'>
+			<%= f.fields_for :map_bans do |map_ban| %>
+				<%= render 'map_ban_fields', f: map_ban %>
+			<% end %>
+		</div>
+	</div>
 
 	<nav class="level">
 		<div class="level-left"></div>

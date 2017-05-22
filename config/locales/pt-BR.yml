@@ -223,15 +223,3 @@ pt-BR:
     pagination:
       next: 'Próximo'
       previous: 'Anterior'
-  activerecord:
-    attributes:
-      sale:
-        customer: 'Cliente'
-      receipt:
-        customer: 'Cliente'
-    errors:
-      models:
-        employee:
-          attributes:
-            salario:
-              invalid_currency: 'Está no formato errado (Use somente números e vírgula)'

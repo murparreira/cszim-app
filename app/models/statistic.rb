@@ -7,4 +7,12 @@ class Statistic < ApplicationRecord
     def ratio
       (kills.to_f/deaths.to_f).round(2)
     end
+
+    def kills
+      super || 0
+    end
+
+    def deaths
+      super || 0
+    end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170518033418) do
+ActiveRecord::Schema.define(version: 20170521151338) do
 
   create_table "losers", force: :cascade do |t|
     t.integer  "round_id"
@@ -21,6 +21,13 @@ ActiveRecord::Schema.define(version: 20170518033418) do
     t.datetime "updated_at", null: false
     t.index ["round_id"], name: "index_losers_on_round_id"
     t.index ["team_id"], name: "index_losers_on_team_id"
+  end
+
+  create_table "map_bans", force: :cascade do |t|
+    t.integer "tournament_id"
+    t.integer "map_id"
+    t.index ["map_id"], name: "index_map_bans_on_map_id"
+    t.index ["tournament_id"], name: "index_map_bans_on_tournament_id"
   end
 
   create_table "maps", force: :cascade do |t|
@@ -48,11 +55,16 @@ ActiveRecord::Schema.define(version: 20170518033418) do
   end
 
   create_table "rounds", force: :cascade do |t|
+    t.integer  "ct_team_id"
+    t.integer  "t_team_id"
     t.integer  "tournament_id"
     t.integer  "map_id"
-    t.integer  "pontos",        default: 3
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.integer  "pontos",          default: 3
+    t.string   "screenshot_uid"
+    t.string   "screenshot_name"
+    t.date     "data_round"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
     t.index ["map_id"], name: "index_rounds_on_map_id"
     t.index ["tournament_id"], name: "index_rounds_on_tournament_id"
   end
