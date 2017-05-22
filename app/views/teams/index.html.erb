@@ -2,7 +2,9 @@
   <thead>
     <th>Nome</th>
     <th>Jogadores</th>
-    <th>Operações</th>
+    <% if current_user.admin %>
+      <th>Operações</th>
+    <% end %>
   </thead>
   <tbody>
     <% @teams.each do |team| %>
@@ -15,9 +17,9 @@
         <% end %>
         </ul>
       </td>
-      <td>
-        <%= link_to "Editar", edit_team_path(team), :class => 'button' %>
-      </td>
+      <% if current_user.admin %>
+        <td><%= link_to "Editar", edit_team_path(team), :class => 'button' %></td>
+      <% end %>
     </tr>
     <% end %>
   </tbody>
