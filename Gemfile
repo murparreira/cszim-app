@@ -23,6 +23,10 @@ gem 'kaminari'
 gem 'cocoon'
 gem 'lazy_high_charts'
 
+group :production do
+  gem 'pg'
+end
+
 group :development, :test do
   gem 'byebug', platform: :mri
 end
@@ -42,3 +46,4 @@ end
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'dragonfly', '~> 1.1.2'
+gem 'dragonfly-s3_data_store'
