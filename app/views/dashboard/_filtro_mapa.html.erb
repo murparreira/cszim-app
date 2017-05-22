@@ -4,7 +4,7 @@
   </div>
 </div>
 
-<% Map.joins(:rounds).all.each do |map| %>
+<% Map.joins(:rounds).group(:map_id).each do |map| %>
   <div class="columns">
     <div class="column has-text-centered">
       <%= image_tag(imagem_mapa_url(map), class: "image is-128x128") %> <h3 class="subtitle"><%= map.nome %> - <%= map.sigla %></h3>
