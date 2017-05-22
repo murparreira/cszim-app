@@ -16,6 +16,7 @@
 <hr>
 
 <%= form_for [@tournament, @round] do |f| %>
+
 	<div class="columns">
 		<div class="column is-quarter"></div>
 		<div class="column is-quarter">
@@ -99,32 +100,40 @@
 		<% @tournament.teams.each do |team| %>
 			<div class="column">
 					<table class="table is-narrow is-striped is-bordered">
-					<thead>
-						<tr>
-							<th colspan="3" class="has-text-centered-important"><%= team.nome %></th>
-						</tr>
-						<tr>
-							<th>Jogador</th>
-							<th>Kills</th>
-							<th>Deaths</th>
-						</tr>
-					</thead>
-					<tbody>
-					<% team.users.each do |user| %>
-							<tr>
-                  <%= puts user.inspect %>
-                  <%= puts @round.inspect %>
-                  <%= puts team.inspect %>
-									<td><%= user.nome %></td>
-									<td><%= text_field_tag "statistics[#{Statistic.find_by(round_id: @round.id, team_id: team.id, user_id: user.id).id}[kills]]", 0, class: 'input', value: Statistic.find_by(round_id: @round.id, team_id: team.id, user_id: user.id).kills %></td>
-									<td><%= text_field_tag "statistics[#{Statistic.find_by(round_id: @round.id, team_id: team.id, user_id: user.id).id}[deaths]]", 0, class: 'input', value: Statistic.find_by(round_id: @round.id, team_id: team.id, user_id: user.id).deaths %></td>
-							</tr>
-					<% end %>
-					</tbody>
+  					<thead>
+  						<tr>
+  							<th colspan="3" class="has-text-centered-important"><%= team.nome %></th>
+  						</tr>
+  						<tr>
+  							<th>Jogador</th>
+  							<th>Kills</th>
+  							<th>Deaths</th>
+  						</tr>
+  					</thead>
+  					<tbody>
+    					<% team.users.each do |user| %>
+    						<tr>
+    							<td><%= user.nome %></td>
+    							<td><%= text_field_tag "statistics[#{Statistic.find_by(round_id: @round.id, team_id: team.id, user_id: user.id).id}[kills]]", 0, class: 'input', value: Statistic.find_by(round_id: @round.id, team_id: team.id, user_id: user.id).kills %></td>
+    							<td><%= text_field_tag "statistics[#{Statistic.find_by(round_id: @round.id, team_id: team.id, user_id: user.id).id}[deaths]]", 0, class: 'input', value: Statistic.find_by(round_id: @round.id, team_id: team.id, user_id: user.id).deaths %></td>
+    						</tr>
+    					<% end %>
+  					</tbody>
 					</table>
 			</div>
 		<% end %>
 	</div>
+
+  <div class="columns">
+    <div class="column">
+      <% if @round.screenshot %>
+        <%= image_tag @round.screenshot.url if @round.screenshot_stored? %>
+        <%= f.file_field :screenshot %>
+      <% else %>
+        <%= f.file_field :screenshot %>
+      <% end %>
+    </div>
+  </div>
 
 	<nav class="level">
 		<div class="level-left"></div>

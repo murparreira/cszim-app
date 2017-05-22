@@ -46,4 +46,3 @@ end
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'dragonfly', '~> 1.1.2'
-gem 'dragonfly-s3_data_store'

@@ -73,10 +73,10 @@ ActiveRecord::Schema.define(version: 20170521151338) do
     t.integer  "round_id"
     t.integer  "user_id"
     t.integer  "team_id"
-    t.integer  "kills"
-    t.integer  "deaths"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "kills",      default: 0
+    t.integer  "deaths",     default: 0
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
     t.index ["round_id"], name: "index_statistics_on_round_id"
     t.index ["team_id"], name: "index_statistics_on_team_id"
     t.index ["user_id"], name: "index_statistics_on_user_id"
