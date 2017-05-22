@@ -128,11 +128,13 @@
   <div class="columns">
     <div class="column">
       <% if @round.screenshot %>
-        <%= image_tag @round.screenshot.url if @round.screenshot_stored? %>
-        <%= f.file_field :screenshot %>
-      <% else %>
-        <%= f.file_field :screenshot %>
+        <a data-fancybox='gallery' href='<%= @round.screenshot.url %>' data-caption='Screenshot'>
+          <%= image_tag @round.screenshot.thumb('400x200#').url if @round.screenshot_stored? %>
+        </a>
       <% end %>
+    </div>
+    <div class="column">
+      <%= f.file_field :screenshot %>
     </div>
   </div>
 
