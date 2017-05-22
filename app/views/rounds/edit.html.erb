@@ -112,6 +112,9 @@
 					<tbody>
 					<% team.users.each do |user| %>
 							<tr>
+                  <%= puts user.inspect %>
+                  <%= puts @round.inspect %>
+                  <%= puts team.inspect %>
 									<td><%= user.nome %></td>
 									<td><%= text_field_tag "statistics[#{Statistic.find_by(round_id: @round.id, team_id: team.id, user_id: user.id).id}[kills]]", 0, class: 'input', value: Statistic.find_by(round_id: @round.id, team_id: team.id, user_id: user.id).kills %></td>
 									<td><%= text_field_tag "statistics[#{Statistic.find_by(round_id: @round.id, team_id: team.id, user_id: user.id).id}[deaths]]", 0, class: 'input', value: Statistic.find_by(round_id: @round.id, team_id: team.id, user_id: user.id).deaths %></td>

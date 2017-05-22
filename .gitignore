@@ -22,3 +22,6 @@
 
 .idea
 /public/system/*
+/config/deploy
+config/deploy.rb
+Capfile

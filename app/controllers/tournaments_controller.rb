@@ -42,21 +42,44 @@ class TournamentsController < ApplicationController
 
   def create
     @tournament = Tournament.new(tournament_params)
-      respond_to do |format|
-      if @tournament.save
-        format.html { redirect_to @tournament, notice: 'Torneio criado com sucesso!' }
-        format.js
-        format.json { render json: @tournament, status: :created, location: @tournament }
-      else
-        # format.html { render action: "new" }
-        format.json { render json: @tournament.errors, status: :unprocessable_entity }
+    @tournament.save
+    if params[:automatico]
+      maps = Map.where(ativo: true).pluck(:id)
+      map_bans = @tournament.map_bans.pluck(:map_id)
+      final_maps = maps - map_bans
+      final_maps.each do |map_id|
+        round_ida = Round.create(tournament_id: @tournament.id, map_id: map_id, ct_team_id: @tournament.teams.first.id, t_team_id: @tournament.teams.last.id)
+
+        @tournament.teams.each do |team|
+          team.users.each do |user|
+            statistic = Statistic.new
+            statistic.round_id = round_ida.id
+            statistic.team_id = team.id
+            statistic.user_id = user.id
+            statistic.save
+          end
+        end
+
+        round_volta = Round.create(tournament_id: @tournament.id, map_id: map_id, ct_team_id: @tournament.teams.last.id, t_team_id: @tournament.teams.first.id)
+
+        @tournament.teams.each do |team|
+          team.users.each do |user|
+            statistic = Statistic.new
+            statistic.round_id = round_volta.id
+            statistic.team_id = team.id
+            statistic.user_id = user.id
+            statistic.save
+          end
+        end
+
       end
     end
+    respond_to :js
   end
 
 	private
 
   def tournament_params
-    params.require(:tournament).permit(:nome, participants_attributes: [team_attributes: [:nome, players_attributes: [:id, :user_id, :_destroy]]])
+    params.require(:tournament).permit(:nome, map_bans_attributes: [:id, :map_id, :_destroy], participants_attributes: [team_attributes: [:nome, players_attributes: [:id, :user_id, :_destroy]]])
   end
 end

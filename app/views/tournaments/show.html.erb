@@ -4,98 +4,113 @@
   </div>
   <div class="column">
     <%= link_to new_tournament_round_path(@tournament), :class => 'button is-primary' do %>
-        <i class="fa fa-plus"></i>&nbsp;
-        Novo Round
+      <i class="fa fa-plus"></i>&nbsp;
+      Novo Round
     <% end %>
   </div>
 </div>
 <hr>
 <% @tournament.rounds.order("rounds.id DESC").each do |round| %>
   <div class="columns">
-      <div class="column"></div>
-      <div class="column is-1">
-          <%= link_to "Editar", edit_tournament_round_path(@tournament, round), class: "button" %>
-      </div>
+    <div class="column"></div>
+    <div class="column is-1">
+      <%= link_to "Editar", edit_tournament_round_path(@tournament, round), class: "button" %>
+    </div>
   </div>
     <div class="columns">
-        <div class="column">
-            Round <%= round.id %> - Pontuação: <%= round.pontos %>
-        </div>
-        <div class="column">
-            Mapa: <strong><%= round.nome_mapa %></strong>
-        </div>
+      <div class="column">
+        Round <%= round.id %> - Pontuação: <%= round.pontos %>
+      </div>
+      <div class="column">
+        Mapa: <strong><%= round.nome_mapa %></strong>
+      </div>
     </div>
 
-    <div class="columns">
+    <% if round.winner && round.loser %>
+      <div class="columns">
         <div class="column">
-            Vencedor: <strong><%= round.nome_vencedor %></strong>
-            <br>
-            Placar: <strong><%= round.placar_vencedor %></strong>
-            <br>
-            Lado: <strong><%= translate_lado round.lado_vencedor %></strong>
+          Vencedor: <strong><%= round.nome_vencedor %></strong>
+          <br>
+          Placar: <strong><%= round.placar_vencedor %></strong>
+          <br>
+          Lado: <strong><%= translate_lado round.lado_vencedor %></strong>
         </div>
         <div class="column">
-             Perdedor: <strong><%= round.nome_perdedor %></strong>
-             <br>
-             Placar: <strong><%= round.placar_perdedor %></strong>
-             <br>
-             Lado: <strong><%= translate_lado round.lado_perdedor %></strong>
+           Perdedor: <strong><%= round.nome_perdedor %></strong>
+           <br>
+           Placar: <strong><%= round.placar_perdedor %></strong>
+           <br>
+           Lado: <strong><%= translate_lado round.lado_perdedor %></strong>
         </div>
-    </div>
-
-    <% statistics = Statistic.where(team_id: round.try(:winner).try(:team).try(:id), round_id: round.id).order(kills: :desc) %>
-
-    <% if statistics.empty? %>
-      <div class="columns">
-          <div class="column is-half is-offset-one-quarter has-text-centered">
-              Não há estatísticas para essa partida
-          </div>
       </div>
-    <% else %>
-      <div class="columns">
+      <% statistics = Statistic.where(team_id: round.try(:winner).try(:team).try(:id), round_id: round.id).order(kills: :desc) %>
+      <% if statistics.empty? %>
+        <div class="columns">
           <div class="column is-half is-offset-one-quarter has-text-centered">
-              Estatísticas
+            Não há estatísticas para essa partida
           </div>
-      </div>
+        </div>
+      <% else %>
+        <div class="columns">
+          <div class="column is-half is-offset-one-quarter has-text-centered">
+            Estatísticas
+          </div>
+        </div>
 
-      <div class="columns">
+        <div class="columns">
           <div class="column">
-              <table class="table is-narrow is-striped is-bordered">
+            <table class="table is-narrow is-striped is-bordered">
               <thead>
-                  <th>Jogador</th>
-                  <th>Kills</th>
-                  <th>Deaths</th>
+                <th>Jogador</th>
+                <th>Kills</th>
+                <th>Deaths</th>
               </thead>
-              <tbody>
+            <tbody>
               <% Statistic.where(team_id: round.winner.team.id, round_id: round.id).order(kills: :desc).each do |statistic| %>
-                  <tr>
-                      <td><%= statistic.user.nome %></td>
-                      <td><%= statistic.kills %></td>
-                      <td><%= statistic.deaths %></td>
-                  </tr>
+                <tr>
+                  <td><%= statistic.user.nome %></td>
+                  <td><%= statistic.kills %></td>
+                  <td><%= statistic.deaths %></td>
+                </tr>
               <% end %>
-              </tbody>
-              </table>
+            </tbody>
+            </table>
           </div>
           <div class="column">
-               <table class="table is-narrow is-striped is-bordered">
+            <table class="table is-narrow is-striped is-bordered">
               <thead>
-                  <th>Jogador</th>
-                  <th>Kills</th>
-                  <th>Deaths</th>
+                <th>Jogador</th>
+                <th>Kills</th>
+                <th>Deaths</th>
               </thead>
-              <tbody>
+            <tbody>
               <% Statistic.where(team_id: round.loser.team.id, round_id: round.id).order(kills: :desc).each do |statistic| %>
-                  <tr>
-                      <td><%= statistic.user.nome %></td>
-                      <td><%= statistic.kills %></td>
-                      <td><%= statistic.deaths %></td>
-                  </tr>
+                <tr>
+                  <td><%= statistic.user.nome %></td>
+                  <td><%= statistic.kills %></td>
+                  <td><%= statistic.deaths %></td>
+                </tr>
               <% end %>
               </tbody>
-              </table>
+            </table>
           </div>
-      </div>
+        </div>
       <% end %>
+    <% else %>
+      <% if round.ct_team_id && round.t_team_id %>
+        <div class="columns">
+          <div class="column">
+            Time: <strong><%= round.ct_team.nome %></strong>
+            <br>
+            Lado: <strong><%= translate_lado "ct" %></strong>
+          </div>
+          <div class="column">
+            Time: <strong><%= round.t_team.nome %></strong>
+            <br>
+            Lado: <strong><%= translate_lado "t" %></strong>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
     <hr>
 <% end %>

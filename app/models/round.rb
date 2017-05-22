@@ -1,9 +1,14 @@
 class Round < ApplicationRecord
+    dragonfly_accessor :screenshot
+
     belongs_to :map
     belongs_to :tournament
 
     has_one :winner
     has_one :loser
+
+    belongs_to :ct_team, foreign_key: "ct_team_id", class_name: "Team"
+    belongs_to :t_team, foreign_key: "t_team_id", class_name: "Team"
 
     has_many :statistics, dependent: :destroy
 
@@ -65,7 +70,9 @@ class Round < ApplicationRecord
 
     def loser_team_id(winner_team_id)
       array = tournament.teams.pluck(:id)
+      puts array
       array.delete(winner_team_id)
+      puts array
       array[0]
     end
 

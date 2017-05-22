@@ -1,0 +1,8 @@
+<% if @tournament.errors.empty? %>
+  window.location.assign("<%= tournament_path @tournament %>");
+<% else %>
+  $("#tournament_errors_list ul").children().remove();
+  $("<li></li>").html("O nome do Torneio não pode ficar em branco").appendTo("#tournament_errors_list ul");
+	$("<li></li>").html("O nome dos Times não pode ficar em branco").appendTo("#tournament_errors_list ul");
+  $("#tournament_errors_list").show();
+<% end %>
