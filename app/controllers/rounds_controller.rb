@@ -9,6 +9,7 @@ class RoundsController < ApplicationController
   def update
     tournament = Tournament.find(params[:tournament_id])
     round = Round.find(params[:id])
+    round.update_attributes(round_params)
 
     if round.winner
       round.winner.update_attributes(placar: params[:placar_vencedor], lado: params[:lado_vencedor])
@@ -68,6 +69,6 @@ class RoundsController < ApplicationController
 	private
 
   def round_params
-    params.require(:round).permit(:map_id)
+    params.require(:round).permit(:map_id, :pontos, :screenshot)
   end
 end
