@@ -1,15 +1,18 @@
-<div class="columns">
-  <div class="column is-4 has-text-centered">
-    <h1 class="title"><%= @tournament.nome %></h1>
+<% if current_user.admin %>
+  <div class="columns">
+    <div class="column is-4 has-text-centered">
+      <h1 class="title"><%= @tournament.nome %></h1>
+    </div>
+    <div class="column">
+      <%= link_to new_tournament_round_path(@tournament), :class => 'button is-primary' do %>
+        <i class="fa fa-plus"></i>&nbsp;
+        Novo Round
+      <% end %>
+    </div>
   </div>
-  <div class="column">
-    <%= link_to new_tournament_round_path(@tournament), :class => 'button is-primary' do %>
-      <i class="fa fa-plus"></i>&nbsp;
-      Novo Round
-    <% end %>
-  </div>
-</div>
-<hr>
+  <hr>
+<% end %>
+
 <% @tournament.rounds.order("rounds.id DESC").each do |round| %>
   <div class="columns">
     <div class="column"></div>
