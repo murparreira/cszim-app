@@ -41,7 +41,7 @@ class TournamentsController < ApplicationController
     authorize @tournament
     @tournament.save
     if params[:automatico]
-      maps = Map.where(ativo: true).pluck(:id)
+      maps = Map.ativos.pluck(:id)
       map_bans = @tournament.map_bans.pluck(:map_id)
       final_maps = maps - map_bans
       final_maps.each do |map_id|
