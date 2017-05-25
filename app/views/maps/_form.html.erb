@@ -19,6 +19,19 @@
 		<div class="column is-third"></div>
 	</div>
 
+	<div class="columns">
+    <div class="column">
+      <% if @map.imagem %>
+        <a data-fancybox='gallery' href='<%= @map.imagem.url %>' data-caption='Imagem'>
+          <%= image_tag @map.imagem.url if @map.imagem_stored? %>
+        </a>
+      <% end %>
+    </div>
+    <div class="column">
+      <%= f.file_field :imagem %>
+    </div>
+  </div>
+
 	<nav class="level">
 		<div class="level-left"></div>
 		<div class="level-right">
