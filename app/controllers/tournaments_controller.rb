@@ -7,21 +7,16 @@ class TournamentsController < ApplicationController
 
 	def edit
     @tournament = Tournament.find(params[:id])
+    authorize @tournament
   end
 
   def show
     @tournament = Tournament.find(params[:id])
   end
 
-  def destroy
-    @tournament = Tournament.find(params[:id])
-    @tournament.destroy
-    flash[:success] = 'Torneio removido com sucesso!'
-    redirect_to tournaments_url
-  end
-
   def update
     @tournament = Tournament.find(params[:id])
+    authorize @tournament
     if @tournament.update_attributes(tournament_params)
       flash[:success] = 'Torneio atualizado com sucesso!'
       redirect_to tournaments_url
@@ -32,6 +27,7 @@ class TournamentsController < ApplicationController
 
   def new
     @tournament = Tournament.new
+    authorize @tournament
     participante_um = Participant.new
     participante_dois = Participant.new
     @tournament.participants << participante_um
@@ -42,6 +38,7 @@ class TournamentsController < ApplicationController
 
   def create
     @tournament = Tournament.new(tournament_params)
+    authorize @tournament
     @tournament.save
     if params[:automatico]
       maps = Map.where(ativo: true).pluck(:id)

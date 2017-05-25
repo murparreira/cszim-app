@@ -7,17 +7,12 @@ class TeamsController < ApplicationController
 
 	def edit
     @team = Team.find(params[:id])
-  end
-
-  def destroy
-    @team = Team.find(params[:id])
-    @team.destroy
-    flash[:success] = 'Time removido com sucesso!'
-    redirect_to teams_url
+    authorize @team
   end
 
   def update
     @team = Team.find(params[:id])
+    authorize @team
     if @team.update_attributes(team_params)
       flash[:success] = 'Time atualizado com sucesso!'
       redirect_to teams_url
@@ -28,10 +23,12 @@ class TeamsController < ApplicationController
 
   def new
     @team = Team.new
+    authorize @team
   end
 
   def create
     @team = Team.new(team_params)
+    authorize @team
     if @team.save
       flash[:success] = 'Time criado com sucesso!'
       redirect_to teams_url
