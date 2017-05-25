@@ -9,4 +9,5 @@ class Tournament < ApplicationRecord
   validates :nome, presence: true
 
   scope :oficiais, -> { where(oficial: true) }
+  scope :ultimos, -> { order(id: :desc).limit(5) }
 end

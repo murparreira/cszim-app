@@ -1,6 +1,7 @@
 <div class="columns">
   <div class="column has-text-centered">
     <h1 class="title">Placar Geral</h1>
+    <h3 class="subtitle is-4">(Últimos 5 torneios)</h3>
   </div>
 </div>
 <table class="table is-narrow is-striped is-bordered">
@@ -9,15 +10,20 @@
       <th colspan="4">Resultado</th>
   </thead>
   <tbody>
-    <% Tournament.all.each do |tournament| %>
+    <% Tournament.ultimos.each do |tournament| %>
       <tr>
         <td><%= link_to tournament.nome, tournament %></td>
         <% tournament.teams.each do |team| %>
           <td>
-            <%= team.nome %>
+            <%= team.nome %> <br>
+            <% team.users.each do |user| %>
+              <%= image_tag avatar_url(user), class: 'img-circle image anti-image-block is-24x24' %> &nbsp;
+            <% end %>
           </td>
           <td>
-            <%= Winner.joins(:round).where(team_id: team.id).sum("rounds.pontos") %> pontos - <%= Winner.joins(:round).where(team_id: team.id).sum(:placar) %> rounds ganhos
+            <%= Winner.joins(:round).where(team_id: team.id).sum("rounds.pontos") %> pontos
+            -
+            <%= Winner.joins(:round).where(team_id: team.id).count %> vitória(s)
           </td>
         <% end %>
       </tr>
@@ -47,10 +53,11 @@
         <td>
           <table>
             <thead>
+              <th>#</th>
               <th>Mapa</th>
-              <th>Rounds Ganhos</th>
-              <th>Vitórias como CT</th>
-              <th>Vitórias como T</th>
+              <th>Vitórias</th>
+              <th>Lado CT</th>
+              <th>Lado T</th>
             </thead>
             <tbody>
               <% Round.group(:map_id).count.each do |map_id, value| %>
@@ -59,7 +66,8 @@
                     <% map = Map.find(map_id) %>
                     <% vitorias_ct = Map.joins(rounds: :winner).where(["maps.id = ? AND winners.lado = 'ct'", map_id]).count %>
                     <% vitorias_t = Map.joins(rounds: :winner).where(["maps.id = ? AND winners.lado = 't'", map_id]).count %>
-                    <td><%= map.sigla %></td>
+                    <td><%= image_tag imagem_mapa_url(map), class: 'img-circle image anti-image-block is-24x24' %></td>
+                    <td><%= map.nome %> - <%= map.sigla %></td>
                     <td><%= value %></td>
                     <td><%= vitorias_ct %></td>
                     <td><%= vitorias_t %></td>

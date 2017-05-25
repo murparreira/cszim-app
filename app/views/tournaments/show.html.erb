@@ -34,12 +34,20 @@
         <div class="column">
           Vencedor: <strong><%= round.nome_vencedor %></strong>
           <br>
+          <% round.winner.team.users.each do |user| %>
+            <%= image_tag avatar_url(user), class: 'img-circle image anti-image-block is-24x24' %> &nbsp;
+          <% end %>
+          <br>
           Placar: <strong><%= round.placar_vencedor %></strong>
           <br>
           Lado: <strong><%= translate_lado round.lado_vencedor %></strong>
         </div>
         <div class="column">
            Perdedor: <strong><%= round.nome_perdedor %></strong>
+           <br>
+           <% round.loser.team.users.each do |user| %>
+             <%= image_tag avatar_url(user), class: 'img-circle image anti-image-block is-24x24' %> &nbsp;
+           <% end %>
            <br>
            Placar: <strong><%= round.placar_perdedor %></strong>
            <br>
@@ -71,7 +79,11 @@
             <tbody>
               <% Statistic.where(team_id: round.winner.team.id, round_id: round.id).order(kills: :desc).each do |statistic| %>
                 <tr>
-                  <td><%= statistic.user.nome %></td>
+                  <td>
+                    <%= image_tag avatar_url(statistic.user), class: 'img-circle image anti-image-block is-24x24' %>
+                    &nbsp;
+                    <%= statistic.user.nome %>
+                  </td>
                   <td><%= statistic.kills %></td>
                   <td><%= statistic.deaths %></td>
                 </tr>
@@ -89,7 +101,11 @@
             <tbody>
               <% Statistic.where(team_id: round.loser.team.id, round_id: round.id).order(kills: :desc).each do |statistic| %>
                 <tr>
-                  <td><%= statistic.user.nome %></td>
+                  <td>
+                    <%= image_tag avatar_url(statistic.user), class: 'img-circle image anti-image-block is-24x24' %>
+                    &nbsp;
+                    <%= statistic.user.nome %>
+                  </td>
                   <td><%= statistic.kills %></td>
                   <td><%= statistic.deaths %></td>
                 </tr>
