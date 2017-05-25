@@ -102,9 +102,9 @@ module ApplicationHelper
     last_monday = last_saturday - 5
   end
 
-  def avatar_url(user)
+  def avatar_url(user, size=64)
     gravatar_id = Digest::MD5.hexdigest(user.email.downcase)
-    "http://gravatar.com/avatar/#{gravatar_id}.png?s=64&d=identicon"
+    "http://gravatar.com/avatar/#{gravatar_id}.png?s=#{size}&d=identicon"
   end
 
   def label_status(status)
