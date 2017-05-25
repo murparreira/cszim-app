@@ -4,7 +4,7 @@
   </div>
 </div>
 
-<% Tournament.joins(rounds: :statistics).group(:tournament_id).each do |tournament| %>
+<% Tournament.joins(rounds: :statistics).oficiais.group(:tournament_id).each do |tournament| %>
   <div class="columns">
     <div class="column has-text-centered">
       <h3 class=""><%= tournament.nome %></h3>
@@ -18,7 +18,7 @@
       <th width="10%">Ratio</th>
     </thead>
     <tbody>
-      <% data_torneio = Statistic.joins(:round).select("SUM(kills) AS kills, SUM(deaths) AS deaths, user_id").where(["rounds.tournament_id = ?", tournament.id]).group(:user_id).order("kills DESC, deaths ASC") %>
+      <% data_torneio = Statistic.joins(:round).select("SUM(kills) AS kills, SUM(deaths) AS deaths, user_id").where("rounds.tournament_id = ?", tournament.id).group(:user_id).order("kills DESC, deaths ASC") %>
       <% data_torneio.each do |statistic| %>
         <tr>
           <% user = User.find(statistic.user_id) %>

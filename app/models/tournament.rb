@@ -7,4 +7,6 @@ class Tournament < ApplicationRecord
   accepts_nested_attributes_for :participants, reject_if: :all_blank, allow_destroy: true
 
   validates :nome, presence: true
+
+  scope :oficiais, -> { where(oficial: true) }
 end

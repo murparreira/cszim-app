@@ -80,6 +80,6 @@ class TournamentsController < ApplicationController
 	private
 
   def tournament_params
-    params.require(:tournament).permit(:nome, map_bans_attributes: [:id, :map_id, :_destroy], participants_attributes: [team_attributes: [:nome, players_attributes: [:id, :user_id, :_destroy]]])
+    params.require(:tournament).permit(:nome, :oficial, map_bans_attributes: [:id, :map_id, :_destroy], participants_attributes: [team_attributes: [:nome, players_attributes: [:id, :user_id, :_destroy]]])
   end
 end

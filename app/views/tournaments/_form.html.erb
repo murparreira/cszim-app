@@ -12,22 +12,32 @@
     <div class="column is-third"></div>
   </div>
 
-	<% if @tournament.new_record? %>
 	  <div class="columns">
+			<% if @tournament.new_record? %>
+				<div class="column">
+					<div class="field">
+						<label class="label"></label>
+						<p class="control">
+							<label class="checkbox">
+					       <%= check_box_tag 'automatico', true, false, class: 'checkbox' %>
+					       Gerar Rounds Automaticamente
+					     </label>
+						</p>
+					</div>
+				</div>
+			<% end %>
 			<div class="column">
 				<div class="field">
 					<label class="label"></label>
 					<p class="control">
 						<label class="checkbox">
-				       <%= check_box_tag 'automatico', true, false, class: 'checkbox' %>
-				       Gerar Rounds Automaticamente
+				       <%= check_box_tag 'tournament[oficial]', true, @tournament.oficial, class: 'checkbox' %>
+				       Torneio Oficial
 				     </label>
 					</p>
 				</div>
 			</div>
-			<div class="column is-third"></div>
 		</div>
-	<% end %>
 
 	<div class="columns">
 	  <%= f.fields_for :participants do |participant| %>
