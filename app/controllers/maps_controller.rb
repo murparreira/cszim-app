@@ -7,17 +7,12 @@ class MapsController < ApplicationController
 
 	def edit
     @map = Map.find(params[:id])
-  end
-
-  def destroy
-    @map = Map.find(params[:id])
-    @map.destroy
-    flash[:success] = 'Mapa removido com sucesso!'
-    redirect_to maps_url
+    authorize @map
   end
 
   def update
     @map = Map.find(params[:id])
+    authorize @map
     if @map.update_attributes(map_params)
       flash[:success] = 'Mapa atualizado com sucesso!'
       redirect_to maps_url
@@ -28,10 +23,12 @@ class MapsController < ApplicationController
 
   def new
     @map = Map.new
+    authorize @map
   end
 
   def create
     @map = Map.new(map_params)
+    authorize @map
     @map.ativo = true
     if @map.save
       flash[:success] = 'Mapa criado com sucesso!'
