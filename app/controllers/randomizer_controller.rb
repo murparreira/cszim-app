@@ -21,7 +21,7 @@ class RandomizerController < ApplicationController
   end
 
   def init_maps
-    session[:maps] = Map.where(ativo: true).order('random()').pluck(:id)
+    session[:maps] = Map.ativos.order('random()').pluck(:id)
   end
 
 end

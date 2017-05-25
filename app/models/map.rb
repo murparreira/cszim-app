@@ -4,4 +4,6 @@ class Map < ApplicationRecord
     has_many :rounds
 
     validates :nome, :sigla, presence: true
+
+    scope :ativos, -> { where(ativo: true) }
 end
