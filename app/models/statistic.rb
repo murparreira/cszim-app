@@ -5,7 +5,10 @@ class Statistic < ApplicationRecord
     attr_accessor :nome
 
     def ratio
-      (kills.to_f/deaths.to_f).round(2)
+      ratio = (kills.to_f/deaths.to_f).round(2)
+      return 1 if ratio.infinite?
+      return 0 if ratio.nan?
+      ratio
     end
 
     def kills
