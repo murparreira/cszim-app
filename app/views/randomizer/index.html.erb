@@ -25,6 +25,8 @@
       </a>
     <% end %>
   </div>
+</div>
+<div class="columns">
   <div class="column is-third">
     <h2 class="title">Mapas Sorteados (<%= session[:chosen_maps].try(:size) || 0 %>)</h2>
       <% if session[:chosen_maps] %>
@@ -33,32 +35,19 @@
           <% if i == 0 %>
             <div class="columns">
           <% end %>
-          <div class="column is-3">
-            <%= previous_chosen_map.nome %>
-            <br>
+          <div class="column is-1">
             <a data-fancybox='gallery' href='<%= imagem_mapa_url(previous_chosen_map) %>' data-caption='<%= previous_chosen_map.nome %> - <%= previous_chosen_map.sigla %>'>
               <%= image_tag(imagem_mapa_url(previous_chosen_map), class: "image is-64x64") %>
             </a>
+            <br>            
+            <%= previous_chosen_map.nome %>
           </div>
-          <% if i > 0 && (i + 1) % 3 == 0 %>
+          <% if i > 0 && (i + 1) % 11 == 0 %>
             </div>
             <div class="columns">
           <% end %>
         <% end %>
       <% end %>
     </div>
-  </div>
-</div>
-
-<div class="columns space-50-top">
-  <div class="column is-4">
-    <h1 class="title">Matadores:</h1>
-  </div>
-  <div class="column">
-    <% User.all.each do |user| %>
-      <a href="<%= user.steamid %>" target="_blank">
-        <%= image_tag avatar_url(user), class: 'img-circle' %>
-      </a>
-    <% end %>
   </div>
 </div>
