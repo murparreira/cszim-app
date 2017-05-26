@@ -1,5 +1,4 @@
 class RandomizerController < ApplicationController
-  layout "application_reduzido"
 
   before_action :authenticate_user
 
