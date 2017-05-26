@@ -13,29 +13,40 @@
   <hr>
 <% end %>
 
-<table class="table is-narrow is-striped is-bordered">
-  <thead>
-    <th>Nome</th>
-    <th>Times</th>
-    <% if current_user.admin %>
-      <th>Operações</th>
-    <% end %>
-  </thead>
-  <tbody>
-    <% @tournaments.each do |tournament| %>
-    <tr>
-      <td><%= link_to tournament.nome, tournament %></td>
-      <td class="td-has-ul">
-        <ul>
-        <% tournament.teams.each do |team| %>
-          <li><%= team.nome %></li>
-        <% end %>
-        </ul>
-      </td>
-      <% if current_user.admin %>
-        <td><%= link_to "Editar", edit_tournament_path(tournament), :class => 'button' %></td>
-      <% end %>
-    </tr>
-    <% end %>
-  </tbody>
-</table>
+<div class="columns is-multiline">
+  <% @tournaments.each do |tournament| %>
+    <div class="column is-one-third">
+      <div class="contact-box center-version">
+        <span>
+          <span class="icon is-large">
+            <i class="fa fa-trophy"></i>
+          </span>
+          <h3><strong><%= link_to tournament.nome, tournament %></strong></h3>
+          <div><%= tournament.texto_oficial %></div>
+          <hr>
+          <h3><strong>Times</strong></h3>
+          <div class="columns">
+            <% tournament.teams.each do |team| %>
+              <div class="column is-half">
+                <%= team.nome %>
+                <br><br>
+                <% team.users.each do |user| %>
+                  <%= image_tag avatar_url(user), class: 'img-circle image anti-image-block is-24x24' %>
+                <% end %>
+                <br><br>
+                <%= Winner.joins(:round).where(team_id: team.id).sum("rounds.pontos") %> pontos
+                -
+                <%= Winner.joins(:round).where(team_id: team.id).count %> vitória(s)
+              </div>
+            <% end %>
+          </div>
+        </span>
+        <div class="contact-box-footer">
+          <% if current_user.admin %>
+            <%= link_to "Editar", edit_tournament_path(tournament), :class => 'button' %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

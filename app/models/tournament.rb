@@ -10,4 +10,13 @@ class Tournament < ApplicationRecord
 
   scope :oficiais, -> { where(oficial: true) }
   scope :ultimos, -> { order(id: :desc).limit(5) }
+
+  def texto_oficial
+    if oficial
+      "Torneio Oficial"
+    else
+      "Torneio Não-Oficial"
+    end
+  end
+
 end

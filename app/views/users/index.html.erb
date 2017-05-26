@@ -1,26 +1,20 @@
-<table class="table is-narrow is-striped is-bordered">
-  <thead>
-    <th>#</th>
-    <th>Nome</th>
-    <th>Email</th>
-    <th>ID da Steam</th>
-    <th>Login</th>
-    <th>Operações</th>
-  </thead>
-  <tbody>
-    <% @users.each do |user| %>
-    <tr>
-      <td><%= image_tag avatar_url(user), class: 'img-circle' %></td>
-      <td><%= user.nome %></td>
-      <td><%= user.email %></td>
-      <td><%= user.steamid %></td>
-      <td><%= user.login %></td>
-      <td>
-        <% if user.id == current_user.id || current_user.admin %>
-          <%= link_to "Editar", edit_user_path(user), :class => 'button' %>
-        <% end %>
-      </td>
-    </tr>
-    <% end %>
-  </tbody>
-</table>
+<div class="columns is-multiline">
+  <% @users.each do |user| %>
+    <div class="column is-one-third">
+      <div class="contact-box center-version">
+        <span>
+          <%= image_tag avatar_url(user), class: 'img-circle' %>
+          <h3><strong><%= user.nome %></strong></h3>
+          <div><%= user.email %></div>
+          <div><a target="_blank" href="<%= user.steamid %>">Perfil da Steam</a></div>
+          <div><%= user.login %></div>
+        </span>
+        <div class="contact-box-footer">
+          <% if user.id == current_user.id || current_user.admin %>
+            <%= link_to "Editar", edit_user_path(user), :class => 'button' %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
