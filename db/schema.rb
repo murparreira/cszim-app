@@ -107,13 +107,6 @@ ActiveRecord::Schema.define(version: 20170525183350) do
     t.datetime "updated_at",                      null: false
   end
 
-  create_table "videos", force: :cascade do |t|
-    t.string   "nome"
-    t.string   "url"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "winners", force: :cascade do |t|
     t.integer  "round_id"
     t.integer  "team_id"
