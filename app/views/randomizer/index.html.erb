@@ -7,7 +7,9 @@
         <li><%= map.nome %> - <%= map.sigla %></li>
       <% end %>
     </ul>
-    <%= link_to "Escolher Fase", randomizer_path(random: true), class: "button" %>
+    <% if session[:maps].any? %>
+      <%= link_to "Escolher Fase", randomizer_path(random: true), class: "button" %>
+    <% end %>
     <%= link_to "Resetar Aplicativo", randomizer_path(reset: true), class: "button is-danger" %>
   </div>
   <div class="column is-third">
