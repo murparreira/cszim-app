@@ -97,3 +97,5 @@
   border-top: 1px solid #e7eaec;
   padding: 15px 20px;
 }
+table tbody tr td { vertical-align: middle !important; }
+.is-narrow { margin-bottom: 0px !important; }
