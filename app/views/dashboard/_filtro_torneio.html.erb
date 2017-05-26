@@ -4,7 +4,7 @@
   </div>
 </div>
 
-<% Tournament.joins(rounds: :statistics).oficiais.group(:tournament_id).each do |tournament| %>
+<% Tournament.joins(rounds: :statistics).group(:tournament_id).each do |tournament| %>
   <div class="columns">
     <div class="column has-text-centered">
       <h3 class=""><%= tournament.nome %></h3>

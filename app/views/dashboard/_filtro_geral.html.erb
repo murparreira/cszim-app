@@ -11,7 +11,11 @@
       <th width="10%">Ratio</th>
   </thead>
   <tbody>
-    <% data_geral = Statistic.joins(round: :tournament).select("SUM(kills) AS kills, SUM(deaths) AS deaths, user_id").where("tournaments.oficial = ?", true).group(:user_id).order("kills DESC, deaths ASC") %>
+    <% if params[:tipo] == "todos" %>
+      <% data_geral = Statistic.joins(round: :tournament).select("SUM(kills) AS kills, SUM(deaths) AS deaths, user_id").group(:user_id).order("kills DESC, deaths ASC") %>
+    <% else %>
+      <% data_geral = Statistic.joins(round: :tournament).select("SUM(kills) AS kills, SUM(deaths) AS deaths, user_id").where("tournaments.oficial = ?", true).group(:user_id).order("kills DESC, deaths ASC") %>
+    <% end %>
     <% data_geral.each do |statistic| %>
       <tr>
         <% user = User.find(statistic.user_id) %>

@@ -41,7 +41,7 @@
 <table class="table is-narrow is-striped is-bordered">
   <tbody>
       <tr>
-        <td width="30%">Vitórias Gerais como CT</td>
+        <td width="15%">Vitórias Gerais como CT</td>
         <td><%= Winner.joins(:round).where(lado: "ct").count %></td>
       </tr>
       <tr>
@@ -97,11 +97,23 @@
     <% filtro_geral = "is-primary" if params[:filtro].nil? %>
     <%= link_to "Geral", root_path, class: "button #{filtro_geral}" %>
     <% filtro_torneio = "is-primary" if params[:filtro] == 'torneio' %>
-    <%= link_to "Por Torneio", root_path(filtro: "torneio"), class: "button #{filtro_torneio}" %>
+    <%= link_to "Por Torneio", root_path(request.query_parameters.merge(filtro: "torneio")), class: "button #{filtro_torneio}" %>
     <% filtro_mapa = "is-primary" if params[:filtro] == 'mapa' %>
-    <%= link_to "Por Mapa", root_path(filtro: "mapa"), class: "button #{filtro_mapa}" %>
+    <%= link_to "Por Mapa", root_path(request.query_parameters.merge(filtro: "mapa")), class: "button #{filtro_mapa}" %>
   </div>
 </div>
+<% if params[:filtro] != 'torneio' %>
+  <div class="columns">
+    <div class="column has-text-centered">
+      <% filtro_oficiais = "" %>
+      <% filtro_todos = "" %>
+      <% filtro_oficiais = "is-primary" if params[:tipo].nil? || params[:tipo] == "oficiais" %>
+      <%= link_to "Torneios Oficiais", root_path(request.query_parameters.merge(tipo: "oficiais")), class: "button #{filtro_oficiais}" %>
+      <% filtro_todos = "is-primary" if params[:tipo] == 'todos' %>
+      <%= link_to "Todos os Torneios", root_path(request.query_parameters.merge(tipo: "todos")), class: "button #{filtro_todos}" %>
+    </div>
+  </div>
+<% end %>
 
 <hr>
 
