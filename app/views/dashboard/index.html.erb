@@ -55,12 +55,12 @@
             <thead>
               <th>#</th>
               <th>Mapa</th>
-              <th>Vitórias</th>
+              <th>Vezes Jogado</th>
               <th>Lado CT</th>
               <th>Lado T</th>
             </thead>
             <tbody>
-              <% Round.group(:map_id).count.each do |map_id, value| %>
+              <% Round.joins(:winner).group(:map_id).count.each do |map_id, value| %>
                 <% if map_id %>
                   <tr>
                     <% map = Map.find(map_id) %>

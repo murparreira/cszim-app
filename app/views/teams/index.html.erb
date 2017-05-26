@@ -1,30 +1,21 @@
-<table class="table is-narrow is-striped is-bordered">
-  <thead>
-    <th>Nome</th>
-    <th>Jogadores</th>
-    <% if current_user.admin %>
-      <th>Operações</th>
-    <% end %>
-  </thead>
-  <tbody>
-    <% @teams.each do |team| %>
-    <tr>
-      <td><%= team.nome %></td>
-      <td class="td-has-ul">
-        <ul>
-        <% team.users.each do |user| %>
-          <li>
+<div class="columns is-multiline">
+  <% @teams.each do |team| %>
+    <div class="column is-one-third">
+      <div class="contact-box center-version">
+        <span>
+          <% team.users.each do |user| %>
             <%= image_tag avatar_url(user), class: 'img-circle image anti-image-block is-24x24' %>
-            &nbsp;
-            <%= user.nome %>
-          </li>
-        <% end %>
-        </ul>
-      </td>
-      <% if current_user.admin %>
-        <td><%= link_to "Editar", edit_team_path(team), :class => 'button' %></td>
-      <% end %>
-    </tr>
-    <% end %>
-  </tbody>
-</table>
+          <% end %>
+          <div><h3><strong><%= team.nome %></strong></h3></div>
+          <div><%= Winner.where(team_id: team.id).count %> vitória(s)</div>
+          <div><%= Loser.where(team_id: team.id).count %> derrota(s)</div>
+        </span>
+        <div class="contact-box-footer">
+          <% if current_user.admin %>
+            <%= link_to "Editar", edit_team_path(team), :class => 'button' %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

@@ -13,37 +13,28 @@
   <hr>
 <% end %>
 
-<table class="table is-narrow is-striped is-bordered">
-  <thead>
-    <th>Nome/Sigla</th>
-    <th>Imagem</th>
-    <th>Status</th>
-    <% if current_user.admin %>
-      <th>Operações</th>
-    <% end %>
-  </thead>
-  <tbody>
-    <% @maps.each do |map| %>
-    <tr>
-      <td class="td-has-ul">
-        <ul>
-          <li><%= map.nome %></li>
-          <li><%= map.sigla %></li>
-        </ul>
-      </td>
-      <td><%= image_tag(imagem_mapa_url(map), class: "image is-128x128") %></td>
-      <td><%= label_status map.ativo %></td>
-      <% if current_user.admin %>
-        <td>
-          <%= link_to "Editar", edit_map_path(map), :class => 'button' %>
-          <% if map.ativo %>
-            <%= link_to "Inativar", toggle_status_map_path(map), :method => :post, remote: true, :class => 'button' %>
-          <% else %>
-            <%= link_to "Ativar", toggle_status_map_path(map), :method => :post, remote: true, :class => 'button' %>
+<div class="columns is-multiline">
+  <% @maps.each do |map| %>
+    <div class="column is-one-quarter">
+      <div class="contact-box center-version">
+        <span>
+          <%= image_tag(imagem_mapa_url(map), class: "is-128x128") %>
+          <div><h3><strong><%= map.nome %></strong></h3></div>
+          <div><h3><strong><%= map.sigla %></strong></h3></div>
+          <div><%= label_status map.ativo %></div>
+          <div>Jogado <%= Round.joins(:winner).where(map_id: map.id).count %> vez(es)</div>
+        </span>
+        <div class="contact-box-footer">
+          <% if current_user.admin %>
+            <%= link_to "Editar", edit_map_path(map), :class => 'button' %>
+            <% if map.ativo %>
+              <%= link_to "Inativar", toggle_status_map_path(map), :method => :post, remote: true, :class => 'button' %>
+            <% else %>
+              <%= link_to "Ativar", toggle_status_map_path(map), :method => :post, remote: true, :class => 'button' %>
+            <% end %>
           <% end %>
-        </td>
-      <% end %>
-    </tr>
-    <% end %>
-  </tbody>
-</table>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
