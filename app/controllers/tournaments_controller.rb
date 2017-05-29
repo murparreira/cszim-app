@@ -39,14 +39,26 @@ class TournamentsController < ApplicationController
   def create
     @tournament = Tournament.new(tournament_params)
     authorize @tournament
+
+    if params[:times_automatico]
+      @tournament.participants.delete_all
+      team_one = Team.safe_find_or_create_by(nome: "Time Aleatório #{Faker::Pokemon.name}")
+      team_two = Team.safe_find_or_create_by(nome: "Time Aleatório #{Faker::Pokemon.name}")
+      user_array = User.all.shuffle.each_slice(3).to_a
+      team_one.users << user_array.first
+      team_two.users << user_array.last
+      @tournament.teams << team_one
+      @tournament.teams << team_two
+    end
+
     @tournament.save
+
     if params[:automatico]
-      maps = Map.ativos.pluck(:id)
+      maps = Map.ativos.pluck(:id).shuffle
       map_bans = @tournament.map_bans.pluck(:map_id)
       final_maps = maps - map_bans
       final_maps.each do |map_id|
         round_ida = Round.create(tournament_id: @tournament.id, map_id: map_id, ct_team_id: @tournament.teams.first.id, t_team_id: @tournament.teams.last.id)
-
         @tournament.teams.each do |team|
           team.users.each do |user|
             statistic = Statistic.new
@@ -56,9 +68,7 @@ class TournamentsController < ApplicationController
             statistic.save
           end
         end
-
         round_volta = Round.create(tournament_id: @tournament.id, map_id: map_id, ct_team_id: @tournament.teams.last.id, t_team_id: @tournament.teams.first.id)
-
         @tournament.teams.each do |team|
           team.users.each do |user|
             statistic = Statistic.new
@@ -68,7 +78,6 @@ class TournamentsController < ApplicationController
             statistic.save
           end
         end
-
       end
     end
     respond_to :js
