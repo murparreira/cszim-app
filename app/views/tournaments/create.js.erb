@@ -2,7 +2,15 @@
   window.location.assign("<%= tournament_path @tournament %>");
 <% else %>
   $("#tournament_errors_list ul").children().remove();
-  $("<li></li>").html("O nome do Torneio não pode ficar em branco").appendTo("#tournament_errors_list ul");
-	$("<li></li>").html("O nome dos Times não pode ficar em branco").appendTo("#tournament_errors_list ul");
+  <% if @tournament.nome.blank? %>
+    $("<li></li>").html("O nome do Torneio não pode ficar em branco").appendTo("#tournament_errors_list ul");
+  <% end %>
+  <% times_sem_nome = @tournament.participants.select {|participant| participant.team.nome.blank?} %>
+  <% if times_sem_nome.any? %>
+	 $("<li></li>").html("O nome dos Times não pode ficar em branco").appendTo("#tournament_errors_list ul");
+  <% end %>
+  <% if @tournament.errors.messages[:erro_maximo_mapas].present? %>
+    $("<li></li>").html("<%= @tournament.errors.messages[:erro_maximo_mapas].first %>").appendTo("#tournament_errors_list ul");
+  <% end %>
   $("#tournament_errors_list").show();
 <% end %>

@@ -56,7 +56,22 @@
 		</div>
 	</div>
 </div>
+<% if @tournament.new_record? %>
+	<div class="columns numero_maximo_mapas" style="display: none;">
+		<div class="column is-third">
+			<div class="field">
+				<label class="label">Número máximo de mapas</label>
+				<p class="control">
+					<%= text_field_tag 'numero_maximo_mapas', 17, class: 'input', autocomplete: 'off', placeholder: 'Nome' %>
+				</p>
+			</div>
+		</div>
+		<div class="column is-third"></div>
+		<div class="column is-third"></div>
+	</div>
+<% end %>
 
+<% if @tournament.new_record? %>
 <div class="times">
 	<h1 class="title">Times</h1>
 	<h2 class="subtitle">Selecione os jogadores de cada time abaixo</h2>
@@ -93,6 +108,7 @@
 	</div>
 	<hr>
 </div>
+<% end %>
 
 <div class="map_bans" style="display: none;">
 	<h1 class="title">Mapas Banidos</h1>
