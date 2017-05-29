@@ -1,94 +1,121 @@
 <%= form_for @tournament, remote: true do |f| %>
-	<div class="columns">
-		<div class="column is-third">
-			<div class="field">
-				<label class="label">Nome</label>
-				<p class="control">
-					<%= f.text_field :nome, class: 'input', autocomplete: 'off', placeholder: 'Nome' %>
-				</p>
-			</div>
+<div class="columns">
+	<div class="column is-third">
+		<div class="field">
+			<label class="label">Nome</label>
+			<p class="control">
+				<%= f.text_field :nome, class: 'input', autocomplete: 'off', placeholder: 'Nome' %>
+			</p>
 		</div>
-    <div class="column is-third"></div>
-    <div class="column is-third"></div>
-  </div>
+	</div>
+	<div class="column is-third"></div>
+	<div class="column is-third"></div>
+</div>
 
-	  <div class="columns">
-			<% if @tournament.new_record? %>
-				<div class="column">
+<h1 class="title">Configurações</h1>
+<h2 class="subtitle">Manipule as opções abaixo</h2>
+<hr>
+<div class="columns">
+	<% if @tournament.new_record? %>
+	<div class="column">
+		<div class="field">
+			<label class="label"></label>
+			<p class="control">
+				<label class="checkbox">
+					<%= check_box_tag 'automatico', true, false, class: 'checkbox' %>
+					Gerar
+					<strong>Rounds</strong>
+					Automaticamente
+				</label>
+			</p>
+		</div>
+	</div>
+	<div class="column">
+		<div class="field">
+			<label class="label"></label>
+			<p class="control">
+				<label class="checkbox">
+					<%= check_box_tag 'times_automatico', true, false, class: 'checkbox' %>
+					Gerar
+					<strong>Times</strong>
+					Automaticamente
+				</label>
+			</p>
+		</div>
+	</div>
+	<% end %>
+	<div class="column">
+		<div class="field">
+			<label class="label"></label>
+			<p class="control">
+				<label class="checkbox">
+					<%= check_box_tag 'tournament[oficial]', true, @tournament.oficial, class: 'checkbox' %>
+					Torneio Oficial
+				</label>
+			</p>
+		</div>
+	</div>
+</div>
+
+<div class="times">
+	<h1 class="title">Times</h1>
+	<h2 class="subtitle">Selecione os jogadores de cada time abaixo</h2>
+	<hr>
+	<div class="columns">
+		<div class="column is-1"></div>
+		<%= f.fields_for :participants do |participant| %>
+		<%= participant.fields_for :team do |team| %>
+		<div class="column is-5 has-text-centered">
+			<div class="columns">
+				<div class="column is-1"></div>
+				<div class="column is-5">
 					<div class="field">
-						<label class="label"></label>
+						<label class="label">Nome do Time</label>
 						<p class="control">
-							<label class="checkbox">
-					       <%= check_box_tag 'automatico', true, false, class: 'checkbox' %>
-					       Gerar Rounds Automaticamente
-					     </label>
+							<%= team.text_field :nome, class: 'input' %>
 						</p>
 					</div>
 				</div>
-			<% end %>
-			<div class="column">
-				<div class="field">
-					<label class="label"></label>
-					<p class="control">
-						<label class="checkbox">
-				       <%= check_box_tag 'tournament[oficial]', true, @tournament.oficial, class: 'checkbox' %>
-				       Torneio Oficial
-				     </label>
-					</p>
-				</div>
+				<div class="column is-1"></div>
+			</div>
+			<div class="control space-20-bottom">
+				<%= link_to_add_association "<i class='fa fa-plus'></i>&nbsp;Adicionar Jogador".html_safe, team, :players, :data => {"association-insertion-method" => "after" }, :class => 'button', :render_options => { :wrapper => 'inline' } %>
+			</div>
+			<div id='players'>
+				<%= team.fields_for :players do |player| %>
+				<%= render 'player_fields', f: player %>
+				<% end %>
 			</div>
 		</div>
-
-	<div class="columns">
-	  <%= f.fields_for :participants do |participant| %>
-	    <%= participant.fields_for :team do |team| %>
-	  		<div class="column is-half has-text-centered">
-					<div class="columns">
-						<div class="column is-half">
-		    			<div class="field">
-		            <label class="label">Nome do Time</label>
-		            <p class="control">
-		              <%= team.text_field :nome, class: 'input' %>
-		            </p>
-		          </div>
-		        </div>
-	        	<div class="column is-half"></div>
-					</div>
-					<div class="control space-20-bottom">
-					  <%= link_to_add_association "<i class='fa fa-plus'></i>&nbsp;Adicionar Jogador".html_safe, team, :players,
-					      :data => {"association-insertion-method" => "after" },
-					      :class => 'button', :render_options => { :wrapper => 'inline' } %>
-				  </div>
-				  <div id='players'>
-				    <%= team.fields_for :players do |player| %>
-				      <%= render 'player_fields', f: player %>
-				    <% end %>
-				  </div>
-				</div>
-	    <% end %>
-	  <% end %>
+		<% end %>
+		<% end %>
+		<div class="column is-1"></div>
 	</div>
 	<hr>
+</div>
 
-	<div class="map_bans" style="display: none;">
-		<div class="control space-20-bottom">
-			<%= link_to_add_association "<i class='fa fa-plus'></i>&nbsp;Adicionar Mapas Banidos".html_safe, f, :map_bans,
+<div class="map_bans" style="display: none;">
+	<h1 class="title">Mapas Banidos</h1>
+	<h2 class="subtitle">Ao gerar automaticamente os rounds, mapas podem serem banidos da criação</h2>
+	<hr>
+	<div class="control space-20-bottom">
+		<%= link_to_add_association "<i class='fa fa-plus'></i>&nbsp;Adicionar Mapas Banidos".html_safe, f, :map_bans,
 					:data => {"association-insertion-method" => "after" },
 					:class => 'button', :render_options => { :wrapper => 'inline' } %>
-		</div>
-		<div id='map_bans'>
-			<%= f.fields_for :map_bans do |map_ban| %>
-				<%= render 'map_ban_fields', f: map_ban %>
-			<% end %>
-		</div>
 	</div>
+	<div id='map_bans'>
+		<%= f.fields_for :map_bans do |map_ban| %>
+		<%= render 'map_ban_fields', f: map_ban %>
+		<% end %>
+	</div>
+</div>
 
-	<nav class="level">
-		<div class="level-left"></div>
-		<div class="level-right">
-	    <p class="level-item"><%= link_to root_path, class: 'button is-danger' do %>Cancelar<% end %></p>
-	    <p class="level-item"><%= link_to new_or_edit_path(@tournament), class: 'button' do %>Limpar<% end %></p>
-			<p class="level-item"><%= f.submit "Salvar", :class => 'button is-success' %></p>
-	  </div>
-	</nav>
+<nav class="level">
+	<div class="level-left"></div>
+	<div class="level-right">
+		<p class="level-item"><%= link_to root_path, class: 'button is-danger' do %>Cancelar<% end %></p>
+		<p class="level-item"><%= link_to new_or_edit_path(@tournament), class: 'button' do %>Limpar<% end %></p>
+		<p class="level-item"><%= f.submit "Salvar", :class => 'button is-success' %></p>
+	</div>
+</nav>
 <% end %>

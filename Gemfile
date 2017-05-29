@@ -21,6 +21,7 @@ gem 'pundit'
 gem 'kaminari'
 gem 'cocoon'
 gem 'lazy_high_charts'
+gem 'faker'
 
 group :production do
   gem 'pg'

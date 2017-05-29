@@ -126,10 +126,10 @@ module ApplicationHelper
   end
 
   def imagem_mapa_url(map)
-    if map.imagem_stored?
+    if map && map.imagem_stored?
       map.imagem.url
     else
-      "http://cszim.com.br/img/#{map.sigla}.jpg"
+      "http://cszim.com.br/img/#{map.try(:sigla)}.jpg"
     end
   end
 

@@ -4,4 +4,10 @@ class Team < ApplicationRecord
   accepts_nested_attributes_for :players, reject_if: :all_blank, allow_destroy: true
 
   validates :nome, presence: true, uniqueness: true
+
+  def self.safe_find_or_create_by(*args, &block)
+    find_or_create_by *args, &block
+  rescue ActiveRecord::RecordNotUnique
+    retry
+  end
 end
