@@ -56,17 +56,18 @@ class TournamentsController < ApplicationController
       raise ActiveRecord::Rollback unless @tournament.save
 
       if params[:automatico]
+        maps = Map.ativos.pluck(:id)
+        map_bans = @tournament.map_bans.pluck(:map_id)
+        final_maps = maps - map_bans
+
         if params[:numero_maximo_mapas]
           if params[:numero_maximo_mapas].to_i <= 0
             @tournament.errors.add(:erro_maximo_mapas, "O número máximo de mapas deve ser maior que 1 (um)")
             raise ActiveRecord::Rollback
           end
-          maps = Map.ativos.order("random()").limit(params[:numero_maximo_mapas]).pluck(:id)
-        else
-          maps = Map.ativos.order("random()").pluck(:id)
+          final_maps = final_maps.sample(params[:numero_maximo_mapas].to_i)
         end
-        map_bans = @tournament.map_bans.pluck(:map_id)
-        final_maps = maps - map_bans
+
         final_maps.each do |map_id|
           round_ida = Round.create(tournament_id: @tournament.id, map_id: map_id, ct_team_id: @tournament.teams.first.id, t_team_id: @tournament.teams.last.id)
           @tournament.teams.each do |team|
