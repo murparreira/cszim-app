@@ -11,7 +11,7 @@ class SessionsController < ApplicationController
 
   def create
     user = User.find_by(login: params[:session][:login].downcase)
-    if user && user.authenticate(params[:session][:password])      
+    if user && user.authenticate(params[:session][:password])
       if user.ativo
         log_in user
         redirect_to root_url
