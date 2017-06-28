@@ -1,83 +1,90 @@
-<div class="columns">
-  <div class="column has-text-centered">
-    <h1 class="title">Placar Geral</h1>
-    <h3 class="subtitle is-4">(Últimos 5 torneios)</h3>
-  </div>
+<div class="columns is-multiline">
+  <% User.all.each do |user| %>
+    <div class="column is-one-third">
+      <div class="contact-box">
+        <div class="columns">
+          <div class="column is-one-third">
+            <%= image_tag avatar_url(user), class: 'img-circle' %>
+          </div>
+          <div class="column">
+            <h3><strong><%= user.nome %></strong></h3>
+            <table class="table is-narrow">
+              <tr><td>Rounds jogados:</td><td><%= Winner.joins(team: :users).where(users: {id: user.id}).count + Loser.joins(team: :users).where(users: {id: user.id}).count %></td></tr>
+              <tr><td>Rounds ganhos:</td><td><%= Winner.joins(team: :users).where(users: {id: user.id}).count %></td></tr>
+              <tr><td>Kills:</td><td><%= Statistic.select("SUM(kills) AS kills").find_by(user_id: user.id).kills %></td></tr>
+              <tr><td>Deaths:</td><td><%= Statistic.select("SUM(deaths) AS deaths").find_by(user_id: user.id).deaths %></td></tr>
+              <tr><td>CT wins:</td><td><%= Winner.joins(team: :users).where(users: {id: user.id}, lado: 'ct').count %></td></tr>
+              <tr><td>T wins:</td><td><%= Winner.joins(team: :users).where(users: {id: user.id}, lado: 't').count %></td></tr>
+              <% hash = Round.joins(statistics: :user).where(users: {id: user.id}).where.not(map_id: nil).group(:map_id).sum(:kills) %>
+              <tr>
+                <td>
+                  <span class="icon is-small"><i class="fa fa-star"></i></span>&nbsp; MVP Map:
+                </td>
+                <td><%= Map.find(hash.sort_by{|k, v| v}.reverse.first.first).nome %>
+                  <br>
+                  <%= hash.sort_by{|k, v| v}.reverse.first.reverse.first %> kills
+                </td>
+              </tr>
+              <% hash = Round.joins(statistics: :user).where(users: {id: user.id}).where.not(map_id: nil).group(:map_id).sum(:deaths) %>
+              <tr>
+                <td>
+                  <span class="icon is-small"><i class="fa fa-thumbs-down"></i></span>&nbsp; Noob Map:
+                </td>
+                <td><%= Map.find(hash.sort_by{|k, v| v}.reverse.first.first).nome %>
+                  <br>
+                  <%= hash.sort_by{|k, v| v}.reverse.first.reverse.first %> deaths
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
 </div>
-<table class="table is-narrow is-striped is-bordered">
-  <thead>
-      <th>Nome do Torneio</th>
-      <th colspan="4">Resultado</th>
-  </thead>
-  <tbody>
-    <% Tournament.ultimos.each do |tournament| %>
-      <tr>
-        <td><%= link_to tournament.nome, tournament %></td>
-        <% tournament.teams.each do |team| %>
-          <td>
-            <%= team.nome %> <br>
-            <% team.users.each do |user| %>
-              <%= image_tag avatar_url(user), class: 'img-circle image anti-image-block is-24x24' %> &nbsp;
-            <% end %>
-          </td>
-          <td>
-            <%= Winner.joins(:round).where(team_id: team.id).sum("rounds.pontos") %> pontos
-            -
-            <%= Winner.joins(:round).where(team_id: team.id).count %> vitória(s)
-          </td>
-        <% end %>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
 
 <hr>
 
 <div class="columns">
   <div class="column has-text-centered">
-    <h1 class="title">Estatísticas Gerais</h1>
+    <h1 class="title">Estatísticas de Mapas</h1>
   </div>
 </div>
 <table class="table is-narrow is-striped is-bordered">
+  <thead>
+    <th width="5%">#</th>
+    <th width="35%">Mapa</th>
+    <th width="20%">Rounds jogados</th>
+    <th width="20%">CT wins</th>
+    <th width="20%">T wins</th>
+  </thead>
   <tbody>
-      <tr>
-        <td width="15%">Vitórias Gerais como CT</td>
-        <td><%= Winner.joins(:round).where(lado: "ct").count %></td>
-      </tr>
-      <tr>
-        <td>Vitórias Gerais como T</td>
-        <td><%= Winner.joins(:round).where(lado: "t").count %></td>
-      </tr>
-      <tr>
-        <td>Estatísticas de Mapa</td>
-        <td>
-          <table>
-            <thead>
-              <th>#</th>
-              <th>Mapa</th>
-              <th>Vezes Jogado</th>
-              <th>Lado CT</th>
-              <th>Lado T</th>
-            </thead>
-            <tbody>
-              <% Round.joins(:winner).group(:map_id).count.each do |map_id, value| %>
-                <% if map_id %>
-                  <tr>
-                    <% map = Map.find(map_id) %>
-                    <% vitorias_ct = Map.joins(rounds: :winner).where(["maps.id = ? AND winners.lado = 'ct'", map_id]).count %>
-                    <% vitorias_t = Map.joins(rounds: :winner).where(["maps.id = ? AND winners.lado = 't'", map_id]).count %>
-                    <td><%= image_tag imagem_mapa_url(map), class: 'img-circle image anti-image-block is-24x24' %></td>
-                    <td><%= map.nome %> - <%= map.sigla %></td>
-                    <td><%= value %></td>
-                    <td><%= vitorias_ct %></td>
-                    <td><%= vitorias_t %></td>
-                  </tr>
-                <% end %>
-              <% end %>
-            </tbody>
-          </table>
-        </td>
-      </tr>
+    <% total = 0 %>
+    <% total_ct = 0 %>
+    <% total_t = 0 %>
+    <% Round.joins(:winner).group(:map_id).count.each do |map_id, value| %>
+      <% if map_id %>
+        <tr>
+          <% map = Map.find(map_id) %>
+          <% vitorias_ct = Map.joins(rounds: :winner).where(["maps.id = ? AND winners.lado = 'ct'", map_id]).count %>
+          <% vitorias_t = Map.joins(rounds: :winner).where(["maps.id = ? AND winners.lado = 't'", map_id]).count %>
+          <td><%= image_tag imagem_mapa_url(map), class: 'img-circle image anti-image-block is-24x24' %></td>
+          <td><%= map.nome %> - <%= map.sigla %></td>
+          <td><%= value %></td>
+          <td><%= vitorias_ct %></td>
+          <td><%= vitorias_t %></td>
+        </tr>
+        <% total += value %>
+        <% total_ct += vitorias_ct %>
+        <% total_t += vitorias_t %>
+      <% end %>
+    <% end %>
+    <tr>
+      <td colspan="2"></td>
+      <td><strong><%= total %></strong></td>
+      <td><strong><%= total_ct %></strong></td>
+      <td><strong><%= total_t %></strong></td>
+    </tr>
   </tbody>
 </table>
 
@@ -102,18 +109,6 @@
     <%= link_to "Por Mapa", root_path(request.query_parameters.merge(filtro: "mapa")), class: "button #{filtro_mapa}" %>
   </div>
 </div>
-<% if params[:filtro] != 'torneio' %>
-  <div class="columns">
-    <div class="column has-text-centered">
-      <% filtro_oficiais = "" %>
-      <% filtro_todos = "" %>
-      <% filtro_oficiais = "is-primary" if params[:tipo].nil? || params[:tipo] == "oficiais" %>
-      <%= link_to "Torneios Oficiais", root_path(request.query_parameters.merge(tipo: "oficiais")), class: "button #{filtro_oficiais}" %>
-      <% filtro_todos = "is-primary" if params[:tipo] == 'todos' %>
-      <%= link_to "Todos os Torneios", root_path(request.query_parameters.merge(tipo: "todos")), class: "button #{filtro_todos}" %>
-    </div>
-  </div>
-<% end %>
 
 <hr>
 

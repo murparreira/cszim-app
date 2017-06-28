@@ -111,7 +111,7 @@ module ApplicationHelper
     if status
       "<span class='tag is-success'>Ativo</span>".html_safe
     else
-      "<span class='tag is-danger'>Ativo</span>".html_safe
+      "<span class='tag is-danger'>Inativo</span>".html_safe
     end
   end
 
