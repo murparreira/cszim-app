@@ -20,20 +20,29 @@
                 <td>
                   <span class="icon is-small"><i class="fa fa-star"></i></span>&nbsp; MVP Map:
                 </td>
-                <td><%= Map.find(hash.sort_by{|k, v| v}.reverse.first.first).nome %>
-                  <br>
-                  <%= hash.sort_by{|k, v| v}.reverse.first.reverse.first %> kills
-                </td>
+                <% if hash.empty? %>
+                  <td>:(</td>
+                <% else %>
+                  <td>
+                    <%= Map.find(hash.sort_by{|k, v| v}.reverse.first.first).nome %>
+                    <br>
+                    <%= hash.sort_by{|k, v| v}.reverse.first.reverse.first %> kills
+                  </td>
+                <% end %>
               </tr>
               <% hash = Round.joins(statistics: :user).where(users: {id: user.id}).where.not(map_id: nil).group(:map_id).sum(:deaths) %>
               <tr>
                 <td>
                   <span class="icon is-small"><i class="fa fa-thumbs-down"></i></span>&nbsp; Noob Map:
                 </td>
-                <td><%= Map.find(hash.sort_by{|k, v| v}.reverse.first.first).nome %>
-                  <br>
-                  <%= hash.sort_by{|k, v| v}.reverse.first.reverse.first %> deaths
-                </td>
+                <% if hash.empty? %>
+                  <td>:(</td>
+                <% else %>
+                  <td><%= Map.find(hash.sort_by{|k, v| v}.reverse.first.first).nome %>
+                    <br>
+                    <%= hash.sort_by{|k, v| v}.reverse.first.reverse.first %> deaths
+                  </td>
+                <% end %>
               </tr>
             </table>
           </div>
