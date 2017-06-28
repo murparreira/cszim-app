@@ -6,30 +6,32 @@
         Painel
       <% end %>
     </li>
-    <li>
-      <%= link_to users_path, class: "#{'is-active' if params[:controller] == 'users'}" do %>
-        <span class="icon is-small"><i class="fa fa-user"></i></span>&nbsp;
-        Usuários/Jogadores
-      <% end %>
-    </li>
-    <li>
-      <%= link_to maps_path, class: "#{'is-active' if params[:controller] == 'maps'}" do %>
-        <span class="icon is-small"><i class="fa fa-map"></i></span>&nbsp;
-        Mapas
-      <% end %>
-    </li>
-    <li>
-      <%= link_to teams_path, class: "#{'is-active' if params[:controller] == 'teams'}" do %>
-        <span class="icon is-small"><i class="fa fa-users"></i></span>&nbsp;
-        Times
-      <% end %>
-    </li>
-    <li>
-      <%= link_to tournaments_path, class: "#{'is-active' if params[:controller] == 'tournaments'}" do %>
-        <span class="icon is-small"><i class="fa fa-trophy"></i></span>&nbsp;
-        Torneios
-      <% end %>
-    </li>
+    <% if logged_in? %>
+      <li>
+        <%= link_to users_path, class: "#{'is-active' if params[:controller] == 'users'}" do %>
+          <span class="icon is-small"><i class="fa fa-user"></i></span>&nbsp;
+          Usuários/Jogadores
+        <% end %>
+      </li>
+      <li>
+        <%= link_to maps_path, class: "#{'is-active' if params[:controller] == 'maps'}" do %>
+          <span class="icon is-small"><i class="fa fa-map"></i></span>&nbsp;
+          Mapas
+        <% end %>
+      </li>
+      <li>
+        <%= link_to teams_path, class: "#{'is-active' if params[:controller] == 'teams'}" do %>
+          <span class="icon is-small"><i class="fa fa-users"></i></span>&nbsp;
+          Times
+        <% end %>
+      </li>
+      <li>
+        <%= link_to tournaments_path, class: "#{'is-active' if params[:controller] == 'tournaments'}" do %>
+          <span class="icon is-small"><i class="fa fa-trophy"></i></span>&nbsp;
+          Torneios
+        <% end %>
+      </li>
+    <% end %>
   </ul>
   <ul class="menu-list">
     <li>

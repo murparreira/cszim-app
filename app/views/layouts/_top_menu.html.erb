@@ -5,11 +5,18 @@
     <% end %>
   </div>
   <div class="nav-right nav-menu">
-    <%= link_to edit_user_path(current_user), class: "nav-item is-tab" do %>
-      <%= current_user.nome %>
-    <% end %>
-    <%= link_to logout_path, method: "delete", class: "nav-item is-tab" do %>
-      Sair
+    <% if logged_in? %>
+      <%= link_to edit_user_path(current_user), class: "nav-item is-tab" do %>
+        <%= current_user.nome %>
+      <% end %>
+      <%= link_to logout_path, method: "delete", class: "nav-item is-tab" do %>
+        Sair
+      <% end %>
+    <% else %>
+      <a href="#" class="nav-item is-tab">Convidado</a>
+      <%= link_to login_path, class: "nav-item is-tab" do %>
+        Logar
+      <% end %>
     <% end %>
   </div>
 </nav>

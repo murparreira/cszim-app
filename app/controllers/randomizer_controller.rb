@@ -1,7 +1,5 @@
 class RandomizerController < ApplicationController
 
-  before_action :authenticate_user
-
   def index
     if session[:maps].nil?
       init_maps
