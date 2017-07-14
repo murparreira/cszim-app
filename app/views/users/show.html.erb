@@ -12,18 +12,26 @@
       <div class="columns">
         <div class="column">
           <table class="table is-narrow">
-            <tr><td>Rounds jogados:</td><td><%= Winner.joins(team: :users).where(users: {id: @user.id}).count + Loser.joins(team: :users).where(users: {id: @user.id}).count %></td></tr>
-            <tr><td>Rounds ganhos:</td><td><%= Winner.joins(team: :users).where(users: {id: @user.id}).count %></td></tr>
+            <tr>
+              <td width="15%">Rounds jogados:</td><td><%= Winner.joins(team: :users).where(users: {id: @user.id}).count + Loser.joins(team: :users).where(users: {id: @user.id}).count %></td>
+              <td>Rounds ganhos:</td><td><%= Winner.joins(team: :users).where(users: {id: @user.id}).count %></td>
+            </tr>
             <% kills = Statistic.select("SUM(kills) AS kills").find_by(user_id: @user.id).kills %>
-            <tr><td>Kills:</td><td><%= kills %></td></tr>
             <% deaths = Statistic.select("SUM(deaths) AS deaths").find_by(user_id: @user.id).deaths %>
-            <tr><td>Deaths:</td><td><%= deaths %></td></tr>
+            <tr>
+              <td>Kills:</td><td><%= kills %></td>
+              <td>Deaths:</td><td><%= deaths %></td>
+            </tr>
             <% ratio = (kills.to_f/deaths.to_f).round(2) %>
-            <tr><td>Ratio Geral:</td><td><%= ratio %></td></tr>
-            <tr><td>CT wins:</td><td><%= Winner.joins(team: :users).where(users: {id: @user.id}, lado: 'ct').count %></td></tr>
-            <tr><td>CT losses:</td><td><%= Loser.joins(team: :users).where(users: {id: @user.id}, lado: 'ct').count %></td></tr>
-            <tr><td>T wins:</td><td><%= Winner.joins(team: :users).where(users: {id: @user.id}, lado: 't').count %></td></tr>
-            <tr><td>T losses:</td><td><%= Loser.joins(team: :users).where(users: {id: @user.id}, lado: 't').count %></td></tr>
+            <tr><td>Ratio Geral:</td><td><%= ratio %></td><td><td></td></td></tr>
+            <tr>
+              <td>CT wins:</td><td><%= Winner.joins(team: :users).where(users: {id: @user.id}, lado: 'ct').count %></td>
+              <td>CT losses:</td><td><%= Loser.joins(team: :users).where(users: {id: @user.id}, lado: 'ct').count %></td>
+            </tr>
+            <tr>
+              <td>T wins:</td><td><%= Winner.joins(team: :users).where(users: {id: @user.id}, lado: 't').count %></td>
+              <td>T losses:</td><td><%= Loser.joins(team: :users).where(users: {id: @user.id}, lado: 't').count %></td>
+            </tr>
             <% hash = Round.joins(statistics: :user).where(users: {id: @user.id}).where.not(map_id: nil).group(:map_id).sum(:kills) %>
             <tr>
               <td>
@@ -37,9 +45,7 @@
                   <%= hash.sort_by{|k, v| v}.reverse.first.reverse.first %> kills
                 </td>
               <% end %>
-            </tr>
-            <% hash = Round.joins(statistics: :user).where(users: {id: @user.id}).where.not(map_id: nil).group(:map_id).sum(:deaths) %>
-            <tr>
+              <% hash = Round.joins(statistics: :user).where(users: {id: @user.id}).where.not(map_id: nil).group(:map_id).sum(:deaths) %>
               <td>
                 <span class="icon is-small"><i class="fa fa-thumbs-down"></i></span>&nbsp; Noob Map:
               </td>

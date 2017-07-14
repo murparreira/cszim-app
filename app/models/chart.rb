@@ -61,21 +61,21 @@ class Chart
   end
 
   def self.historic_chart(user_id)
-    LazyHighCharts::HighChart.new('column') do |f|
+    LazyHighCharts::HighChart.new('graph') do |f|
       f.title(text: "Histórico de Ratio (Kills/Deaths)")
       f.yAxis(title: "Ratio", categories: [])
       data = []
-      result = ActiveRecord::Base.connection.execute "SELECT CAST(SUM(kills) AS float)/CAST(SUM(deaths) AS float) AS ratio, tournament_id FROM statistics s INNER JOIN rounds r ON s.round_id = r.id INNER JOIN tournaments t ON r.tournament_id = t.id WHERE map_id IS NOT NULL AND user_id = #{user_id} GROUP BY tournament_id ORDER BY tournament_id ASC"
+      categories = []
+      result = ActiveRecord::Base.connection.execute "SELECT round(CAST(SUM(kills) AS float)/CAST(SUM(deaths) AS float), 2) AS ratio, tournament_id FROM statistics s INNER JOIN rounds r ON s.round_id = r.id INNER JOIN tournaments t ON r.tournament_id = t.id WHERE map_id IS NOT NULL AND user_id = #{user_id} GROUP BY tournament_id ORDER BY tournament_id ASC"
       result.each do |hash|
         data << hash["ratio"]
+        tournament = Tournament.find(hash["tournament_id"])
+        categories << "<a href='/tournaments/#{tournament.id}'>#{tournament.nome}</a>".html_safe
       end
       f.series(name: "Ratio", data: data)
-      categories = []
-      Tournament.order(id: :asc).each do |tournament|
-        categories << tournament.nome
-      end
       f.xAxis(categories: categories)
       f.legend(align: 'right', verticalAlign: 'top', layout: 'vertical')
+      f.chart({defaultSeriesType: "column"})
     end
   end
 
