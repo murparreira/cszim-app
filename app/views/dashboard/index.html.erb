@@ -7,7 +7,14 @@
             <%= image_tag avatar_url(user), class: 'img-circle' %>
           </div>
           <div class="column">
-            <h3><strong><%= user.nome %></strong></h3>
+            <h3 class="subtitle"><strong><%= user.nome %></strong></h3>
+            <%= link_to user, class: 'button' do %>
+              Histórico
+            <% end %>
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column">
             <table class="table is-narrow">
               <tr><td>Rounds jogados:</td><td><%= Winner.joins(team: :users).where(users: {id: user.id}).count + Loser.joins(team: :users).where(users: {id: user.id}).count %></td></tr>
               <tr><td>Rounds ganhos:</td><td><%= Winner.joins(team: :users).where(users: {id: user.id}).count %></td></tr>

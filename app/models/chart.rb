@@ -60,4 +60,28 @@ class Chart
     end
   end
 
+  def self.historic_chart(user_id)
+    LazyHighCharts::HighChart.new('column') do |f|
+      f.title(text: "Histórico de Ratio (Kills/Deaths)")
+      f.yAxis(title: "Ratio", categories: [])
+      data = []
+      result = ActiveRecord::Base.connection.execute "SELECT CAST(SUM(kills) AS float)/CAST(SUM(deaths) AS float) AS ratio, tournament_id FROM statistics s INNER JOIN rounds r ON s.round_id = r.id INNER JOIN tournaments t ON r.tournament_id = t.id WHERE map_id IS NOT NULL AND user_id = #{user_id} GROUP BY tournament_id ORDER BY tournament_id ASC"
+      result.each do |hash|
+        data << hash["ratio"]
+      end
+      f.series(name: "Ratio", data: data)
+      categories = []
+      Tournament.order(id: :asc).each do |tournament|
+        categories << tournament.nome
+      end
+      f.xAxis(categories: categories)
+      f.legend(align: 'right', verticalAlign: 'top', layout: 'vertical')
+    end
+  end
+
 end
+
+=begin
+ActiveRecord::Base.connection.execute "SELECT CAST(SUM(kills) AS float)/CAST(SUM(deaths) AS float) AS ratio, map_id FROM statistics s INNER JOIN rounds r ON s.round_id = r.id WHERE map_id IS NOT NULL AND user_id = 1 GROUP BY map_id ORDER BY ratio"
+ActiveRecord::Base.connection.execute "SELECT CAST(SUM(kills) AS float)/CAST(SUM(deaths) AS float) AS ratio, tournament_id FROM statistics s INNER JOIN rounds r ON s.round_id = r.id INNER JOIN tournaments t ON r.tournament_id = t.id WHERE map_id IS NOT NULL AND user_id = 1 GROUP BY tournament_id ORDER BY ratio"
+=end
