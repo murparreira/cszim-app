@@ -34,4 +34,30 @@ class Chart
       f.legend(align: 'right', verticalAlign: 'top', y: 75, x: -50, layout: 'vertical')
     end
   end
+
+  def self.line_chart
+    LazyHighCharts::HighChart.new('line') do |f|
+      f.title(text: "Últimos 5 torneios")
+      f.yAxis(title: "Kills", categories: [])
+      tournaments = Tournament.order(id: :desc).limit(5).reverse
+      User.order(id: :asc).each do |user|
+        data = []
+        n_kills = 0
+        tournaments.each do |tournament|
+          statistic = Statistic.joins(round: :tournament).select("SUM(kills) AS kills").where("user_id = ? AND tournaments.id = ?", user.id, tournament.id).first
+          kills = statistic.kills || 0
+          n_kills += kills
+          data << n_kills
+        end
+        f.series(name: user.nome, data: data)
+      end
+      categories = []
+      tournaments.each do |tournament|
+        categories << tournament.nome
+      end
+      f.xAxis(categories: categories)
+      f.legend(align: 'right', verticalAlign: 'top', layout: 'vertical')
+    end
+  end
+
 end
