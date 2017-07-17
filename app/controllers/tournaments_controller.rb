@@ -44,8 +44,8 @@ class TournamentsController < ApplicationController
 
       if params[:times_automatico]
         @tournament.participants.delete_all
-        team_one = Team.safe_find_or_create_by(nome: "Time Aleatório #{Faker::Pokemon.name}")
-        team_two = Team.safe_find_or_create_by(nome: "Time Aleatório #{Faker::Pokemon.name}")
+        team_one = Team.create
+        team_two = Team.create
         user_array = User.all.shuffle.each_slice(3).to_a
         team_one.users << user_array.first
         team_two.users << user_array.last

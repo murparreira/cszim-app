@@ -80,19 +80,7 @@
 		<div class="column is-1"></div>
 		<%= f.fields_for :participants do |participant| %>
 		<%= participant.fields_for :team do |team| %>
-		<div class="column is-5 has-text-centered">
-			<div class="columns">
-				<div class="column is-1"></div>
-				<div class="column is-5">
-					<div class="field">
-						<label class="label">Nome do Time</label>
-						<p class="control">
-							<%= team.text_field :nome, class: 'input' %>
-						</p>
-					</div>
-				</div>
-				<div class="column is-1"></div>
-			</div>
+		<div class="column is-5 has-text-centered">			
 			<div class="control space-20-bottom">
 				<%= link_to_add_association "<i class='fa fa-plus'></i>&nbsp;Adicionar Jogador".html_safe, team, :players, :data => {"association-insertion-method" => "after" }, :class => 'button', :render_options => { :wrapper => 'inline' } %>
 			</div>
