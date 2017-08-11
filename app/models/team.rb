@@ -5,7 +5,7 @@ class Team < ApplicationRecord
 
   validates :nome, presence: true, uniqueness: true
 
-  before_validation :criar_nome_aleatorio
+  #before_validation :criar_nome_aleatorio
 
   def criar_nome_aleatorio
     player_names = ""

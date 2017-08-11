@@ -7,7 +7,9 @@ class Chart
     pie_death = []
     data.each do |statistic|
       user = User.find(statistic.user_id)
-      ratio = statistic.ratio
+      deaths = statistic.deaths.to_i
+      deaths = 1 if statistic.deaths.to_i == 0
+      ratio = statistic.kills.to_i/deaths
       media = (statistic.kills.to_f+statistic.deaths.to_f)/2
       nome << user.nome + '<br>' + ratio.to_s
       kill << statistic.kills
@@ -15,8 +17,8 @@ class Chart
       pie_kill << {name: user.nome.to_s, y: statistic.kills}
       pie_death << {name: user.nome.to_s, y: statistic.deaths}
     end
-    line_kill = (data.map {|k| k['kills']}.reduce(0, :+))/data.size
-    line_death = (data.map {|d| d['deaths']}.reduce(0, :+))/data.size
+    line_kill = (data.map {|k| k['kills']}.reduce(0, :+))/data.size if data.size > 0
+    line_death = (data.map {|d| d['deaths']}.reduce(0, :+))/data.size if data.size > 0
     LazyHighCharts::HighChart.new('graph') do |f|
       f.title(text: "Kikiu")
       f.xAxis(categories: nome)

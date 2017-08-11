@@ -58,6 +58,155 @@
               <% end %>
             </tr>
           </table>
+          <hr>
+          <table>
+            <thead>
+              <tr>
+                <th>kills</th>
+                <th>deaths</th>
+                <th>score</th>
+                <th>suicides</th>
+                <th>tk</th>
+                <th>shots</th>
+                <th>hits</th>
+                <th>headshots</th>
+                <th>connected</th>
+                <th>rounds_tr</th>
+                <th>rounds_ct</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><%= @rankme.kills %></td>
+                <td><%= @rankme.deaths %></td>
+                <td><%= @rankme.suicides %></td>
+                <td><%= @rankme.tk %></td>
+                <td><%= @rankme.shots %></td>
+                <td><%= @rankme.hits %></td>
+                <td><%= @rankme.headshots %></td>
+                <td><%= @rankme.connected %></td>
+                <td><%= @rankme.rounds_tr %></td>
+                <td><%= @rankme.rounds_ct %></td>
+              </tr>
+            </tbody>
+          </table>
+          <hr>
+          <table>
+            <thead>
+              <tr>
+                <th>knife</th>
+                <th>glock</th>
+                <th>usp</th>
+                <th>p228</th>
+                <th>deagle</th>
+                <th>elite</th>
+                <th>fiveseven</th>
+                <th>m3</th>
+                <th>xm1014</th>
+                <th>mac10</th>
+                <th>tmp</th>
+                <th>mp5navy</th>
+                <th>ump45</th>
+                <th>p90</th>
+                <th>galil</th>
+              </tr>
+              <tr>
+                <td><%= @rankme.knife %></td>
+                <td><%= @rankme.glock %></td>
+                <td><%= @rankme.usp %></td>
+                <td><%= @rankme.p228 %></td>
+                <td><%= @rankme.deagle %></td>
+                <td><%= @rankme.elite %></td>
+                <td><%= @rankme.fiveseven %></td>
+                <td><%= @rankme.m3 %></td>
+                <td><%= @rankme.xm1014 %></td>
+                <td><%= @rankme.mac10 %></td>
+                <td><%= @rankme.tmp %></td>
+                <td><%= @rankme.mp5navy %></td>
+                <td><%= @rankme.ump45 %></td>
+                <td><%= @rankme.p90 %></td>
+                <td><%= @rankme.galil %></td>
+              </tr>
+              <tr>
+                <th>ak47</th>
+                <th>sg550</th>
+                <th>famas</th>
+                <th>m4a1</th>
+                <th>aug</th>
+                <th>scout</th>
+                <th>sg552</th>
+                <th>awp</th>
+                <th>g3sg1</th>
+                <th>m249</th>
+                <th>hegrenade</th>
+                <th>flashbang</th>
+                <th>smokegrenade</th>
+              </tr>
+              <tr>
+                <td><%= @rankme.ak47 %></td>
+                <td><%= @rankme.sg550 %></td>
+                <td><%= @rankme.famas %></td>
+                <td><%= @rankme.m4a1 %></td>
+                <td><%= @rankme.aug %></td>
+                <td><%= @rankme.scout %></td>
+                <td><%= @rankme.sg552 %></td>
+                <td><%= @rankme.awp %></td>
+                <td><%= @rankme.g3sg1 %></td>
+                <td><%= @rankme.m249 %></td>
+                <td><%= @rankme.hegrenade %></td>
+                <td><%= @rankme.flashbang %></td>
+                <td><%= @rankme.smokegrenade %></td>
+              </tr>
+            </tbody>
+          </table>
+          <hr>
+          <table>
+            <thead>
+              <tr>
+                <th>head</th>
+                <th>chest</th>
+                <th>stomach</th>
+                <th>left_arm</th>
+                <th>right_arm</th>
+                <th>left_leg</th>
+                <th>right_leg</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><%= @rankme.head %></td>
+                <td><%= @rankme.chest %></td>
+                <td><%= @rankme.stomach %></td>
+                <td><%= @rankme.left_arm %></td>
+                <td><%= @rankme.right_arm %></td>
+                <td><%= @rankme.left_leg %></td>
+                <td><%= @rankme.right_leg %></td>
+              </tr>
+            </tbody>
+          </table>
+          <hr>
+          <table>
+            <thead>
+              <tr>
+                <th>c4_planted</th>
+                <th>c4_exploded</th>
+                <th>c4_defused</th>
+                <th>ct_win</th>
+                <th>tr_win</th>
+                <th>hostages_rescued</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><%= @rankme.c4_planted %></td>
+                <td><%= @rankme.c4_exploded %></td>
+                <td><%= @rankme.c4_defused %></td>
+                <td><%= @rankme.ct_win %></td>
+                <td><%= @rankme.tr_win %></td>
+                <td><%= @rankme.hostages_rescued %></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -67,3 +216,14 @@
 <hr>
 
 <%= high_chart("historicchart", Chart.historic_chart(@user.id)) %>
+
+
+
+
+
+
+
+
+
+
+

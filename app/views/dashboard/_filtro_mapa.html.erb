@@ -4,7 +4,7 @@
   </div>
 </div>
 
-<% Map.joins(:rounds).group(:map_id).each do |map| %>
+<% Map.all.each do |map| %>
   <div class="columns is-multiline">
     <div class="column">
       <div class="contact-box">
@@ -25,14 +25,17 @@
                 <th width="10%">Ratio</th>
               </thead>
               <tbody>
-                <% data_mapa = Statistic.joins(round: :tournament).select("SUM(kills) AS kills, SUM(deaths) AS deaths, user_id").where("rounds.map_id = ?", map.id).group(:user_id).order("kills DESC, deaths ASC") %>
+                <% #data_mapa = Statistic.joins(round: :tournament).select("SUM(kills) AS kills, SUM(deaths) AS deaths, user_id").where("rounds.map_id = ?", map.id).group(:user_id).order("kills DESC, deaths ASC") %>
+                <% data_mapa = Rankme.joins(:tournament).select("SUM(kills) AS kills, SUM(deaths) AS deaths, user_id").where("rankmes.map_id = ?", map.id).group(:user_id).order("kills DESC, deaths ASC") %>
                 <% data_mapa.each do |statistic| %>
+                  <% deaths = statistic.deaths.to_i %>
+                  <% deaths = 1 if statistic.deaths.to_i == 0%>
                   <tr>
                     <% user = User.find(statistic.user_id) %>
                     <td><%= image_tag avatar_url(user), class: 'img-circle image anti-image-block is-24x24' %> <%= user.nome %></td>
                     <td><%= statistic.kills %></td>
                     <td><%= statistic.deaths %></td>
-                    <td><%= statistic.ratio %></td>
+                    <td><%= (statistic.kills.to_f/deaths.to_f).round(2) %></td>
                   </tr>
                 <% end %>
               </tbody>

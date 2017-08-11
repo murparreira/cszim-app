@@ -110,7 +110,7 @@
         </table>
       </div>
     </div>
-    <% statistics = Statistic.where(team_id: round.try(:winner).try(:team).try(:id), round_id: round.id).order(kills: :desc) %>
+    <% statistics = Rankme.where(team_id: round.try(:winner).try(:team).try(:id), round_id: round.id).order(kills: :desc) %>
     <% if statistics.empty? %>
     <div class="columns">
       <div class="column is-half is-offset-one-quarter has-text-centered">
@@ -133,7 +133,7 @@
             <th>Deaths</th>
           </thead>
           <tbody>
-            <% Statistic.where(team_id: round.winner.team.id, round_id: round.id).order(kills: :desc).each do |statistic| %>
+            <% Rankme.where(team_id: round.winner.team.id, round_id: round.id).order(kills: :desc).each do |statistic| %>
             <tr>
               <td>
                 <%= image_tag avatar_url(statistic.user), class: 'img-circle image anti-image-block is-24x24' %>
@@ -155,7 +155,7 @@
             <th>Deaths</th>
           </thead>
           <tbody>
-            <% Statistic.where(team_id: round.loser.team.id, round_id: round.id).order(kills: :desc).each do |statistic| %>
+            <% Rankme.where(team_id: round.loser.team.id, round_id: round.id).order(kills: :desc).each do |statistic| %>
             <tr>
               <td>
                 <%= image_tag avatar_url(statistic.user), class: 'img-circle image anti-image-block is-24x24' %>

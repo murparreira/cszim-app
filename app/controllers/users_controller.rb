@@ -7,6 +7,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
+    @rankme = Rankme.find_by(user_id: @user.id)
   end
 
   def edit

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170525183350) do
+ActiveRecord::Schema.define(version: 20170811190114) do
 
   create_table "losers", force: :cascade do |t|
     t.integer  "round_id"
@@ -52,6 +52,75 @@ ActiveRecord::Schema.define(version: 20170525183350) do
     t.integer "user_id"
     t.index ["team_id"], name: "index_players_on_team_id"
     t.index ["user_id"], name: "index_players_on_user_id"
+  end
+
+  create_table "rankmes", force: :cascade do |t|
+    t.string   "steam"
+    t.string   "name"
+    t.string   "lastip"
+    t.integer  "score"
+    t.integer  "kills"
+    t.integer  "deaths"
+    t.integer  "suicides"
+    t.integer  "tk"
+    t.integer  "shots"
+    t.integer  "hits"
+    t.integer  "headshots"
+    t.integer  "connected"
+    t.integer  "rounds_tr"
+    t.integer  "rounds_ct"
+    t.integer  "lastconnect"
+    t.integer  "knife"
+    t.integer  "glock"
+    t.integer  "usp"
+    t.integer  "p228"
+    t.integer  "deagle"
+    t.integer  "elite"
+    t.integer  "fiveseven"
+    t.integer  "m3"
+    t.integer  "xm1014"
+    t.integer  "mac10"
+    t.integer  "tmp"
+    t.integer  "mp5navy"
+    t.integer  "ump45"
+    t.integer  "p90"
+    t.integer  "galil"
+    t.integer  "ak47"
+    t.integer  "sg550"
+    t.integer  "famas"
+    t.integer  "m4a1"
+    t.integer  "aug"
+    t.integer  "scout"
+    t.integer  "sg552"
+    t.integer  "awp"
+    t.integer  "g3sg1"
+    t.integer  "m249"
+    t.integer  "hegrenade"
+    t.integer  "flashbang"
+    t.integer  "smokegrenade"
+    t.integer  "head"
+    t.integer  "chest"
+    t.integer  "stomach"
+    t.integer  "left_arm"
+    t.integer  "right_arm"
+    t.integer  "left_leg"
+    t.integer  "right_leg"
+    t.integer  "c4_planted"
+    t.integer  "c4_exploded"
+    t.integer  "c4_defused"
+    t.integer  "ct_win"
+    t.integer  "tr_win"
+    t.integer  "hostages_rescued"
+    t.integer  "vip_killed"
+    t.integer  "vip_escaped"
+    t.integer  "vip_played"
+    t.integer  "user_id"
+    t.integer  "map_id"
+    t.integer  "tournament_id"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+    t.integer  "round_id"
+    t.integer  "team_id"
   end
 
   create_table "rounds", force: :cascade do |t|
@@ -105,6 +174,7 @@ ActiveRecord::Schema.define(version: 20170525183350) do
     t.boolean  "admin",           default: false
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
+    t.string   "steam"
   end
 
   create_table "winners", force: :cascade do |t|

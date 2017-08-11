@@ -8,7 +8,7 @@
       <% end %>
     </ul>
     <% if session[:maps].any? %>
-      <%= link_to "Escolher Fase", randomizer_path(random: true), class: "button" %>
+      <%= link_to "Escolher Mapa", randomizer_path(random: true), class: "button" %>
     <% end %>
     <%= link_to "Resetar Aplicativo", randomizer_path(reset: true), class: "button is-danger" %>
   </div>
@@ -20,7 +20,10 @@
       <br>
       <%= image_tag(imagem_mapa_url(chosen_map), class: "image is-256x256") %>
       <br>
-      <a class="button is-info" href="steam://rungameid/240// +map <%= chosen_map.sigla %>">
+      <%= link_to "Iniciar Mapa", randomizer_path(start: true), class: "button is-info" %>      
+      <%= link_to "Finalizar Mapa", randomizer_path(finish: true), class: "button is-danger" %>
+      <br><br>
+      <a class="button" href="steam://rungameid/240// +map <%= chosen_map.sigla %>">
         Abrir o Mapa Automaticamente
       </a>
     <% end %>
