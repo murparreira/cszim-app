@@ -6,61 +6,20 @@
           <%= image_tag avatar_url(@user), class: 'img-circle' %>
         </div>
         <div class="column">
-          <h3 class="subtitle"><strong><%= @user.nome %></strong></h3>
+          <h3 class="subtitle">
+            <strong><%= @user.nome %></strong><br>
+            Rounds jogados: <%= Winner.joins(team: :users).where(users: {id: @user.id}).count + Loser.joins(team: :users).where(users: {id: @user.id}).count %><br>
+            Rounds ganhos: <%= Winner.joins(team: :users).where(users: {id: @user.id}).count %>
+          </h3>
         </div>
       </div>
       <div class="columns">
         <div class="column">
-          <table class="table is-narrow">
-            <tr>
-              <td width="15%">Rounds jogados:</td><td><%= Winner.joins(team: :users).where(users: {id: @user.id}).count + Loser.joins(team: :users).where(users: {id: @user.id}).count %></td>
-              <td>Rounds ganhos:</td><td><%= Winner.joins(team: :users).where(users: {id: @user.id}).count %></td>
-            </tr>
-            <% kills = Statistic.select("SUM(kills) AS kills").find_by(user_id: @user.id).kills %>
-            <% deaths = Statistic.select("SUM(deaths) AS deaths").find_by(user_id: @user.id).deaths %>
-            <tr>
-              <td>Kills:</td><td><%= kills %></td>
-              <td>Deaths:</td><td><%= deaths %></td>
-            </tr>
-            <% ratio = (kills.to_f/deaths.to_f).round(2) %>
-            <tr><td>Ratio Geral:</td><td><%= ratio %></td><td><td></td></td></tr>
-            <tr>
-              <td>CT wins:</td><td><%= Winner.joins(team: :users).where(users: {id: @user.id}, lado: 'ct').count %></td>
-              <td>CT losses:</td><td><%= Loser.joins(team: :users).where(users: {id: @user.id}, lado: 'ct').count %></td>
-            </tr>
-            <tr>
-              <td>T wins:</td><td><%= Winner.joins(team: :users).where(users: {id: @user.id}, lado: 't').count %></td>
-              <td>T losses:</td><td><%= Loser.joins(team: :users).where(users: {id: @user.id}, lado: 't').count %></td>
-            </tr>
-            <% hash = Round.joins(statistics: :user).where(users: {id: @user.id}).where.not(map_id: nil).group(:map_id).sum(:kills) %>
-            <tr>
-              <td>
-                <span class="icon is-small"><i class="fa fa-star"></i></span>&nbsp; MVP Map:
-              </td>
-              <% if hash.empty? %>
-                <td>:(</td>
-              <% else %>
-                <td>
-                  <%= Map.find(hash.sort_by{|k, v| v}.reverse.first.first).nome %> -
-                  <%= hash.sort_by{|k, v| v}.reverse.first.reverse.first %> kills
-                </td>
-              <% end %>
-              <% hash = Round.joins(statistics: :user).where(users: {id: @user.id}).where.not(map_id: nil).group(:map_id).sum(:deaths) %>
-              <td>
-                <span class="icon is-small"><i class="fa fa-thumbs-down"></i></span>&nbsp; Noob Map:
-              </td>
-              <% if hash.empty? %>
-                <td>:(</td>
-              <% else %>
-                <td><%= Map.find(hash.sort_by{|k, v| v}.reverse.first.first).nome %> -
-                  <%= hash.sort_by{|k, v| v}.reverse.first.reverse.first %> deaths
-                </td>
-              <% end %>
-            </tr>
-          </table>
-          <hr>
-          <table>
+          <table class="table is-bordered is-striped is-narrow is-fullwidth">
             <thead>
+              <tr>
+                <th colspan="12">Pontos</th>
+              </tr>
               <tr>
                 <th>kills</th>
                 <th>deaths</th>
@@ -79,6 +38,7 @@
               <tr>
                 <td><%= @rankme.kills %></td>
                 <td><%= @rankme.deaths %></td>
+                <td><%= @rankme.score %></td>
                 <td><%= @rankme.suicides %></td>
                 <td><%= @rankme.tk %></td>
                 <td><%= @rankme.shots %></td>
@@ -91,24 +51,27 @@
             </tbody>
           </table>
           <hr>
-          <table>
+          <table class="table is-bordered is-striped is-narrow is-fullwidth">
             <thead>
               <tr>
-                <th>knife</th>
-                <th>glock</th>
-                <th>usp</th>
-                <th>p228</th>
-                <th>deagle</th>
-                <th>elite</th>
-                <th>fiveseven</th>
-                <th>m3</th>
-                <th>xm1014</th>
-                <th>mac10</th>
-                <th>tmp</th>
-                <th>mp5navy</th>
-                <th>ump45</th>
-                <th>p90</th>
-                <th>galil</th>
+                <th colspan="15">Armas</th>
+              </tr>
+              <tr>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_knives.png'), class: 'image anti-image-block is-24x24', title: 'knife') %></th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_glock16.png'), class: 'image anti-image-block is-24x24', title: 'glock') %></th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_usp.png'), class: 'image anti-image-block is-24x24', title: 'usp') %></th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_p228.png'), class: 'image anti-image-block is-24x24', title: 'p228') %></th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_deagle.png'), class: 'image anti-image-block is-24x24', title: 'deagle') %></th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_beretta.png'), class: 'image anti-image-block is-24x24', title: 'elite') %></th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_es57.png'), class: 'image anti-image-block is-24x24', title: 'fiveseven') %></th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_m3.png'), class: 'image anti-image-block is-24x24', title: 'm3') %></th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_xm1014.png'), class: 'image anti-image-block is-24x24', title: 'xm1014') %></th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_mac10.png'), class: 'image anti-image-block is-24x24', title: 'mac10') %></th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_tmp.png'), class: 'image anti-image-block is-24x24', title: 'tmp') %></th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_mp5.png'), class: 'image anti-image-block is-24x24', title: 'mp5navy') %></th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_ump.png'), class: 'image anti-image-block is-24x24', title: 'ump45') %></th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_p90.png'), class: 'image anti-image-block is-24x24', title: 'p90') %></th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_galil.png'), class: 'image anti-image-block is-24x24', title: 'galil') %></th>
               </tr>
               <tr>
                 <td><%= @rankme.knife %></td>
@@ -128,19 +91,20 @@
                 <td><%= @rankme.galil %></td>
               </tr>
               <tr>
-                <th>ak47</th>
-                <th>sg550</th>
-                <th>famas</th>
-                <th>m4a1</th>
-                <th>aug</th>
-                <th>scout</th>
-                <th>sg552</th>
-                <th>awp</th>
-                <th>g3sg1</th>
-                <th>m249</th>
-                <th>hegrenade</th>
-                <th>flashbang</th>
-                <th>smokegrenade</th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_ak47.png'), class: 'image anti-image-block is-24x24', title: 'ak47') %></th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_sg-550.png'), class: 'image anti-image-block is-24x24', title: 'sg550') %></th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_famas.png'), class: 'image anti-image-block is-24x24', title: 'famas') %></th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_m4a1.png'), class: 'image anti-image-block is-24x24', title: 'm4a1') %></th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_aug.png'), class: 'image anti-image-block is-24x24', title: 'aug') %></th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_scout.png'), class: 'image anti-image-block is-24x24', title: 'scout') %></th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_sg-552.png'), class: 'image anti-image-block is-24x24', title: 'sg552') %></th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_awp.png'), class: 'image anti-image-block is-24x24', title: 'awp') %></th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_sg-1.png'), class: 'image anti-image-block is-24x24', title: 'g3sg1') %></th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_m249.png'), class: 'image anti-image-block is-24x24', title: 'm249') %></th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_frag.png'), class: 'image anti-image-block is-24x24', title: 'hegrenade') %></th>
+                <th><%= image_tag(asset_path('cssweapons/Css_flashbang.png'), class: 'image anti-image-block is-24x24', title: 'flashbang') %></th>
+                <th><%= image_tag(asset_path('cssweapons/Css_smoke.png'), class: 'image anti-image-block is-24x24', title: 'smokegrenade') %></th>
+                <th colspan="2"></th>
               </tr>
               <tr>
                 <td><%= @rankme.ak47 %></td>
@@ -156,12 +120,16 @@
                 <td><%= @rankme.hegrenade %></td>
                 <td><%= @rankme.flashbang %></td>
                 <td><%= @rankme.smokegrenade %></td>
+                <td colspan="2"></td>
               </tr>
             </tbody>
           </table>
           <hr>
-          <table>
+          <table class="table is-bordered is-striped is-narrow is-fullwidth">
             <thead>
+              <tr>
+                <th colspan="7">Corpo</th>
+              </tr>
               <tr>
                 <th>head</th>
                 <th>chest</th>
@@ -185,8 +153,11 @@
             </tbody>
           </table>
           <hr>
-          <table>
+          <table class="table is-bordered is-striped is-narrow is-fullwidth">
             <thead>
+              <tr>
+                <th colspan="6">Acessórios</th>
+              </tr>
               <tr>
                 <th>c4_planted</th>
                 <th>c4_exploded</th>

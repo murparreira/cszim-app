@@ -23,9 +23,7 @@
       <%= link_to "Iniciar Mapa", randomizer_path(start: true), class: "button is-info" %>      
       <%= link_to "Finalizar Mapa", randomizer_path(finish: true), class: "button is-danger" %>
       <br><br>
-      <a class="button" href="steam://rungameid/240// +map <%= chosen_map.sigla %>">
-        Abrir o Mapa Automaticamente
-      </a>
+      <%= link_to "Abrir Mapa Automaticamente", randomizer_path(open_map: true), class: "button" %> 
     <% end %>
   </div>
 </div>

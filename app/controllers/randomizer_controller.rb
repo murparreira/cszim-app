@@ -1,3 +1,4 @@
+require 'net/ssh'
 class RandomizerController < ApplicationController
 
   def index
@@ -92,6 +93,11 @@ class RandomizerController < ApplicationController
       columns_with_zero = columns_to_update.map { |c| [c, 0] }.to_h
       RankmeMysql.update_all columns_with_zero
       init_maps
+    end
+    if params[:open_map]      
+      Net::SSH.start( '201.25.106.82', 'cssserver', :password => 's3nh4123' ) do| ssh |
+       ssh.exec! "tmux send-keys 'changelevel #{Map.find(session[:chosen_map]).nome}' Enter"
+      end
     end
   end
 
