@@ -2,51 +2,50 @@
   <div class="column is-third">
     <h2 class="title">Mapas Disponíveis</h2>
     <ul class="ul-mapas-randomizer">
-      <% session[:maps].each do |map_id| %>
+      <% (Map.pluck(:id) - RandomMap.pluck(:map_id)).shuffle.each do |map_id| %>
         <% map = Map.find(map_id) %>
         <li><%= map.nome %> - <%= map.sigla %></li>
       <% end %>
     </ul>
-    <% if session[:maps].any? %>
-      <%= link_to "Escolher Mapa", randomizer_path(random: true), class: "button" %>
+    <% if RandomMap.count < Map.count %>
+      <%= link_to "Sortear Mapa", randomizer_raffle_path, class: "button" %>
     <% end %>
-    <%= link_to "Resetar Aplicativo", randomizer_path(reset: true), class: "button is-danger" %>
+    <%= link_to "Resetar Aplicativo", randomizer_reset_path, class: "button is-danger" %>
   </div>
   <div class="column is-third">
     <h2 class="title">Fase Escolhida</h2>
-    <% if session[:chosen_map] %>
-      <% chosen_map = Map.find(session[:chosen_map]) %>
+    <% last_random_map = RandomMap.last %>
+    <% if last_random_map.present? %>
+      <% chosen_map = Map.find(last_random_map.map_id) %>
       <%= chosen_map.nome %> - <%= chosen_map.sigla %>
       <br>
       <%= image_tag(imagem_mapa_url(chosen_map), class: "image is-256x256") %>
       <br>
-      <%= link_to "Iniciar Mapa", randomizer_path(start: true), class: "button is-info" %>      
-      <%= link_to "Finalizar Mapa", randomizer_path(finish: true), class: "button is-danger" %>
+      <%= link_to "Iniciar Mapa", randomizer_start_path, class: "button is-info" %>
+      <%= link_to "Finalizar Mapa", randomizer_finish_path, class: "button is-danger" %>
       <br><br>
-      <%= link_to "Abrir Mapa Automaticamente", randomizer_path(open_map: true), class: "button" %> 
+      <%= link_to "Abrir Mapa Automaticamente", randomizer_open_map_path, class: "button" %>
     <% end %>
   </div>
 </div>
 <div class="columns">
   <div class="column is-third">
-    <h2 class="title">Mapas Sorteados (<%= session[:chosen_maps].try(:size) || 0 %>)</h2>
-      <% if session[:chosen_maps] %>
-        <% session[:chosen_maps].each_with_index do |chosen_map_id, i| %>
-          <% previous_chosen_map = Map.find(chosen_map_id) %>
-          <% if i == 0 %>
-            <div class="columns">
-          <% end %>
-          <div class="column is-1">
-            <a data-fancybox='gallery' href='<%= imagem_mapa_url(previous_chosen_map) %>' data-caption='<%= previous_chosen_map.nome %> - <%= previous_chosen_map.sigla %>'>
-              <%= image_tag(imagem_mapa_url(previous_chosen_map), class: "image is-64x64") %>
-            </a>
-            <br>            
-            <%= previous_chosen_map.nome %>
+    <h2 class="title">Mapas Sorteados (<%= RandomMap.count %>)</h2>
+      <% RandomMap.all.each_with_index do |random_map, i| %>
+        <% previous_chosen_map = Map.find(random_map.map_id) %>
+        <% if i == 0 %>
+          <div class="columns">
+        <% end %>
+        <div class="column is-1">
+          <a data-fancybox='gallery' href='<%= imagem_mapa_url(previous_chosen_map) %>' data-caption='<%= previous_chosen_map.nome %> - <%= previous_chosen_map.sigla %>'>
+            <%= image_tag(imagem_mapa_url(previous_chosen_map), class: "image is-64x64") %>
+          </a>
+          <br>
+          <%= previous_chosen_map.nome %>
+        </div>
+        <% if i > 0 && (i + 1) % 11 == 0 %>
           </div>
-          <% if i > 0 && (i + 1) % 11 == 0 %>
-            </div>
-            <div class="columns">
-          <% end %>
+          <div class="columns">
         <% end %>
       <% end %>
     </div>

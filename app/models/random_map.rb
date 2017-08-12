@@ -1,0 +1,2 @@
+class RandomMap < ApplicationRecord
+end

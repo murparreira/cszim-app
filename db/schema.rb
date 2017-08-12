@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170811190114) do
+ActiveRecord::Schema.define(version: 20170812134421) do
 
   create_table "losers", force: :cascade do |t|
     t.integer  "round_id"
@@ -52,6 +52,13 @@ ActiveRecord::Schema.define(version: 20170811190114) do
     t.integer "user_id"
     t.index ["team_id"], name: "index_players_on_team_id"
     t.index ["user_id"], name: "index_players_on_user_id"
+  end
+
+  create_table "random_maps", force: :cascade do |t|
+    t.integer  "map_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["map_id"], name: "index_random_maps_on_map_id"
   end
 
   create_table "rankmes", force: :cascade do |t|
