@@ -10,7 +10,7 @@ class RandomizerController < ApplicationController
     Net::SSH.start('201.25.106.82', 'cssserver', :password => 's3nh4123') do| ssh |
      ssh.exec! "tmux send-keys 'changelevel #{map.sigla}' Enter"
     end
-    flash.now[:success] = "Mapa mudou para #{map.nome} - #{map.sigla}!"
+    flash[:success] = "Mapa mudou para #{map.nome} - #{map.sigla}!"
     redirect_to randomizer_url
   end
 
@@ -53,9 +53,9 @@ class RandomizerController < ApplicationController
       columns_to_update = columns - ["id", "steam", "name", "lastip"]
       columns_with_zero = columns_to_update.map { |c| [c, 0] }.to_h
       RankmeMysql.update_all columns_with_zero
-      flash.now[:success] = "Torneio #{Date.today.to_s(:human)} e mapa iniciado com sucesso!"
+      flash[:success] = "Torneio #{Date.today.to_s(:human)} e mapa iniciado com sucesso!"
     else
-      flash.now[:success] = "Mapa iniciado com sucesso!"
+      flash[:success] = "Mapa iniciado com sucesso!"
     end
     redirect_to randomizer_url
   end
@@ -100,7 +100,7 @@ class RandomizerController < ApplicationController
     columns_to_update = columns - ["id", "steam", "name", "lastip"]
     columns_with_zero = columns_to_update.map { |c| [c, 0] }.to_h
     RankmeMysql.update_all columns_with_zero
-    flash.now[:warning] = "Mapa finalizado com sucesso!"
+    flash[:warning] = "Mapa finalizado com sucesso!"
     redirect_to randomizer_url
   end
 

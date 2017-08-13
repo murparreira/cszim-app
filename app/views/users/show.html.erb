@@ -18,20 +18,14 @@
           <table class="table is-bordered is-striped is-narrow is-fullwidth">
             <thead>
               <tr>
-                <th colspan="12">Pontos</th>
+                <th colspan="12">Estatísticas de KDR</th>
               </tr>
               <tr>
-                <th>kills</th>
-                <th>deaths</th>
-                <th>score</th>
-                <th>suicides</th>
-                <th>tk</th>
-                <th>shots</th>
-                <th>hits</th>
-                <th>headshots</th>
-                <th>connected</th>
-                <th>rounds_tr</th>
-                <th>rounds_ct</th>
+                <th>Kills</th>
+                <th>Deaths</th>
+                <th>Placar Geral</th>
+                <th>Suicídos</th>
+                <th>Team Kills</th>
               </tr>
             </thead>
             <tbody>
@@ -41,12 +35,28 @@
                 <td><%= @rankme.score %></td>
                 <td><%= @rankme.suicides %></td>
                 <td><%= @rankme.tk %></td>
-                <td><%= @rankme.shots %></td>
-                <td><%= @rankme.hits %></td>
+              </tr>
+            </tbody>
+          </table>
+          <hr>
+          <table class="table is-bordered is-striped is-narrow is-fullwidth">
+            <thead>
+              <tr>
+                <th colspan="12">Estatísticas Gerais</th>
+              </tr>
+              <tr>
+                <th>Tiros Disparados/Tiros Acertados/Mira(%)</th>
+                <th>Kills por headshot</th>
+                <th>Rounds como TR/Vitórias como TR</th>
+                <th>Rounds como CT/Vitórias como CT</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><%= @rankme.shots %>/<%= @rankme.hits %>/<%= ((@rankme.hits.to_f/@rankme.shots.to_f)*100).round(2) %>%</td>
                 <td><%= @rankme.headshots %></td>
-                <td><%= @rankme.connected %></td>
-                <td><%= @rankme.rounds_tr %></td>
-                <td><%= @rankme.rounds_ct %></td>
+                <td><%= @rankme.rounds_tr %>/<%= @rankme.tr_win %></td>
+                <td><%= @rankme.rounds_ct %>/<%= @rankme.ct_win %></td>
               </tr>
             </tbody>
           </table>
@@ -54,73 +64,79 @@
           <table class="table is-bordered is-striped is-narrow is-fullwidth">
             <thead>
               <tr>
-                <th colspan="15">Armas</th>
+                <th colspan="15">Estatísticas com Armas</th>
               </tr>
               <tr>
-                <th><%= image_tag(asset_path('cssweapons/300px-Css_knives.png'), class: 'image anti-image-block is-24x24', title: 'knife') %></th>
-                <th><%= image_tag(asset_path('cssweapons/300px-Css_glock16.png'), class: 'image anti-image-block is-24x24', title: 'glock') %></th>
-                <th><%= image_tag(asset_path('cssweapons/300px-Css_usp.png'), class: 'image anti-image-block is-24x24', title: 'usp') %></th>
-                <th><%= image_tag(asset_path('cssweapons/300px-Css_p228.png'), class: 'image anti-image-block is-24x24', title: 'p228') %></th>
-                <th><%= image_tag(asset_path('cssweapons/300px-Css_deagle.png'), class: 'image anti-image-block is-24x24', title: 'deagle') %></th>
-                <th><%= image_tag(asset_path('cssweapons/300px-Css_beretta.png'), class: 'image anti-image-block is-24x24', title: 'elite') %></th>
-                <th><%= image_tag(asset_path('cssweapons/300px-Css_es57.png'), class: 'image anti-image-block is-24x24', title: 'fiveseven') %></th>
-                <th><%= image_tag(asset_path('cssweapons/300px-Css_m3.png'), class: 'image anti-image-block is-24x24', title: 'm3') %></th>
-                <th><%= image_tag(asset_path('cssweapons/300px-Css_xm1014.png'), class: 'image anti-image-block is-24x24', title: 'xm1014') %></th>
-                <th><%= image_tag(asset_path('cssweapons/300px-Css_mac10.png'), class: 'image anti-image-block is-24x24', title: 'mac10') %></th>
-                <th><%= image_tag(asset_path('cssweapons/300px-Css_tmp.png'), class: 'image anti-image-block is-24x24', title: 'tmp') %></th>
-                <th><%= image_tag(asset_path('cssweapons/300px-Css_mp5.png'), class: 'image anti-image-block is-24x24', title: 'mp5navy') %></th>
-                <th><%= image_tag(asset_path('cssweapons/300px-Css_ump.png'), class: 'image anti-image-block is-24x24', title: 'ump45') %></th>
-                <th><%= image_tag(asset_path('cssweapons/300px-Css_p90.png'), class: 'image anti-image-block is-24x24', title: 'p90') %></th>
-                <th><%= image_tag(asset_path('cssweapons/300px-Css_galil.png'), class: 'image anti-image-block is-24x24', title: 'galil') %></th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_knives.png'), class: 'image anti-image-block is-24x24', title: 'knife') %> (3)</th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_glock16.png'), class: 'image anti-image-block is-24x24', title: 'glock') %> (B 1 1)</th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_usp.png'), class: 'image anti-image-block is-24x24', title: 'usp') %>(B 1 2)</th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_p228.png'), class: 'image anti-image-block is-24x24', title: 'p228') %>(B 1 3)</th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_deagle.png'), class: 'image anti-image-block is-24x24', title: 'deagle') %>(B 1 4)</th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_beretta.png'), class: 'image anti-image-block is-24x24', title: 'elite') %>(B 1 5) TR</th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_es57.png'), class: 'image anti-image-block is-24x24', title: 'fiveseven') %>(B 1 5) CT</th>
               </tr>
               <tr>
-                <td><%= @rankme.knife %></td>
-                <td><%= @rankme.glock %></td>
-                <td><%= @rankme.usp %></td>
-                <td><%= @rankme.p228 %></td>
-                <td><%= @rankme.deagle %></td>
-                <td><%= @rankme.elite %></td>
-                <td><%= @rankme.fiveseven %></td>
-                <td><%= @rankme.m3 %></td>
-                <td><%= @rankme.xm1014 %></td>
-                <td><%= @rankme.mac10 %></td>
-                <td><%= @rankme.tmp %></td>
-                <td><%= @rankme.mp5navy %></td>
-                <td><%= @rankme.ump45 %></td>
-                <td><%= @rankme.p90 %></td>
-                <td><%= @rankme.galil %></td>
+                <td><%= @rankme.knife %> (<%= @rankme.knife_percentage %>%)</td>
+                <td><%= @rankme.glock %> (<%= @rankme.glock_percentage %>%)</td>
+                <td><%= @rankme.usp %> (<%= @rankme.usp_percentage %>%)</td>
+                <td><%= @rankme.p228 %> (<%= @rankme.p228_percentage %>%)</td>
+                <td><%= @rankme.deagle %> (<%= @rankme.deagle_percentage %>%)</td>
+                <td><%= @rankme.elite %> (<%= @rankme.elite_percentage %>%)</td>
+                <td><%= @rankme.fiveseven %> (<%= @rankme.fiveseven_percentage %>%)</td>
               </tr>
               <tr>
-                <th><%= image_tag(asset_path('cssweapons/300px-Css_ak47.png'), class: 'image anti-image-block is-24x24', title: 'ak47') %></th>
-                <th><%= image_tag(asset_path('cssweapons/300px-Css_sg-550.png'), class: 'image anti-image-block is-24x24', title: 'sg550') %></th>
-                <th><%= image_tag(asset_path('cssweapons/300px-Css_famas.png'), class: 'image anti-image-block is-24x24', title: 'famas') %></th>
-                <th><%= image_tag(asset_path('cssweapons/300px-Css_m4a1.png'), class: 'image anti-image-block is-24x24', title: 'm4a1') %></th>
-                <th><%= image_tag(asset_path('cssweapons/300px-Css_aug.png'), class: 'image anti-image-block is-24x24', title: 'aug') %></th>
-                <th><%= image_tag(asset_path('cssweapons/300px-Css_scout.png'), class: 'image anti-image-block is-24x24', title: 'scout') %></th>
-                <th><%= image_tag(asset_path('cssweapons/300px-Css_sg-552.png'), class: 'image anti-image-block is-24x24', title: 'sg552') %></th>
-                <th><%= image_tag(asset_path('cssweapons/300px-Css_awp.png'), class: 'image anti-image-block is-24x24', title: 'awp') %></th>
-                <th><%= image_tag(asset_path('cssweapons/300px-Css_sg-1.png'), class: 'image anti-image-block is-24x24', title: 'g3sg1') %></th>
-                <th><%= image_tag(asset_path('cssweapons/300px-Css_m249.png'), class: 'image anti-image-block is-24x24', title: 'm249') %></th>
-                <th><%= image_tag(asset_path('cssweapons/300px-Css_frag.png'), class: 'image anti-image-block is-24x24', title: 'hegrenade') %></th>
-                <th><%= image_tag(asset_path('cssweapons/Css_flashbang.png'), class: 'image anti-image-block is-24x24', title: 'flashbang') %></th>
-                <th><%= image_tag(asset_path('cssweapons/Css_smoke.png'), class: 'image anti-image-block is-24x24', title: 'smokegrenade') %></th>
-                <th colspan="2"></th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_m3.png'), class: 'image anti-image-block is-24x24', title: 'm3') %>(B 2 1)</th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_xm1014.png'), class: 'image anti-image-block is-24x24', title: 'xm1014') %>(B 2 2)</th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_mac10.png'), class: 'image anti-image-block is-24x24', title: 'mac10') %>(B 3 1) TR</th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_tmp.png'), class: 'image anti-image-block is-24x24', title: 'tmp') %>(B 3 1) CT</th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_mp5.png'), class: 'image anti-image-block is-24x24', title: 'mp5navy') %>(B 3 2)</th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_ump.png'), class: 'image anti-image-block is-24x24', title: 'ump45') %>(B 3 3)</th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_p90.png'), class: 'image anti-image-block is-24x24', title: 'p90') %>(B 3 4)</th>
               </tr>
               <tr>
-                <td><%= @rankme.ak47 %></td>
-                <td><%= @rankme.sg550 %></td>
-                <td><%= @rankme.famas %></td>
-                <td><%= @rankme.m4a1 %></td>
-                <td><%= @rankme.aug %></td>
-                <td><%= @rankme.scout %></td>
-                <td><%= @rankme.sg552 %></td>
-                <td><%= @rankme.awp %></td>
-                <td><%= @rankme.g3sg1 %></td>
-                <td><%= @rankme.m249 %></td>
-                <td><%= @rankme.hegrenade %></td>
-                <td><%= @rankme.flashbang %></td>
-                <td><%= @rankme.smokegrenade %></td>
-                <td colspan="2"></td>
+                <td><%= @rankme.m3 %> (<%= @rankme.m3_percentage %>%)</td>
+                <td><%= @rankme.xm1014 %> (<%= @rankme.xm1014_percentage %>%)</td>
+                <td><%= @rankme.mac10 %> (<%= @rankme.mac10_percentage %>%)</td>
+                <td><%= @rankme.tmp %> (<%= @rankme.tmp_percentage %>%)</td>
+                <td><%= @rankme.mp5navy %> (<%= @rankme.mp5navy_percentage %>%)</td>
+                <td><%= @rankme.ump45 %> (<%= @rankme.ump45_percentage %>%)</td>
+                <td><%= @rankme.p90 %> (<%= @rankme.p90_percentage %>%)</td>
+              </tr>
+              <tr>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_galil.png'), class: 'image anti-image-block is-24x24', title: 'galil') %>(B 4 1) TR</th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_ak47.png'), class: 'image anti-image-block is-24x24', title: 'ak47') %>(B 4 2) TR</th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_sg-550.png'), class: 'image anti-image-block is-24x24', title: 'sg550') %>(B 4 6) TR</th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_famas.png'), class: 'image anti-image-block is-24x24', title: 'famas') %>(B 4 3) CT</th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_m4a1.png'), class: 'image anti-image-block is-24x24', title: 'm4a1') %>(B 4 3) CT</th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_aug.png'), class: 'image anti-image-block is-24x24', title: 'aug') %>(B 4 4) CT</th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_scout.png'), class: 'image anti-image-block is-24x24', title: 'scout') %>(B 4 3) TR (B 4 2) CT</th>
+              </tr>
+              <tr>
+                <td><%= @rankme.galil %> (<%= @rankme.galil_percentage %>%)</td>
+                <td><%= @rankme.ak47 %> (<%= @rankme.ak47_percentage %>%)</td>
+                <td><%= @rankme.sg550 %> (<%= @rankme.sg550_percentage %>%)</td>
+                <td><%= @rankme.famas %> (<%= @rankme.famas_percentage %>%)</td>
+                <td><%= @rankme.m4a1 %> (<%= @rankme.m4a1_percentage %>%)</td>
+                <td><%= @rankme.aug %> (<%= @rankme.aug_percentage %>%)</td>
+                <td><%= @rankme.scout %> (<%= @rankme.scout_percentage %>%)</td>
+              </tr>
+              <tr>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_sg-552.png'), class: 'image anti-image-block is-24x24', title: 'sg552') %>(B 4 4) TR</th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_awp.png'), class: 'image anti-image-block is-24x24', title: 'awp') %>(B 4 5) TR (B 4 6) CT</th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_sg-1.png'), class: 'image anti-image-block is-24x24', title: 'g3sg1') %>(B 4 6) TR</th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_m249.png'), class: 'image anti-image-block is-24x24', title: 'm249') %>(B 5 1)</th>
+                <th><%= image_tag(asset_path('cssweapons/300px-Css_frag.png'), class: 'image anti-image-block is-24x24', title: 'hegrenade') %>(O 4)</th>
+                <th><%= image_tag(asset_path('cssweapons/Css_flashbang.png'), class: 'image anti-image-block is-24x24', title: 'flashbang') %>(O 3)</th>
+                <th><%= image_tag(asset_path('cssweapons/Css_smoke.png'), class: 'image anti-image-block is-24x24', title: 'smokegrenade') %>(O 5)</th>
+              </tr>
+              <tr>
+                <td><%= @rankme.sg552 %> (<%= @rankme.sg552_percentage %>%)</td>
+                <td><%= @rankme.awp %> (<%= @rankme.awp_percentage %>%)</td>
+                <td><%= @rankme.g3sg1 %> (<%= @rankme.g3sg1_percentage %>%)</td>
+                <td><%= @rankme.m249 %> (<%= @rankme.m249_percentage %>%)</td>
+                <td><%= @rankme.hegrenade %> (<%= @rankme.hegrenade_percentage %>%)</td>
+                <td><%= @rankme.flashbang %> (<%= @rankme.flashbang_percentage %>%)</td>
+                <td><%= @rankme.smokegrenade %> (<%= @rankme.smokegrenade_percentage %>%)</td>
               </tr>
             </tbody>
           </table>
@@ -128,16 +144,14 @@
           <table class="table is-bordered is-striped is-narrow is-fullwidth">
             <thead>
               <tr>
-                <th colspan="7">Corpo</th>
+                <th colspan="7">Estatísticas dos Tiros no Inimigo</th>
               </tr>
               <tr>
-                <th>head</th>
-                <th>chest</th>
-                <th>stomach</th>
-                <th>left_arm</th>
-                <th>right_arm</th>
-                <th>left_leg</th>
-                <th>right_leg</th>
+                <th>Cabeça</th>
+                <th>Peito</th>
+                <th>Barriga</th>
+                <th>Braços</th>
+                <th>Pernas</th>
               </tr>
             </thead>
             <tbody>
@@ -145,10 +159,8 @@
                 <td><%= @rankme.head %></td>
                 <td><%= @rankme.chest %></td>
                 <td><%= @rankme.stomach %></td>
-                <td><%= @rankme.left_arm %></td>
-                <td><%= @rankme.right_arm %></td>
-                <td><%= @rankme.left_leg %></td>
-                <td><%= @rankme.right_leg %></td>
+                <td><%= @rankme.left_arm + @rankme.right_arm %></td>
+                <td><%= @rankme.left_leg + @rankme.right_leg %></td>
               </tr>
             </tbody>
           </table>
@@ -156,15 +168,12 @@
           <table class="table is-bordered is-striped is-narrow is-fullwidth">
             <thead>
               <tr>
-                <th colspan="6">Acessórios</th>
+                <th colspan="6">Estatísticas Diversas</th>
               </tr>
               <tr>
-                <th>c4_planted</th>
-                <th>c4_exploded</th>
-                <th>c4_defused</th>
-                <th>ct_win</th>
-                <th>tr_win</th>
-                <th>hostages_rescued</th>
+                <th>C4 plantadas</th>
+                <th>C4 explodidas</th>
+                <th>C4 defusadas</th>
               </tr>
             </thead>
             <tbody>
@@ -172,9 +181,6 @@
                 <td><%= @rankme.c4_planted %></td>
                 <td><%= @rankme.c4_exploded %></td>
                 <td><%= @rankme.c4_defused %></td>
-                <td><%= @rankme.ct_win %></td>
-                <td><%= @rankme.tr_win %></td>
-                <td><%= @rankme.hostages_rescued %></td>
               </tr>
             </tbody>
           </table>
@@ -187,14 +193,3 @@
 <hr>
 
 <%= high_chart("historicchart", Chart.historic_chart(@user.id)) %>
-
-
-
-
-
-
-
-
-
-
-
