@@ -81,7 +81,7 @@ class RandomizerController < ApplicationController
         # Salva todos os dados do jogador que veio do mysql na tabela rankmes do sistema
         Rankme.create(dados_tratados)
         # Insere o jogador no time CT
-        Player.new(team_id: time_ct.id, user_id: user.id).first_or_create
+        Player.where(team_id: time_ct.id, user_id: user.id).first_or_create
       end
       # Pega todos os jogadores do time TR
       jogadores_time_tr = RankmeMysql.where("rounds_tr > 0").pluck(:steam)
@@ -99,7 +99,7 @@ class RandomizerController < ApplicationController
         # Salva todos os dados do jogador que veio do mysql na tabela rankmes do sistema
         Rankme.create(dados_tratados)
         # Insere o jogador no time TR
-        Player.new(team_id: time_tr.id, user_id: user.id).first_or_create
+        Player.where(team_id: time_tr.id, user_id: user.id).first_or_create
       end
       # Se o vencedor foi o time CT
       if vencedor_ct
