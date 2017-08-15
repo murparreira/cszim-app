@@ -81,7 +81,7 @@ class RandomizerController < ApplicationController
         # Salva todos os dados do jogador que veio do mysql na tabela rankmes do sistema
         Rankme.create(dados_tratados)
         # Insere o jogador no time CT
-        Player.create(team_id: time_ct.id, user_id: user.id)
+        Player.new(team_id: time_ct.id, user_id: user.id).first_or_create
       end
       # Pega todos os jogadores do time TR
       jogadores_time_tr = RankmeMysql.where("rounds_tr > 0").pluck(:steam)
@@ -99,7 +99,7 @@ class RandomizerController < ApplicationController
         # Salva todos os dados do jogador que veio do mysql na tabela rankmes do sistema
         Rankme.create(dados_tratados)
         # Insere o jogador no time TR
-        Player.create(team_id: time_tr.id, user_id: user.id)
+        Player.new(team_id: time_tr.id, user_id: user.id).first_or_create
       end
       # Se o vencedor foi o time CT
       if vencedor_ct
@@ -120,7 +120,7 @@ class RandomizerController < ApplicationController
       columns_to_update = columns - ["id", "steam", "name", "lastip"]
       columns_with_zero = columns_to_update.map { |c| [c, 0] }.to_h
       RankmeMysql.all.update columns_with_zero
-      flash[:warning] = "Mapa finalizado com sucesso!"
+      flash[:success] = "Mapa finalizado com sucesso!"
     else
       # Se não existir vencedor da partida, só retorna uma mensagem
       flash[:warning] = "Mapa não teve um vencedor. Não foi gravado os dados!"
