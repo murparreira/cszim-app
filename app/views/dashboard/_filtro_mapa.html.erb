@@ -26,7 +26,7 @@
               </thead>
               <tbody>
                 <% #data_mapa = Statistic.joins(round: :tournament).select("SUM(kills) AS kills, SUM(deaths) AS deaths, user_id").where("rounds.map_id = ?", map.id).group(:user_id).order("kills DESC, deaths ASC") %>
-                <% data_mapa = Rankme.joins(:tournament).select("SUM(kills) AS kills, SUM(deaths) AS deaths, user_id").where("rankmes.map_id = ?", map.id).group(:user_id).order("kills DESC, deaths ASC") %>
+                <% data_mapa = Rankme.select("SUM(kills) AS kills, SUM(deaths) AS deaths, user_id").where("rankmes.map_id = ?", map.id).group(:user_id).order("kills DESC, deaths ASC") %>
                 <% data_mapa.each do |statistic| %>
                   <% deaths = statistic.deaths.to_i %>
                   <% deaths = 1 if statistic.deaths.to_i == 0%>

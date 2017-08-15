@@ -19,7 +19,7 @@
     </thead>
     <tbody>
       <% #data_torneio = Statistic.joins(:round).select("SUM(kills) AS kills, SUM(deaths) AS deaths, user_id").where("rounds.tournament_id = ?", tournament.id).group(:user_id).order("kills DESC, deaths ASC") %>
-      <% data_torneio = Rankme.joins(:tournament).select("kills, deaths, user_id").where("rankmes.tournament_id = ?", tournament.id).order("kills DESC, deaths ASC") %>
+      <% data_torneio = Rankme.select("kills, deaths, user_id").where("rankmes.tournament_id = ?", tournament.id).order("kills DESC, deaths ASC") %>
       <% data_torneio.each do |statistic| %>
         <% deaths = statistic.deaths.to_i %>
         <% deaths = 1 if statistic.deaths.to_i == 0%>

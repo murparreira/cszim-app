@@ -46,7 +46,7 @@ class Chart
         data = []
         n_kills = 0
         tournaments.each do |tournament|
-          statistic = Statistic.joins(round: :tournament).select("SUM(kills) AS kills").where("user_id = ? AND tournaments.id = ?", user.id, tournament.id).first
+          statistic = Rankme.select("COALESCE(SUM(kills), 0) AS kills").where("user_id = ? AND tournaments.id = ?", user.id, tournament.id).first
           kills = statistic.kills || 0
           n_kills += kills
           data << n_kills
@@ -68,7 +68,8 @@ class Chart
       f.yAxis(title: "Ratio", categories: [])
       data = []
       categories = []
-      result = ActiveRecord::Base.connection.execute "SELECT round(CAST(SUM(kills) AS float)/CAST(SUM(deaths) AS float), 2) AS ratio, tournament_id FROM statistics s INNER JOIN rounds r ON s.round_id = r.id INNER JOIN tournaments t ON r.tournament_id = t.id WHERE map_id IS NOT NULL AND user_id = #{user_id} GROUP BY tournament_id ORDER BY tournament_id ASC"
+      result = ActiveRecord::Base.connection.execute "SELECT round(CAST(SUM(kills) AS float)/CAST(SUM(deaths) AS float), 2) AS ratio, tournament_id FROM rankmes s WHERE map_id IS NOT NULL AND user_id = #{user_id} GROUP BY tournament_id ORDER BY tournament_id ASC"
+      # result = ActiveRecord::Base.connection.execute "SELECT round(CAST(SUM(kills) AS float)/CAST(SUM(deaths) AS float), 2) AS ratio, tournament_id FROM statistics s INNER JOIN rounds r ON s.round_id = r.id INNER JOIN tournaments t ON r.tournament_id = t.id WHERE map_id IS NOT NULL AND user_id = #{user_id} GROUP BY tournament_id ORDER BY tournament_id ASC"
       result.each do |hash|
         data << hash["ratio"]
         tournament = Tournament.find(hash["tournament_id"])
