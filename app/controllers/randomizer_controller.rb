@@ -51,16 +51,20 @@ class RandomizerController < ApplicationController
   def finish
     chosen_map = RandomMap.last
     @torneio_dia = Tournament.find_by(nome: "Torneio #{Date.today.to_s(:human)}")
-    @rankme_mysql_ct = RankmeMysql.where('ct_win > 0').first
-    @rankme_mysql_tr = RankmeMysql.where('tr_win > 0').first
+    @rankme_mysql_ct = RankmeMysql.where('ct_win = 7').first
+    @rankme_mysql_tr = RankmeMysql.where('tr_win = 7').first
     if @rankme_mysql_ct.try(:ct_win) == 7 || @rankme_mysql_tr.try(:tr_win) == 7
       round = Round.create(tournament_id: @torneio_dia.id, map_id: chosen_map.map_id)
+      ct_team = Team.find_by(nome: "Time 1 CT #{Date.today.to_s(:human)}")
+      tr_team = Team.find_by(nome: "Time 2 TR #{Date.today.to_s(:human)}")
       if @rankme_mysql_ct.try(:ct_win) == 7
-        Winner.create(team_id: @ct_team.id, round_id: round.id, placar: @rankme_mysql_ct.ct_win, lado: 'ct')
-        Loser.create(team_id: @tr_team.id, round_id: round.id, placar: @rankme_mysql_tr.tr_win, lado: 't')
+        rankme_mysql_tr_win = RankmeMysql.where('tr_win > 0').first
+        Winner.create(team_id: ct_team.id, round_id: round.id, placar: @rankme_mysql_ct.ct_win, lado: 'ct')
+        Loser.create(team_id: tr_team.id, round_id: round.id, placar: rankme_mysql_tr_win.tr_win, lado: 't')
       elsif @rankme_mysql_tr.try(:tr_win) == 7
-        Winner.create(team_id: @tr_team.id, round_id: round.id, placar: @rankme_mysql_tr.tr_win, lado: 't')
-        Loser.create(team_id: @ct_team.id, round_id: round.id, placar: @rankme_mysql_ct.ct_win, lado: 'ct')
+        rankme_mysql_ct_win = RankmeMysql.where('ct_win > 0').first
+        Winner.create(team_id: tr_team.id, round_id: round.id, placar: @rankme_mysql_tr.tr_win, lado: 't')
+        Loser.create(team_id: ct_team.id, round_id: round.id, placar: rankme_mysql_ct_win.ct_win, lado: 'ct')
       end
       User.all.each do |u|
         if u.steam.present?
@@ -70,7 +74,7 @@ class RandomizerController < ApplicationController
             @tr_team = Team.find_by(nome: "Time 2 TR #{Date.today.to_s(:human)}")
             if @rankme_mysql.ct_win.to_i > 0 || @rankme_mysql.tr_win.to_i > 0
               rankme_attributes = @rankme_mysql.as_json.select{|k,v| k != 'id'}
-              if @rankme_mysql.ct_win.to_i > 0
+              if @rankme_mysql.ct_win.to_i == 7
                 rankme_attributes[:team_id] = @ct_team.id
                 Player.where(team_id: @ct_team.id, user_id: u.id).first_or_create
               else
