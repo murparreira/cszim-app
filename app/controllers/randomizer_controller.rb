@@ -84,7 +84,7 @@ class RandomizerController < ApplicationController
         Player.create(team_id: time_ct.id, user_id: user.id)
       end
       # Pega todos os jogadores do time TR
-      jogadores_time_tr = RankmeMysql.where("tounds_tr > 0").pluck(:steam)
+      jogadores_time_tr = RankmeMysql.where("rounds_tr > 0").pluck(:steam)
       jogadores_time_tr.each do |steam_jogador|
         # Identifica o jogador na tabela users pelo steam
         user = User.find_by(steam: steam_jogador)
