@@ -45,58 +45,84 @@ class RandomizerController < ApplicationController
     columns_to_update = columns - ["id", "steam", "name", "lastip"]
     columns_with_zero = columns_to_update.map { |c| [c, 0] }.to_h
     RankmeMysql.all.update columns_with_zero
+    Net::SSH.start('201.25.106.82', 'cssserver', :password => 's3nh4123') do| ssh |
+      ssh.exec! "tmux send-keys 'mp_restartgame 2' Enter"
+    end
     redirect_to randomizer_url
   end
 
   def finish
-    chosen_map = RandomMap.last
-    @torneio_dia = Tournament.find_by(nome: "Torneio #{Date.today.to_s(:human)}")
-    @rankme_mysql_ct = RankmeMysql.where('ct_win = 7').first
-    @rankme_mysql_tr = RankmeMysql.where('tr_win = 7').first
-    if @rankme_mysql_ct.try(:ct_win) == 7 || @rankme_mysql_tr.try(:tr_win) == 7
-      round = Round.create(tournament_id: @torneio_dia.id, map_id: chosen_map.map_id)
-      ct_team = Team.find_by(nome: "Time 1 CT #{Date.today.to_s(:human)}")
-      tr_team = Team.find_by(nome: "Time 2 TR #{Date.today.to_s(:human)}")
-      if @rankme_mysql_ct.try(:ct_win) == 7
-        rankme_mysql_tr_win = RankmeMysql.where('tr_win > 0').first
-        Winner.create(team_id: ct_team.id, round_id: round.id, placar: @rankme_mysql_ct.ct_win, lado: 'ct')
-        Loser.create(team_id: tr_team.id, round_id: round.id, placar: rankme_mysql_tr_win.tr_win, lado: 't')
-      elsif @rankme_mysql_tr.try(:tr_win) == 7
-        rankme_mysql_ct_win = RankmeMysql.where('ct_win > 0').first
-        Winner.create(team_id: tr_team.id, round_id: round.id, placar: @rankme_mysql_tr.tr_win, lado: 't')
-        Loser.create(team_id: ct_team.id, round_id: round.id, placar: rankme_mysql_ct_win.ct_win, lado: 'ct')
+    # Consulta o torneio do dia
+    torneio_dia = Tournament.find_by(nome: "Torneio #{Date.today.to_s(:human)}")
+    # Consulta os times do torneio do dia
+    time_ct = Team.find_by(nome: "Time 1 CT #{Date.today.to_s(:human)}")
+    time_tr = Team.find_by(nome: "Time 2 TR #{Date.today.to_s(:human)}")
+    # Verificar se houve algum vencedor
+    vencedor_ct = RankmeMysql.find_by(ct_win: 7)
+    vencedor_tr = RankmeMysql.find_by(tr_win: 7)
+    # Se existir vencedor da partida
+    if vencedor_ct || vencedor_tr
+      # Cria o round com os dados de torneio e mapa
+      chosen_map = RandomMap.last
+      round = Round.create(tournament_id: torneio_dia.id, map_id: chosen_map.map_id)
+      # Pega todos os jogadores do time CT
+      jogadores_time_ct = RankmeMysql.where("rounds_ct > 0").pluck(:steam)
+      jogadores_time_ct.each do |steam_jogador|
+        # Identifica o jogador na tabela users pelo steam
+        user = User.find_by(steam: steam_jogador)
+        # Pega todos os dados desse jogador no mysql
+        dados_mysql = RankmeMysql.find_by(:steam => u.steam)
+        dados_mysql.as_json.select! {|k,v| k != 'id'}
+        # Coloca o resto das informações no hash para salvar
+        dados_mysql[:user_id] = user.id
+        dados_mysql[:map_id] = chosen_map.id
+        dados_mysql[:tournament_id] = torneio_dia.id
+        dados_mysql[:round_id] = round.id
+        # Salva todos os dados do jogador que veio do mysql na tabela rankmes do sistema
+        Rankme.create(dados_mysql)
+        # Insere o jogador no time CT
+        Player.create(team_id: time_ct.id, user_id: user.id)
       end
-      User.all.each do |u|
-        if u.steam.present?
-          @rankme_mysql = RankmeMysql.find_by(:steam => u.steam)
-          if @rankme_mysql.present?
-            @ct_team = Team.find_by(nome: "Time 1 CT #{Date.today.to_s(:human)}")
-            @tr_team = Team.find_by(nome: "Time 2 TR #{Date.today.to_s(:human)}")
-            if @rankme_mysql.ct_win.to_i > 0 || @rankme_mysql.tr_win.to_i > 0
-              rankme_attributes = @rankme_mysql.as_json.select{|k,v| k != 'id'}
-              if @rankme_mysql.ct_win.to_i == 7
-                rankme_attributes[:team_id] = @ct_team.id
-                Player.where(team_id: @ct_team.id, user_id: u.id).first_or_create
-              else
-                rankme_attributes[:team_id] = @tr_team.id
-                Player.where(team_id: @tr_team.id, user_id: u.id).first_or_create
-              end
-              rankme_attributes[:user_id] = u.id
-              rankme_attributes[:map_id] = chosen_map.id
-              rankme_attributes[:tournament_id] = @torneio_dia.id
-              rankme_attributes[:round_id] = round.id
-              @rankme_pg = Rankme.new(rankme_attributes)
-              @rankme_pg.save
-            end
-          end
-        end
+      # Pega todos os jogadores do time TR
+      jogadores_time_tr = RankmeMysql.where("tounds_tr > 0").pluck(:steam)
+      jogadores_time_tr.each do |steam_jogador|
+        # Identifica o jogador na tabela users pelo steam
+        user = User.find_by(steam: steam_jogador)
+        # Pega todos os dados desse jogador no mysql removendo o id
+        dados_mysql = RankmeMysql.find_by(:steam => u.steam)
+        dados_mysql.as_json.select! {|k,v| k != 'id'}
+        # Coloca o resto das informações no hash para salvar
+        dados_mysql[:user_id] = user.id
+        dados_mysql[:map_id] = chosen_map.id
+        dados_mysql[:tournament_id] = torneio_dia.id
+        dados_mysql[:round_id] = round.id
+        # Salva todos os dados do jogador que veio do mysql na tabela rankmes do sistema
+        Rankme.create(dados_mysql)
+        # Insere o jogador no time TR
+        Player.create(team_id: time_tr.id, user_id: user.id)
       end
+      # Se o vencedor foi o time CT
+      if vencedor_ct
+        Winner.create(team_id: time_ct.id, round_id: round.id, placar: 0, lado: 'ct')
+        # Pega o número maior de vitorias dos TR
+        vitorias_tr = RankmeMysql.where("tr_win > 0").pluck(:tr_win).max
+        Loser.create(team_id: time_tr.id, round_id: round.id, placar: vitorias_tr, lado: 't')
+      end
+      # Se o vencedor foi o time TR
+      if vencedor_tr
+        Winner.create(team_id: time_tr.id, round_id: round.id, placar: 7, lado: 't')
+        # Pega o número maior de vitorias dos CT
+        vitorias_ct = RankmeMysql.where("ct_win > 0").pluck(:ct_win).max
+        Loser.create(team_id: time_ct.id, round_id: round.id, placar: vitorias_ct, lado: 'ct')
+      end
+      # Zera todas as estatísticas de todos os jogadores
       columns = RankmeMysql.columns.map(&:name)
       columns_to_update = columns - ["id", "steam", "name", "lastip"]
       columns_with_zero = columns_to_update.map { |c| [c, 0] }.to_h
       RankmeMysql.all.update columns_with_zero
       flash[:warning] = "Mapa finalizado com sucesso!"
     else
+      # Se não existir vencedor da partida, só retorna uma mensagem
       flash[:warning] = "Mapa não teve um vencedor. Não foi gravado os dados!"
     end
     redirect_to randomizer_url
