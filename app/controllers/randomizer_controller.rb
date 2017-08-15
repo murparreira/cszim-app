@@ -70,16 +70,16 @@ class RandomizerController < ApplicationController
       jogadores_time_ct.each do |steam_jogador|
         # Identifica o jogador na tabela users pelo steam
         user = User.find_by(steam: steam_jogador)
-        # Pega todos os dados desse jogador no mysql
+        # Pega todos os dados desse jogador no mysql removendo o id
         dados_mysql = RankmeMysql.find_by(:steam => user.steam)
-        dados_mysql.as_json.select! {|k,v| k != 'id'}
+        dados_tratados = dados_mysql.as_json.select {|k,v| k != 'id'}
         # Coloca o resto das informações no hash para salvar
-        dados_mysql[:user_id] = user.id
-        dados_mysql[:map_id] = chosen_map.id
-        dados_mysql[:tournament_id] = torneio_dia.id
-        dados_mysql[:round_id] = round.id
+        dados_tratados[:user_id] = user.id
+        dados_tratados[:map_id] = chosen_map.id
+        dados_tratados[:tournament_id] = torneio_dia.id
+        dados_tratados[:round_id] = round.id
         # Salva todos os dados do jogador que veio do mysql na tabela rankmes do sistema
-        Rankme.create(dados_mysql)
+        Rankme.create(dados_tratados)
         # Insere o jogador no time CT
         Player.create(team_id: time_ct.id, user_id: user.id)
       end
@@ -90,14 +90,14 @@ class RandomizerController < ApplicationController
         user = User.find_by(steam: steam_jogador)
         # Pega todos os dados desse jogador no mysql removendo o id
         dados_mysql = RankmeMysql.find_by(:steam => user.steam)
-        dados_mysql.as_json.select! {|k,v| k != 'id'}
+        dados_tratados = dados_mysql.as_json.select {|k,v| k != 'id'}
         # Coloca o resto das informações no hash para salvar
-        dados_mysql[:user_id] = user.id
-        dados_mysql[:map_id] = chosen_map.id
-        dados_mysql[:tournament_id] = torneio_dia.id
-        dados_mysql[:round_id] = round.id
+        dados_tratados[:user_id] = user.id
+        dados_tratados[:map_id] = chosen_map.id
+        dados_tratados[:tournament_id] = torneio_dia.id
+        dados_tratados[:round_id] = round.id
         # Salva todos os dados do jogador que veio do mysql na tabela rankmes do sistema
-        Rankme.create(dados_mysql)
+        Rankme.create(dados_tratados)
         # Insere o jogador no time TR
         Player.create(team_id: time_tr.id, user_id: user.id)
       end
