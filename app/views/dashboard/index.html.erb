@@ -18,11 +18,11 @@
             <table class="table is-narrow">
               <tr><td>Rounds jogados:</td><td><%= Winner.joins(team: :users).where(users: {id: user.id}).count + Loser.joins(team: :users).where(users: {id: user.id}).count %></td></tr>
               <tr><td>Rounds ganhos:</td><td><%= Winner.joins(team: :users).where(users: {id: user.id}).count %></td></tr>
-              <tr><td>Kills:</td><td><%= Rankme.select("SUM(kills) AS kills").find_by(user_id: user.id).kills %></td></tr>
-              <tr><td>Deaths:</td><td><%= Rankme.select("SUM(deaths) AS deaths").find_by(user_id: user.id).deaths %></td></tr>
+              <tr><td>Kills:</td><td><%= Rankme.select("COALESCE(SUM(kills), 0) AS kills").find_by(user_id: user.id).kills %></td></tr>
+              <tr><td>Deaths:</td><td><%= Rankme.select("COALESCE(SUM(deaths), 0) AS deaths").find_by(user_id: user.id).deaths %></td></tr>
               <tr><td>CT wins:</td><td><%= Winner.joins(team: :users).where(users: {id: user.id}, lado: 'ct').count %></td></tr>
               <tr><td>T wins:</td><td><%= Winner.joins(team: :users).where(users: {id: user.id}, lado: 't').count %></td></tr>
-              <% hash = Round.joins(statistics: :user).where(users: {id: user.id}).where.not(map_id: nil).group(:map_id).sum(:kills) %>
+              <% hash = Rankme.where(user_id: user.id}).group(:map_id).sum(:kills) %>
               <tr>
                 <td>
                   <span class="icon is-small"><i class="fa fa-star"></i></span>&nbsp; MVP Map:
@@ -37,7 +37,7 @@
                   </td>
                 <% end %>
               </tr>
-              <% hash = Round.joins(statistics: :user).where(users: {id: user.id}).where.not(map_id: nil).group(:map_id).sum(:deaths) %>
+              <% hash = Rankme.where(user_id: user.id}).group(:map_id).sum(:deaths) %>
               <tr>
                 <td>
                   <span class="icon is-small"><i class="fa fa-thumbs-down"></i></span>&nbsp; Noob Map:

@@ -15,18 +15,6 @@ class RandomizerController < ApplicationController
   end
 
   def raffle
-    @torneio_dia = Tournament.find_by(nome: "Torneio #{Date.today.to_s(:human)}")
-    if @torneio_dia.nil?
-      @torneio_dia = Tournament.create(nome: "Torneio #{Date.today.to_s(:human)}")
-      @ct_team = Team.create(nome: "Time 1 CT #{Date.today.to_s(:human)}")
-      @tr_team = Team.create(nome: "Time 2 TR #{Date.today.to_s(:human)}")
-      Participant.create(team_id: @ct_team.id, tournament_id: @torneio_dia.id)
-      Participant.create(team_id: @tr_team.id, tournament_id: @torneio_dia.id)
-      columns = RankmeMysql.columns.map(&:name)
-      columns_to_update = columns - ["id", "steam", "name", "lastip"]
-      columns_with_zero = columns_to_update.map { |c| [c, 0] }.to_h
-      RankmeMysql.update_all columns_with_zero
-    end
     chosen_map = (Map.pluck(:id) - RandomMap.pluck(:map_id)).sample
     RandomMap.create(map_id: chosen_map)
     redirect_to randomizer_url
@@ -49,14 +37,14 @@ class RandomizerController < ApplicationController
       @tr_team = Team.create(nome: "Time 2 TR #{Date.today.to_s(:human)}")
       Participant.create(team_id: @ct_team.id, tournament_id: @torneio_dia.id)
       Participant.create(team_id: @tr_team.id, tournament_id: @torneio_dia.id)
-      columns = RankmeMysql.columns.map(&:name)
-      columns_to_update = columns - ["id", "steam", "name", "lastip"]
-      columns_with_zero = columns_to_update.map { |c| [c, 0] }.to_h
-      RankmeMysql.update_all columns_with_zero
       flash[:success] = "Torneio #{Date.today.to_s(:human)} e mapa iniciado com sucesso!"
     else
       flash[:success] = "Mapa iniciado com sucesso!"
     end
+    columns = RankmeMysql.columns.map(&:name)
+    columns_to_update = columns - ["id", "steam", "name", "lastip"]
+    columns_with_zero = columns_to_update.map { |c| [c, 0] }.to_h
+    RankmeMysql.update_all columns_with_zero
     redirect_to randomizer_url
   end
 
