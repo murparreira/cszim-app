@@ -2,12 +2,12 @@
   <div class="column is-third">
     <h2 class="title">Mapas Disponíveis</h2>
     <ul class="ul-mapas-randomizer">
-      <% (Map.pluck(:id) - RandomMap.pluck(:map_id)).shuffle.each do |map_id| %>
+      <% (Map.ativos.pluck(:id) - RandomMap.pluck(:map_id)).shuffle.each do |map_id| %>
         <% map = Map.find(map_id) %>
         <li><%= map.nome %> - <%= map.sigla %></li>
       <% end %>
     </ul>
-    <% if RandomMap.count < Map.count %>
+    <% if RandomMap.count < Map.ativos.count %>
       <%= link_to "Sortear Mapa", randomizer_raffle_path, class: "button" %>
     <% end %>
     <%= link_to "Resetar Aplicativo", randomizer_reset_path, class: "button is-danger" %>

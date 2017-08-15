@@ -15,7 +15,7 @@ class RandomizerController < ApplicationController
   end
 
   def raffle
-    chosen_map = (Map.pluck(:id) - RandomMap.pluck(:map_id)).sample
+    chosen_map = (Map.ativos.pluck(:id) - RandomMap.pluck(:map_id)).sample
     RandomMap.create(map_id: chosen_map)
     redirect_to randomizer_url
   end
