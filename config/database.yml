@@ -10,6 +10,6 @@ development_sec:
   adapter: mysql2
   database: rankme
   username: root
-  password: a789465a
+  password: a789456a
   host: 127.0.0.1
-  port: 3360
+  port: 3306
