@@ -71,7 +71,7 @@ class RandomizerController < ApplicationController
         # Identifica o jogador na tabela users pelo steam
         user = User.find_by(steam: steam_jogador)
         # Pega todos os dados desse jogador no mysql
-        dados_mysql = RankmeMysql.find_by(:steam => u.steam)
+        dados_mysql = RankmeMysql.find_by(:steam => user.steam)
         dados_mysql.as_json.select! {|k,v| k != 'id'}
         # Coloca o resto das informações no hash para salvar
         dados_mysql[:user_id] = user.id
@@ -89,7 +89,7 @@ class RandomizerController < ApplicationController
         # Identifica o jogador na tabela users pelo steam
         user = User.find_by(steam: steam_jogador)
         # Pega todos os dados desse jogador no mysql removendo o id
-        dados_mysql = RankmeMysql.find_by(:steam => u.steam)
+        dados_mysql = RankmeMysql.find_by(:steam => user.steam)
         dados_mysql.as_json.select! {|k,v| k != 'id'}
         # Coloca o resto das informações no hash para salvar
         dados_mysql[:user_id] = user.id
@@ -103,7 +103,7 @@ class RandomizerController < ApplicationController
       end
       # Se o vencedor foi o time CT
       if vencedor_ct
-        Winner.create(team_id: time_ct.id, round_id: round.id, placar: 0, lado: 'ct')
+        Winner.create(team_id: time_ct.id, round_id: round.id, placar: 7, lado: 'ct')
         # Pega o número maior de vitorias dos TR
         vitorias_tr = RankmeMysql.where("tr_win > 0").pluck(:tr_win).max
         Loser.create(team_id: time_tr.id, round_id: round.id, placar: vitorias_tr, lado: 't')
