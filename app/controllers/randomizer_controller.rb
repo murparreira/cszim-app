@@ -25,7 +25,7 @@ class RandomizerController < ApplicationController
     columns = RankmeMysql.columns.map(&:name)
     columns_to_update = columns - ["id", "steam", "name", "lastip"]
     columns_with_zero = columns_to_update.map { |c| [c, 0] }.to_h
-    RankmeMysql.update_all columns_with_zero
+    RankmeMysql.all.update columns_with_zero
     redirect_to randomizer_url
   end
 
@@ -44,7 +44,7 @@ class RandomizerController < ApplicationController
     columns = RankmeMysql.columns.map(&:name)
     columns_to_update = columns - ["id", "steam", "name", "lastip"]
     columns_with_zero = columns_to_update.map { |c| [c, 0] }.to_h
-    RankmeMysql.update_all columns_with_zero
+    RankmeMysql.all.update columns_with_zero
     redirect_to randomizer_url
   end
 
@@ -94,7 +94,7 @@ class RandomizerController < ApplicationController
       columns = RankmeMysql.columns.map(&:name)
       columns_to_update = columns - ["id", "steam", "name", "lastip"]
       columns_with_zero = columns_to_update.map { |c| [c, 0] }.to_h
-      RankmeMysql.update_all columns_with_zero
+      RankmeMysql.all.update columns_with_zero
       flash[:warning] = "Mapa finalizado com sucesso!"
     else
       flash[:warning] = "Mapa não teve um vencedor. Não foi gravado os dados!"
