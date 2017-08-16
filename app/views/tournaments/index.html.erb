@@ -24,12 +24,7 @@
           <h3><strong><%= link_to tournament.nome, tournament %></strong></h3>
           <div><%= tournament.texto_oficial %></div>
           <hr>
-          <h3><strong>Times</strong></h3>
-          <div class="columns">
-            <div class="column is-half">
-              Rounds jogados: <%= tournament.rounds.count %>
-            </div>
-          </div>
+          <h3><strong>Rounds jogados: <%= tournament.rounds.count %></strong></h3>
         </span>
         <div class="contact-box-footer">
           <% if current_user.admin %>
