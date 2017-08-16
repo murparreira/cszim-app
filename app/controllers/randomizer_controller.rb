@@ -94,7 +94,7 @@ class RandomizerController < ApplicationController
         dados_tratados = dados_mysql.as_json.select {|k,v| k != 'id'}
         # Coloca o resto das informações no hash para salvar
         dados_tratados[:user_id] = user.id
-        dados_tratados[:map_id] = chosen_map.id
+        dados_tratados[:map_id] = chosen_map.map_id
         dados_tratados[:tournament_id] = torneio_dia.id
         dados_tratados[:round_id] = round.id
         dados_tratados[:team_id] = time_ct.id
@@ -132,7 +132,7 @@ class RandomizerController < ApplicationController
         dados_tratados = dados_mysql.as_json.select {|k,v| k != 'id'}
         # Coloca o resto das informações no hash para salvar
         dados_tratados[:user_id] = user.id
-        dados_tratados[:map_id] = chosen_map.id
+        dados_tratados[:map_id] = chosen_map.map_id
         dados_tratados[:tournament_id] = torneio_dia.id
         dados_tratados[:round_id] = round.id
         dados_tratados[:team_id] = time_tr.id
