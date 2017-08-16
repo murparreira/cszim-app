@@ -74,7 +74,7 @@ class RandomizerController < ApplicationController
       # Para cada time, consultar os jogadores do mesmo e comparar o resultado em forma de array com os ids do time atual
       salvar_novo_time = true
       ids_times_ja_criados.each do |team_id|
-        jogadores_desse_time = Team.find(team_id).users.pluck(:id)
+        jogadores_desse_time = Team.find(team_id).users.pluck(:id).sort
         if jogadores_desse_time == ids_jogadores_time_ct
           time_ct = Team.find(team_id)
           salvar_novo_time = false
@@ -111,7 +111,7 @@ class RandomizerController < ApplicationController
       # Para cada time, consultar os jogadores do mesmo e comparar o resultado em forma de array com os ids do time atual
       salvar_novo_time = true
       ids_times_ja_criados.each do |team_id|
-        jogadores_desse_time = Team.find(team_id).users.pluck(:id)
+        jogadores_desse_time = Team.find(team_id).users.pluck(:id).sort
         if jogadores_desse_time == ids_jogadores_time_tr
           time_tr = Team.find(team_id)
           salvar_novo_time = false
