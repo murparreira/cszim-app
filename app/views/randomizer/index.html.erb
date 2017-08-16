@@ -1,4 +1,4 @@
-<div class="columns">
+<div class="columns" data-turbolinks="false">
   <div class="column is-third">
     <h2 class="title">Mapas Disponíveis</h2>
     <ul class="ul-mapas-randomizer">
@@ -28,7 +28,7 @@
     <% end %>
   </div>
 </div>
-<div class="columns">
+<div class="columns" data-turbolinks="false">
   <div class="column is-third">
     <h2 class="title">Mapas Sorteados (<%= RandomMap.count %>)</h2>
       <% RandomMap.all.each_with_index do |random_map, i| %>
