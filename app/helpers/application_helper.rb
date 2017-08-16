@@ -132,5 +132,13 @@ module ApplicationHelper
       "http://cszim.com.br/img/#{map.try(:sigla)}.jpg"
     end
   end
+  
+  def criar_nome_time(user_ids)
+    player_names = ""
+    user_ids.each do |user_id|
+      player_names += User.find(user_id).nome.first
+    end
+    player_names
+  end
 
 end
