@@ -30,13 +30,13 @@ class RandomizerController < ApplicationController
   end
 
   def start
-    @torneio_dia = Tournament.find_by(nome: "Torneio #{Date.today.to_s(:human)}")
-    if @torneio_dia.nil?
-      @torneio_dia = Tournament.create(nome: "Torneio #{Date.today.to_s(:human)}")
-      @ct_team = Team.create(nome: "Time 1 CT #{Date.today.to_s(:human)}")
-      @tr_team = Team.create(nome: "Time 2 TR #{Date.today.to_s(:human)}")
-      Participant.create(team_id: @ct_team.id, tournament_id: @torneio_dia.id)
-      Participant.create(team_id: @tr_team.id, tournament_id: @torneio_dia.id)
+    torneio_dia = Tournament.find_by(nome: "Torneio #{Date.today.to_s(:human)}")
+    if torneio_dia.nil?
+      torneio_dia = Tournament.create(nome: "Torneio #{Date.today.to_s(:human)}")
+      # ct_team = Team.create(nome: "Time 1 CT #{Date.today.to_s(:human)}")
+      # tr_team = Team.create(nome: "Time 2 TR #{Date.today.to_s(:human)}")
+      # Participant.create(team_id: @ct_team.id, tournament_id: @torneio_dia.id)
+      # Participant.create(team_id: @tr_team.id, tournament_id: @torneio_dia.id)
       flash[:success] = "Torneio #{Date.today.to_s(:human)} e mapa iniciado com sucesso!"
     else
       flash[:success] = "Mapa iniciado com sucesso!"
@@ -55,8 +55,8 @@ class RandomizerController < ApplicationController
     # Consulta o torneio do dia
     torneio_dia = Tournament.find_by(nome: "Torneio #{Date.today.to_s(:human)}")
     # Consulta os times do torneio do dia
-    time_ct = Team.find_by(nome: "Time 1 CT #{Date.today.to_s(:human)}")
-    time_tr = Team.find_by(nome: "Time 2 TR #{Date.today.to_s(:human)}")
+    # time_ct = Team.find_by(nome: "Time 1 CT #{Date.today.to_s(:human)}")
+    # time_tr = Team.find_by(nome: "Time 2 TR #{Date.today.to_s(:human)}")
     # Verificar se houve algum vencedor
     vencedor_ct = RankmeMysql.find_by(ct_win: 7)
     vencedor_tr = RankmeMysql.find_by(tr_win: 7)
@@ -72,13 +72,18 @@ class RandomizerController < ApplicationController
       # Verificar quais os times existentes que esses jogadores participam
       ids_times_ja_criados = Team.joins(:players).where("players.user_id IN (?)", ids_jogadores_time_ct).pluck(:id).uniq.sort
       # Para cada time, consultar os jogadores do mesmo e comparar o resultado em forma de array com os ids do time atual
+      salvar_novo_time = true
       ids_times_ja_criados.each do |team_id|
         jogadores_desse_time = Team.find(team_id).users.pluck(:id)
         if jogadores_desse_time == ids_jogadores_time_ct
           time_ct = Team.find(team_id)
-        else
-          time_ct = Team.create(nome: "Time #{helpers.criar_nome_time(ids_jogadores_time_ct)}")
+          salvar_novo_time = false
+          break          
         end
+      end
+      if salvar_novo_time
+        time_ct = Team.create(nome: "Time #{helpers.criar_nome_time(ids_jogadores_time_ct)}")
+        Participant.create(team_id: time_ct.id, tournament_id: torneio_dia.id)
       end
       jogadores_time_ct.each do |steam_jogador|
         # Identifica o jogador na tabela users pelo steam
@@ -104,14 +109,19 @@ class RandomizerController < ApplicationController
       # Verificar quais os times existentes que esses jogadores participam
       ids_times_ja_criados = Team.joins(:players).where("players.user_id IN (?)", ids_jogadores_time_tr).pluck(:id).uniq.sort
       # Para cada time, consultar os jogadores do mesmo e comparar o resultado em forma de array com os ids do time atual
+      salvar_novo_time = true
       ids_times_ja_criados.each do |team_id|
         jogadores_desse_time = Team.find(team_id).users.pluck(:id)
         if jogadores_desse_time == ids_jogadores_time_tr
           time_tr = Team.find(team_id)
-        else
-          time_tr = Team.create(nome: "Time #{helpers.criar_nome_time(ids_jogadores_time_tr)}")
+          salvar_novo_time = false
+          break          
         end
-      end      
+      end
+      if salvar_novo_time
+        time_tr = Team.create(nome: "Time #{helpers.criar_nome_time(ids_jogadores_time_tr)}")
+        Participant.create(team_id: time_tr.id, tournament_id: torneio_dia.id)
+      end
       jogadores_time_tr.each do |steam_jogador|
         # Identifica o jogador na tabela users pelo steam
         user = User.find_by(steam: steam_jogador)
