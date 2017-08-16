@@ -22,10 +22,6 @@ class RandomizerController < ApplicationController
 
   def reset
     RandomMap.destroy_all
-    columns = RankmeMysql.columns.map(&:name)
-    columns_to_update = columns - ["id", "steam", "name", "lastip"]
-    columns_with_zero = columns_to_update.map { |c| [c, 0] }.to_h
-    RankmeMysql.all.update columns_with_zero
     redirect_to randomizer_url
   end
 
@@ -33,20 +29,17 @@ class RandomizerController < ApplicationController
     torneio_dia = Tournament.find_by(nome: "Torneio #{Date.today.to_s(:human)}")
     if torneio_dia.nil?
       torneio_dia = Tournament.create(nome: "Torneio #{Date.today.to_s(:human)}")
-      # ct_team = Team.create(nome: "Time 1 CT #{Date.today.to_s(:human)}")
-      # tr_team = Team.create(nome: "Time 2 TR #{Date.today.to_s(:human)}")
-      # Participant.create(team_id: @ct_team.id, tournament_id: @torneio_dia.id)
-      # Participant.create(team_id: @tr_team.id, tournament_id: @torneio_dia.id)
       flash[:success] = "Torneio #{Date.today.to_s(:human)} e mapa iniciado com sucesso!"
     else
       flash[:success] = "Mapa iniciado com sucesso!"
     end
-    columns = RankmeMysql.columns.map(&:name)
-    columns_to_update = columns - ["id", "steam", "name", "lastip"]
-    columns_with_zero = columns_to_update.map { |c| [c, 0] }.to_h
-    RankmeMysql.all.update columns_with_zero
+    Net::SSH.start('201.25.106.82', 'cssserver', :password => 's3nh4123') do| ssh |
+      ssh.exec! "tmux send-keys 'sm plugins unload rankme' Enter"
+    end
+    RankmeMysql.delete_all
     Net::SSH.start('201.25.106.82', 'cssserver', :password => 's3nh4123') do| ssh |
       ssh.exec! "tmux send-keys 'mp_restartgame 2' Enter"
+      ssh.exec! "tmux send-keys 'sm plugins load rankme' Enter"
     end
     redirect_to randomizer_url
   end
@@ -54,9 +47,6 @@ class RandomizerController < ApplicationController
   def finish
     # Consulta o torneio do dia
     torneio_dia = Tournament.find_by(nome: "Torneio #{Date.today.to_s(:human)}")
-    # Consulta os times do torneio do dia
-    # time_ct = Team.find_by(nome: "Time 1 CT #{Date.today.to_s(:human)}")
-    # time_tr = Team.find_by(nome: "Time 2 TR #{Date.today.to_s(:human)}")
     # Verificar se houve algum vencedor
     vencedor_ct = RankmeMysql.find_by(ct_win: 7)
     vencedor_tr = RankmeMysql.find_by(tr_win: 7)
@@ -79,7 +69,7 @@ class RandomizerController < ApplicationController
         if jogadores_desse_time == ids_jogadores_time_ct
           time_ct = Team.find(team_id)
           salvar_novo_time = false
-          break          
+          break
         end
       end
       if salvar_novo_time
@@ -104,7 +94,7 @@ class RandomizerController < ApplicationController
         Player.where(team_id: time_ct.id, user_id: user.id).first_or_create
       end
       # Pega todos os códigos da steam dos jogadores do time TR
-      jogadores_time_tr = RankmeMysql.where("rounds_tr > 0").pluck(:steam)      
+      jogadores_time_tr = RankmeMysql.where("rounds_tr > 0").pluck(:steam)
       # Pega todos os ids de usuário dos jogadores do time TR
       ids_jogadores_time_tr = User.where(steam: jogadores_time_tr).pluck(:id).sort
       # Verificar quais os times existentes que esses jogadores participam
@@ -117,7 +107,7 @@ class RandomizerController < ApplicationController
         if jogadores_desse_time == ids_jogadores_time_tr
           time_tr = Team.find(team_id)
           salvar_novo_time = false
-          break          
+          break
         end
       end
       if salvar_novo_time
@@ -154,12 +144,7 @@ class RandomizerController < ApplicationController
         # Pega o número maior de vitorias dos CT
         vitorias_ct = RankmeMysql.where("ct_win > 0").pluck(:ct_win).max
         Loser.create(team_id: time_ct.id, round_id: round.id, placar: vitorias_ct, lado: 'ct')
-      end
-      # Zera todas as estatísticas de todos os jogadores
-      columns = RankmeMysql.columns.map(&:name)
-      columns_to_update = columns - ["id", "steam", "name", "lastip"]
-      columns_with_zero = columns_to_update.map { |c| [c, 0] }.to_h
-      RankmeMysql.all.update columns_with_zero
+      end      
       flash[:success] = "Mapa finalizado com sucesso!"
     else
       # Se não existir vencedor da partida, só retorna uma mensagem
