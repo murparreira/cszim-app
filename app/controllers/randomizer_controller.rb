@@ -65,8 +65,21 @@ class RandomizerController < ApplicationController
       # Cria o round com os dados de torneio e mapa
       chosen_map = RandomMap.last
       round = Round.create(tournament_id: torneio_dia.id, map_id: chosen_map.map_id)
-      # Pega todos os jogadores do time CT
-      jogadores_time_ct = RankmeMysql.where("rounds_ct > 0").pluck(:steam)
+      # Pega todos os códigos da steam dos jogadores do time CT
+      jogadores_time_ct = RankmeMysql.where("rounds_ct > 0").pluck(:steam).sort
+      # Pega todos os ids de usuário dos jogadores do time CT
+      ids_jogadores_time_ct = User.where(steam: jogadores_time_ct).pluck(:id).sort
+      # Verificar quais os times existentes que esses jogadores participam
+      ids_times_ja_criados = Team.joins(:players).where("players.user_id IN (?)", ids_jogadores_time_ct).pluck(:id).uniq.sort
+      # Para cada time, consultar os jogadores do mesmo e comparar o resultado em forma de array com os ids do time atual
+      ids_times_ja_criados.each do |team_id|
+        jogadores_desse_time = Team.find(team_id).users.pluck(:id)
+        if jogadores_desse_time == ids_jogadores_time_ct
+          time_ct = Team.find(team_id)
+        else
+          time_ct = Team.create(nome: "Time #{helpers.criar_nome_time(ids_jogadores_time_ct)}")
+        end
+      end
       jogadores_time_ct.each do |steam_jogador|
         # Identifica o jogador na tabela users pelo steam
         user = User.find_by(steam: steam_jogador)
@@ -84,8 +97,21 @@ class RandomizerController < ApplicationController
         # Insere o jogador no time CT
         Player.where(team_id: time_ct.id, user_id: user.id).first_or_create
       end
-      # Pega todos os jogadores do time TR
-      jogadores_time_tr = RankmeMysql.where("rounds_tr > 0").pluck(:steam)
+      # Pega todos os códigos da steam dos jogadores do time TR
+      jogadores_time_tr = RankmeMysql.where("rounds_tr > 0").pluck(:steam)      
+      # Pega todos os ids de usuário dos jogadores do time TR
+      ids_jogadores_time_tr = User.where(steam: jogadores_time_tr).pluck(:id).sort
+      # Verificar quais os times existentes que esses jogadores participam
+      ids_times_ja_criados = Team.joins(:players).where("players.user_id IN (?)", ids_jogadores_time_tr).pluck(:id).uniq.sort
+      # Para cada time, consultar os jogadores do mesmo e comparar o resultado em forma de array com os ids do time atual
+      ids_times_ja_criados.each do |team_id|
+        jogadores_desse_time = Team.find(team_id).users.pluck(:id)
+        if jogadores_desse_time == ids_jogadores_time_tr
+          time_tr = Team.find(team_id)
+        else
+          time_tr = Team.create(nome: "Time #{helpers.criar_nome_time(ids_jogadores_time_tr)}")
+        end
+      end      
       jogadores_time_tr.each do |steam_jogador|
         # Identifica o jogador na tabela users pelo steam
         user = User.find_by(steam: steam_jogador)
