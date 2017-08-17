@@ -109,10 +109,12 @@
               [image: '300px-Css_m249.png', title: 'm249', atalho: '(B51)', point: @rankme.m249, percent: @rankme.m249_percentage]
           ]
           arms_sort = arms.sort_by{ |h| h[0][:point] }.reverse!
+          offset = rand(User.count)
           %>
           <div class="columns">
             <div class="column is-one-quarter">
               <div class="csbody">
+                <div class="csperfil"><%= image_tag avatar_url(User.offset(offset).first), class: 'img-circle' %></div>
                 <div class="cshead"><span><%= @rankme.head %> (<%= ((@rankme.head.to_f/@rankme.hits.to_f)*100).round(2) %>%)</span></div>
                 <div class="cschest"><span><%= @rankme.chest %> (<%= ((@rankme.chest.to_f/@rankme.hits.to_f)*100).round(2) %>%)</span></div>
                 <div class="csstomach"><span><%= @rankme.stomach %> (<%= ((@rankme.stomach.to_f/@rankme.hits.to_f)*100).round(2) %>%)</span></div>
@@ -157,9 +159,28 @@
   flex: none;
   width: 20%;
 }
+.csperfil {
+
+}
+
 .csbody {
   position: relative;
   display: inline-block;
+}
+.csperfil {
+  position: absolute;    
+  height: 100%;
+  text-align: center;    
+  width: 100%;
+  padding-top: 4px;
+  font-weight: bold;
+  font-size: 10px;
+}
+.csperfil:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: top;
 }
 .cshead {
   position: absolute;    
