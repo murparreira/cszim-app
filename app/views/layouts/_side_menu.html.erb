@@ -34,11 +34,13 @@
     <% end %>
   </ul>
   <ul class="menu-list">
-    <li>
-      <%= link_to randomizer_path, class: "#{'is-active' if params[:controller] == 'randomizer'}" do %>
-        <span class="icon is-small"><i class="fa fa-random"></i></span>&nbsp;
-        Randomizador
-      <% end %>
-    </li>
+    <% if logged_in? %>
+      <li>
+        <%= link_to randomizer_path, class: "#{'is-active' if params[:controller] == 'randomizer'}" do %>
+          <span class="icon is-small"><i class="fa fa-random"></i></span>&nbsp;
+          Randomizador
+        <% end %>
+      </li>
+    <% end %>
   </ul>
 </aside>

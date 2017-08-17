@@ -1,6 +1,7 @@
 require 'net/ssh'
 
 class RandomizerController < ApplicationController
+  before_action :authenticate_user
 
   def index
   end
@@ -144,7 +145,7 @@ class RandomizerController < ApplicationController
         # Pega o número maior de vitorias dos CT
         vitorias_ct = RankmeMysql.where("ct_win > 0").pluck(:ct_win).max
         Loser.create(team_id: time_ct.id, round_id: round.id, placar: vitorias_ct, lado: 'ct')
-      end      
+      end
       flash[:success] = "Mapa finalizado com sucesso!"
     else
       # Se não existir vencedor da partida, só retorna uma mensagem

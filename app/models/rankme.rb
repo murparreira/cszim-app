@@ -2,6 +2,10 @@ class Rankme < ApplicationRecord
 	belongs_to :tournament
 	belongs_to :user
 
+	def ratio
+		(kills.to_f/deaths.to_f).round(2)
+	end
+
 	def knife_percentage
 		((knife.to_f/kills.to_f)*100).round(2)
 	end

@@ -8,8 +8,9 @@
         <div class="column">
           <h3 class="subtitle">
             <strong><%= @user.nome %></strong><br>
-            Rounds jogados: <%= Winner.joins(team: :users).where(users: {id: @user.id}).count + Loser.joins(team: :users).where(users: {id: @user.id}).count %><br>
-            Rounds ganhos: <%= Winner.joins(team: :users).where(users: {id: @user.id}).count %>
+            Partidas: <%= Winner.joins(team: :users).where(users: {id: @user.id}).count + Loser.joins(team: :users).where(users: {id: @user.id}).count %><br>
+            Vitórias: <%= Winner.joins(team: :users).where(users: {id: @user.id}).count %><br>
+            Derrotas: <%= Loser.joins(team: :users).where(users: {id: @user.id}).count %>
           </h3>
         </div>
       </div>
@@ -23,6 +24,7 @@
               <tr>
                 <th>Kills</th>
                 <th>Deaths</th>
+                <th>Ratio</th>
                 <th>Placar Geral</th>
                 <th>Suicídos</th>
                 <th>Team Kills</th>
@@ -32,6 +34,7 @@
               <tr>
                 <td><%= @rankme.kills %></td>
                 <td><%= @rankme.deaths %></td>
+                <td><%= @rankme.ratio %></td>
                 <td><%= @rankme.score %></td>
                 <td><%= @rankme.suicides %></td>
                 <td><%= @rankme.tk %></td>
@@ -76,7 +79,7 @@
               </tr>
             </tbody>
           </table>
-          <hr>          
+          <hr>
           <%
           arms = [
               [image: '300px-Css_frag.png', title: 'hegrenade', atalho: '(04)', point: @rankme.hegrenade, percent: @rankme.hegrenade_percentage],
@@ -183,9 +186,9 @@
   vertical-align: top;
 }
 .cshead {
-  position: absolute;    
+  position: absolute;
   height: 100%;
-  text-align: center;    
+  text-align: center;
   width: 100%;
   padding-top: 4px;
   font-weight: bold;
@@ -198,9 +201,9 @@
   vertical-align: top;
 }
 .cschest {
-  position: absolute;    
+  position: absolute;
   height: 100%;
-  text-align: center;    
+  text-align: center;
   width: 100%;
   padding-top: 65px;
   font-weight: bold;
@@ -213,9 +216,9 @@
   vertical-align: top;
 }
 .csstomach {
-  position: absolute;    
+  position: absolute;
   height: 100%;
-  text-align: center;    
+  text-align: center;
   width: 100%;
   padding-top: 97px;
   font-weight: bold;
@@ -228,9 +231,9 @@
   vertical-align: top;
 }
 .csleftarm {
-  position: absolute;    
+  position: absolute;
   height: 100%;
-  text-align: left;    
+  text-align: left;
   width: 100%;
   padding-top: 50px;
   font-weight: bold;
@@ -243,9 +246,9 @@
   vertical-align: top;
 }
 .csrightarm {
-  position: absolute;    
+  position: absolute;
   height: 100%;
-  text-align: right;    
+  text-align: right;
   width: 100%;
   padding-top: 50px;
   font-weight: bold;
@@ -258,9 +261,9 @@
   vertical-align: top;
 }
 .csleftleg {
-  position: absolute;    
+  position: absolute;
   height: 100%;
-  text-align: left;    
+  text-align: left;
   width: 100%;
   padding-top: 210px;
   padding-left: 40px;
@@ -274,9 +277,9 @@
   vertical-align: top;
 }
 .csrightleg {
-  position: absolute;    
+  position: absolute;
   height: 100%;
-  text-align: right;    
+  text-align: right;
   width: 100%;
   padding-top: 180px;
   font-weight: bold;
