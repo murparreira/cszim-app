@@ -14,6 +14,7 @@
           <% if user.id == current_user.id || current_user.admin %>
             <%= link_to "Editar", edit_user_path(user), :class => 'button' %>
           <% end %>
+          <%= link_to "Histórico", user, class: 'button' %>
         </div>
       </div>
     </div>
