@@ -17,7 +17,15 @@
           <div class="field">
             <label class="label">Torneio</label>
             <p class="control">
-              <%= select_tag :tournament_id, options_for_select(Tournament.all.order(created_at: :desc).collect {|c| [c.nome, c.id]}, params[:tournament_id]), {class: 'input', include_blank: true} %>
+              <%= select_tag :tournament_id, options_for_select(Tournament.all.order(created_at: :desc).collect {|t| [t.nome, t.id]}, params[:tournament_id]), {class: 'input history-detail', include_blank: true} %>
+            </p>
+          </div>
+        </div>
+        <div class="column">
+          <div class="field">
+            <label class="label">Mapa</label>
+            <p class="control">
+              <%= select_tag :map_id, options_for_select(Map.all.order(nome: :asc).collect {|m| [m.nome, m.id]}, params[:map_id]), {class: 'input history-detail', include_blank: true} %>
             </p>
           </div>
         </div>
@@ -164,8 +172,8 @@
 
 <%= high_chart("historicchart", Chart.historic_chart(@user.id)) %>
 <script type="text/javascript">
-$("#tournament_id").on("change", function() {
-  window.location.href = "/users/<%= @user.id %>?tournament_id="+$(this).val();
+$(".history-detail").on("change", function() {
+  window.location.href = "/users/<%= @user.id %>?tournament_id="+$("#tournament_id").val()+"&map_id="+$("#map_id").val();
 });
 </script>
 <style type="text/css">
