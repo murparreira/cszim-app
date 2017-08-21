@@ -79,31 +79,32 @@
     <th width="20%">T wins</th>
   </thead>
   <tbody>
-    <% total = 0 %>
+    <% total_rounds = 0 %>
     <% total_ct = 0 %>
-    <% total_t = 0 %>
+    <% total_tr = 0 %>
     <% Round.joins(:winner).group(:map_id).count.each do |map_id, value| %>
       <% if map_id %>
         <tr>
           <% map = Map.find(map_id) %>
-          <% vitorias_ct = Map.joins(rounds: :winner).where(["maps.id = ? AND winners.lado = 'ct'", map_id]).count %>
-          <% vitorias_t = Map.joins(rounds: :winner).where(["maps.id = ? AND winners.lado = 't'", map_id]).count %>
+          <% vitorias_ct = Rankme.where(map_id: map_id).group(:user_id).sum(:ct_win).values.uniq.max %>
+          <% vitorias_tr = Rankme.where(map_id: map_id).group(:user_id).sum(:tr_win).values.uniq.max %>
           <td><%= image_tag imagem_mapa_url(map), class: 'img-circle image anti-image-block is-24x24' %></td>
           <td><%= map.nome %> - <%= map.sigla %></td>
-          <td><%= value %></td>
-          <td><%= vitorias_ct %></td>
-          <td><%= vitorias_t %></td>
+          <% total = vitorias_ct + vitorias_tr %>
+          <td><%= total %></td>
+          <td><%= vitorias_ct %> (<%= ((vitorias_ct.to_f/total.to_f)*100.00).round(2) %>%)</td>
+          <td><%= vitorias_tr %> (<%= ((vitorias_tr.to_f/total.to_f)*100.00).round(2) %>%)</td>
         </tr>
-        <% total += value %>
+        <% total_rounds += total %>
         <% total_ct += vitorias_ct %>
-        <% total_t += vitorias_t %>
+        <% total_tr += vitorias_tr %>
       <% end %>
     <% end %>
     <tr>
       <td colspan="2"></td>
-      <td><strong><%= total %></strong></td>
-      <td><strong><%= total_ct %></strong></td>
-      <td><strong><%= total_t %></strong></td>
+      <td><strong><%= total_rounds %></strong></td>
+      <td><strong><%= total_ct %> (<%= ((total_ct.to_f/total_rounds.to_f)*100.00).round(2) %>%)</strong></td>
+      <td><strong><%= total_tr %> (<%= ((total_tr.to_f/total_rounds.to_f)*100.00).round(2) %>%)</strong></td>
     </tr>
   </tbody>
 </table>
