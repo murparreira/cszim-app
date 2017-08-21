@@ -13,6 +13,14 @@
             Derrotas: <%= Loser.joins(team: :users).where(users: {id: @user.id}).count %>
           </h3>
         </div>
+        <div class="column">
+          <div class="field">
+            <label class="label">Torneio</label>
+            <p class="control">
+              <%= select_tag :tournament_id, options_for_select(Tournament.all.order(created_at: :desc).collect {|c| [c.nome, c.id]}, params[:tournament_id]), {class: 'input', include_blank: true} %>
+            </p>
+          </div>
+        </div>
       </div>
       <div class="columns">
         <div class="column">
@@ -155,6 +163,11 @@
 <hr>
 
 <%= high_chart("historicchart", Chart.historic_chart(@user.id)) %>
+<script type="text/javascript">
+$("#tournament_id").on("change", function() {
+  window.location.href = "/users/<%= @user.id %>?tournament_id="+$(this).val();
+});
+</script>
 <style type="text/css">
 .is-card {
   -webkit-box-flex: 0;
