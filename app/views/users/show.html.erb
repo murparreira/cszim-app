@@ -25,7 +25,7 @@
           <div class="field">
             <label class="label">Mapa</label>
             <p class="control">
-              <%= select_tag :map_id, options_for_select(Map.all.order(nome: :asc).collect {|m| [m.nome, m.id]}, params[:map_id]), {class: 'input history-detail', include_blank: true} %>
+              <%= select_tag :map_id, options_for_select(Map.all.where(ativo: true).order(nome: :asc).collect {|m| [m.nome, m.id]}, params[:map_id]), {class: 'input history-detail', include_blank: true} %>
             </p>
           </div>
         </div>
@@ -169,8 +169,6 @@
 </div>
 
 <hr>
-
-<%= high_chart("historicchart", Chart.historic_chart(@user.id)) %>
 <script type="text/javascript">
 $(".history-detail").on("change", function() {
   window.location.href = "/users/<%= @user.id %>?tournament_id="+$("#tournament_id").val()+"&map_id="+$("#map_id").val();
