@@ -16,8 +16,8 @@
         <div class="columns">
           <div class="column">
             <table class="table is-narrow">
-              <tr><td>Rounds jogados:</td><td><%= Winner.joins(team: :users).where(users: {id: user.id}).count + Loser.joins(team: :users).where(users: {id: user.id}).count %></td></tr>
-              <tr><td>Rounds ganhos:</td><td><%= Winner.joins(team: :users).where(users: {id: user.id}).count %></td></tr>
+              <tr><td>Mapas jogados:</td><td><%= Winner.joins(team: :users).where(users: {id: user.id}).count + Loser.joins(team: :users).where(users: {id: user.id}).count %></td></tr>
+              <tr><td>Mapas ganhos:</td><td><%= Winner.joins(team: :users).where(users: {id: user.id}).count %></td></tr>
               <% user_kills = Rankme.select("COALESCE(SUM(kills), 0) AS kills").find_by(user_id: user.id).kills %>
               <tr><td>Kills:</td><td><%= user_kills %></td></tr>
               <% user_deaths = Rankme.select("COALESCE(SUM(deaths), 0) AS deaths").find_by(user_id: user.id).deaths %>
