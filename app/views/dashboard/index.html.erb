@@ -18,36 +18,47 @@
             <table class="table is-narrow">
               <tr><td>Rounds jogados:</td><td><%= Winner.joins(team: :users).where(users: {id: user.id}).count + Loser.joins(team: :users).where(users: {id: user.id}).count %></td></tr>
               <tr><td>Rounds ganhos:</td><td><%= Winner.joins(team: :users).where(users: {id: user.id}).count %></td></tr>
-              <tr><td>Kills:</td><td><%= Rankme.select("COALESCE(SUM(kills), 0) AS kills").find_by(user_id: user.id).kills %></td></tr>
-              <tr><td>Deaths:</td><td><%= Rankme.select("COALESCE(SUM(deaths), 0) AS deaths").find_by(user_id: user.id).deaths %></td></tr>
-              <tr><td>CT wins:</td><td><%= Winner.joins(team: :users).where(users: {id: user.id}, lado: 'ct').count %></td></tr>
-              <tr><td>T wins:</td><td><%= Winner.joins(team: :users).where(users: {id: user.id}, lado: 't').count %></td></tr>
-              <% hash = Rankme.where(user_id: user.id).group(:map_id).sum(:kills) %>
+              <% user_kills = Rankme.select("COALESCE(SUM(kills), 0) AS kills").find_by(user_id: user.id).kills %>
+              <tr><td>Kills:</td><td><%= user_kills %></td></tr>
+              <% user_deaths = Rankme.select("COALESCE(SUM(deaths), 0) AS deaths").find_by(user_id: user.id).deaths %>
+              <tr><td>Deaths:</td><td><%= user_deaths %></td></tr>
+              <% user_ratio = (user_kills.to_f/user_deaths.to_f).round(2) %>
+              <tr><td>Ratio:</td><td><%= user_ratio %></td></tr>
+              <% user_ct_win = Rankme.select("COALESCE(SUM(ct_win), 0) AS ct_win").find_by(user_id: user.id).ct_win %>
+              <% user_tr_win = Rankme.select("COALESCE(SUM(tr_win), 0) AS tr_win").find_by(user_id: user.id).tr_win %>
+              <% user_total_win = user_ct_win + user_tr_win %>
+              <tr><td>CT wins:</td><td><%= user_ct_win %> (<%= ((user_ct_win.to_f/user_total_win.to_f)*100.00).round(2) %>%)</td></tr>
+              <tr><td>T wins:</td><td><%= user_tr_win %> (<%= ((user_tr_win.to_f/user_total_win.to_f)*100.00).round(2) %>%)</td></tr>
+              <% kill_hash = Rankme.where(user_id: user.id).pluck(:map_id, :kills).map{|r| {r[0] => r[1]} }.inject{|memo, el| memo.merge( el ){|k, old_v, new_v| old_v + new_v}} %>
+              <% death_hash = Rankme.where(user_id: user.id).pluck(:map_id, :deaths).map{|r| {r[0] => r[1]} }.inject{|memo, el| memo.merge( el ){|k, old_v, new_v| old_v + new_v}} %>
+              <% if kill_hash.present? && death_hash.present? %>
+                <% ratio_hash = kill_hash.merge(death_hash) {|k, kill_value, death_value| (kill_value.to_f/death_value.to_f).round(2)} %>
+              <% end %>
               <tr>
                 <td>
                   <span class="icon is-small"><i class="fa fa-star"></i></span>&nbsp; MVP Map:
                 </td>
-                <% if hash.empty? %>
+                <% if ratio_hash.nil? %>
                   <td>:(</td>
                 <% else %>
                   <td>
-                    <%= Map.find(hash.sort_by{|k, v| v}.reverse.first.first).nome %>
+                    <%= Map.find(ratio_hash.sort_by{|k ,v| -v}.first.first).nome %>
                     <br>
-                    <%= hash.sort_by{|k, v| v}.reverse.first.reverse.first %> kills
+                    Ratio: <%= ratio_hash.sort_by{|k ,v| -v}.first.last %>
                   </td>
                 <% end %>
               </tr>
-              <% hash = Rankme.where(user_id: user.id).group(:map_id).sum(:deaths) %>
               <tr>
                 <td>
                   <span class="icon is-small"><i class="fa fa-thumbs-down"></i></span>&nbsp; Noob Map:
                 </td>
-                <% if hash.empty? %>
+                <% if ratio_hash.nil? %>
                   <td>:(</td>
                 <% else %>
-                  <td><%= Map.find(hash.sort_by{|k, v| v}.reverse.first.first).nome %>
+                  <td>
+                    <%= Map.find(ratio_hash.sort_by{|k ,v| v}.first.first).nome %>
                     <br>
-                    <%= hash.sort_by{|k, v| v}.reverse.first.reverse.first %> deaths
+                    Ratio: <%= ratio_hash.sort_by{|k ,v| v}.first.last %>
                   </td>
                 <% end %>
               </tr>
