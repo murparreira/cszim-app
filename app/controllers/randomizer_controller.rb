@@ -15,6 +15,11 @@ class RandomizerController < ApplicationController
     redirect_to randomizer_url
   end
 
+  def select
+    RandomMap.create(map_id: params[:map_id])
+    redirect_to randomizer_url
+  end
+
   def raffle
     chosen_map = (Map.ativos.pluck(:id) - RandomMap.pluck(:map_id)).sample
     RandomMap.create(map_id: chosen_map)

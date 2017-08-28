@@ -4,7 +4,12 @@
     <ul class="ul-mapas-randomizer">
       <% (Map.ativos.pluck(:id) - RandomMap.pluck(:map_id)).shuffle.each do |map_id| %>
         <% map = Map.find(map_id) %>
-        <li><%= map.nome %> - <%= map.sigla %></li>
+        <li>
+          <%= link_to randomizer_select_path(map_id: map.id), class: "button is-small" do %>
+            <i class="fa fa-forward"></i>
+          <% end %>
+          <%= map.nome %> - <%= map.sigla %>
+        </li>
       <% end %>
     </ul>
     <% if RandomMap.count < Map.ativos.count %>

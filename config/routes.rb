@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   get 'randomizer_start' => 'randomizer#start'
   get 'randomizer_finish' => 'randomizer#finish'
   get 'randomizer_open_map' => 'randomizer#open_map'
+  get 'randomizer_select' => 'randomizer#select'
 
   get 'login' => 'sessions#new'
   post 'login' => 'sessions#create'
