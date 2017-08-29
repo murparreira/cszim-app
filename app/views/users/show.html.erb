@@ -73,9 +73,9 @@
             <tbody>
               <tr>
                 <td><%= @rankme.shots %>/<%= @rankme.hits %>/<%= ((@rankme.hits.to_f/@rankme.shots.to_f)*100).round(2) %>%</td>
-                <td><%= @rankme.headshots %></td>
-                <td><%= @rankme.rounds_tr %>/<%= @rankme.tr_win %></td>
-                <td><%= @rankme.rounds_ct %>/<%= @rankme.ct_win %></td>
+                <td><%= @rankme.headshots %> (<%= ((@rankme.headshots.to_f/@rankme.kills.to_f)*100).round(2) %>%)</td>
+                <td><%= @rankme.rounds_tr %>/<%= @rankme.tr_win %> (<%= ((@rankme.tr_win.to_f/@rankme.rounds_tr.to_f)*100).round(2) %>%)</td>
+                <td><%= @rankme.rounds_ct %>/<%= @rankme.ct_win %> (<%= ((@rankme.ct_win.to_f/@rankme.rounds_ct.to_f)*100).round(2) %>%)</td>
               </tr>
             </tbody>
             <thead>
@@ -190,9 +190,9 @@ $(".history-detail").on("change", function() {
   display: inline-block;
 }
 .csperfil {
-  position: absolute;    
+  position: absolute;
   height: 100%;
-  text-align: center;    
+  text-align: center;
   width: 100%;
   padding-top: 4px;
   font-weight: bold;
