@@ -8,7 +8,7 @@ class RandomizerController < ApplicationController
 
   def open_map
     map = Map.find(RandomMap.last.map_id)
-    Net::SSH.start('201.25.106.82', 'cssserver', :password => 's3nh4123') do| ssh |
+    Net::SSH.start('127.0.0.1', 'cssserver', password: 's3nh4123', port: 19922) do| ssh |
       ssh.exec! "tmux send-keys 'changelevel #{map.sigla}' Enter"
     end
     flash[:success] = "Mapa mudou para #{map.nome} - #{map.sigla}!"
@@ -39,11 +39,11 @@ class RandomizerController < ApplicationController
     else
       flash[:success] = "Mapa iniciado com sucesso!"
     end
-    Net::SSH.start('201.25.106.82', 'cssserver', :password => 's3nh4123') do| ssh |
+    Net::SSH.start('127.0.0.1', 'cssserver', password: 's3nh4123', port: 19922) do| ssh |
       ssh.exec! "tmux send-keys 'sm plugins unload rankme' Enter"
     end
     RankmeMysql.delete_all
-    Net::SSH.start('201.25.106.82', 'cssserver', :password => 's3nh4123') do| ssh |
+    Net::SSH.start('127.0.0.1', 'cssserver', password: 's3nh4123', port: 19922) do| ssh |
       ssh.exec! "tmux send-keys 'mp_restartgame 2' Enter"
       ssh.exec! "tmux send-keys 'sm plugins load rankme' Enter"
     end
