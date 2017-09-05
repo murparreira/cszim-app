@@ -5,15 +5,21 @@
   </div>
 </div>
 
+<div class="columns" data-turbolinks="false">
+  <div class="column is-third">
+    <%= select_tag :tournament_id, options_for_select(Tournament.all.order(created_at: :desc).collect {|t| [t.nome, t.id]}, params[:tournament_id]), {class: 'input history-detail', include_blank: true} %>
+  </div>
+</div>
+
 <div id="compare"></div>
 
 <script type="text/javascript">
-  $('select').select2();
+  $('#players').select2();
   $('select').on("change", function() {
     $.ajax({
       url: "/compare_players",
       type: "GET",
-      data: {players: $('select').val()},
+      data: {players: $('#players').val(), tournament_id: $('#tournament_id').val()},
       success: function(html) {
         $("#compare").html(html);
       }
