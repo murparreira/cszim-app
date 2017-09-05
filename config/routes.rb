@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   resources :teams
   root to: 'dashboard#index'
 
+  get 'compare' => 'compare#index'
+  get 'compare_players' => 'compare#compare_players'
   get 'randomizer' => 'randomizer#index'
   get 'randomizer_raffle' => 'randomizer#raffle'
   get 'randomizer_reset' => 'randomizer#reset'

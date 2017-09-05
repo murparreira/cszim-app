@@ -41,6 +41,12 @@
           Randomizador
         <% end %>
       </li>
+      <li>
+        <%= link_to compare_path, class: "#{'is-active' if params[:controller] == 'compare'}" do %>
+          <span class="icon is-small"><i class="fa fa-arrows-alt"></i></span>&nbsp;
+          Comparar
+        <% end %>
+      </li>
     <% end %>
   </ul>
 </aside>

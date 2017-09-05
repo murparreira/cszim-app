@@ -1,0 +1,189 @@
+<div class="columns" data-turbolinks="false">
+  <div class="column is-2">
+    <table class="table is-bordered">
+    <tbody>
+      <tr><td>Jogador</td></tr>
+      <tr><td>Kills</td></tr>
+      <tr><td>Deaths</td></tr>
+      <tr><td>Ratio</td></tr>
+      <tr><td>Suicídios</td></tr>
+      <tr><td>Team Kills</td></tr>
+      <tr><td>Disparos</td></tr>
+      <tr><td>Mira(%)</td></tr>
+      <tr><td>Kills por headshot</td></tr>
+      <tr><td>Kills por headshot (%)</td></tr>
+      <tr><td>C4 plantadas</td></tr>
+      <tr><td>C4 explodidas</td></tr>
+      <tr><td>C4 defusadas</td></tr>
+      <tr><td><%= image_tag(asset_path("cssweapons/300px-Css_ak47.png"), class: 'image anti-image-block is-16x16') %> AK 47</td></tr>
+      <tr><td><%= image_tag(asset_path("cssweapons/300px-Css_m4a1.png"), class: 'image anti-image-block is-16x16') %> M4</td></tr>
+      <tr><td><%= image_tag(asset_path("cssweapons/300px-Css_awp.png"), class: 'image anti-image-block is-16x16') %> AWP</td></tr>
+      <tr><td>
+        <%= image_tag(asset_path("cssweapons/300px-Css_sg-550.png"), class: 'image anti-image-block is-16x16') %>
+        <%= image_tag(asset_path("cssweapons/300px-Css_sg-1.png"), class: 'image anti-image-block is-16x16') %>
+        TECOS
+      </td></tr>
+      <tr><td><%= image_tag(asset_path("cssweapons/300px-Css_famas.png"), class: 'image anti-image-block is-16x16') %> FAMAS</td></tr>
+      <tr><td><%= image_tag(asset_path("cssweapons/300px-Css_galil.png"), class: 'image anti-image-block is-16x16') %> GALIL</td></tr>
+      <tr><td><%= image_tag(asset_path("cssweapons/300px-Css_knives.png"), class: 'image anti-image-block is-16x16') %> FACA</td></tr>
+      <tr><td>
+        <%= image_tag(asset_path("cssweapons/300px-Css_usp.png"), class: 'image anti-image-block is-16x16') %>
+        <%= image_tag(asset_path("cssweapons/300px-Css_glock16.png"), class: 'image anti-image-block is-16x16') %>
+        USP + GLOCK
+      </td></tr>
+      <tr><td><%= image_tag(asset_path("cssweapons/300px-Css_deagle.png"), class: 'image anti-image-block is-16x16') %> DEAGLE</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <% @ranks.each do |rank| %>
+    <div class="column is-1">
+      <table class="table is-bordered">
+      <tbody>
+          <tr><td><%= rank.nome %></td></tr>
+          <tr><td data-kills="<%= rank.kills.round(1) %>" class="colored"><%= rank.kills %></td></tr>
+          <tr><td data-deaths="<%= rank.deaths.round(1) %>" class="colored"><%= rank.deaths %></td></tr>
+          <tr><td data-ratio="<%= format_float(rank.ratio) %>" class="colored"><%= rank.ratio %></td></tr>
+          <tr><td data-suicides="<%= rank.suicides.round(1) %>" class="colored"><%= rank.suicides %></td></tr>
+          <tr><td data-tk="<%= rank.tk.round(1) %>" class="colored"><%= rank.tk %></td></tr>
+          <tr><td data-shots="<%= rank.shots.round(1) %>" class="colored"><%= rank.shots %></td></tr>
+          <% mira = ((rank.hits.to_f/rank.shots.to_f)*100).round(1) %>
+          <tr><td data-mira="<%= mira.round(1) %>" class="colored"><%= mira %>%</td></tr>
+          <tr><td data-nuheadshots="<%= rank.headshots.round(1) %>" class="colored"><%= rank.headshots %></td></tr>
+          <% headshots = ((rank.headshots.to_f/rank.kills.to_f)*100).round(1) %>
+          <tr><td data-headshots="<%= headshots.round(1) %>" class="colored"><%= headshots %>%</td></tr>
+          <tr><td data-c4planted="<%= rank.c4_planted.round(1) %>" class="colored"><%= rank.c4_planted %></td></tr>
+          <tr><td data-c4exploded="<%= rank.c4_exploded.round(1) %>" class="colored"><%= rank.c4_exploded %></td></tr>
+          <tr><td data-c4defused="<%= rank.c4_defused.round(1) %>" class="colored"><%= rank.c4_defused %></td></tr>
+          <tr class="armas"><td data-ak47="<%= rank.ak47.round(1) %>" class="colored"><%= rank.ak47 %></td></tr>
+          <tr class="armas"><td data-m4a1="<%= rank.m4a1.round(1) %>" class="colored"><%= rank.m4a1 %></td></tr>
+          <tr class="armas"><td data-awp="<%= rank.awp.round(1) %>" class="colored"><%= rank.awp %></td></tr>
+          <% tecos = (rank.sg550 + rank.g3sg1) %>
+          <tr class="armas"><td data-tecos="<%= tecos.round(1) %>" class="colored"><%= tecos %></td></tr>
+          <tr class="armas"><td data-famas="<%= rank.famas.round(1) %>" class="colored"><%= rank.famas %></td></tr>
+          <tr class="armas"><td data-galil="<%= rank.galil.round(1) %>" class="colored"><%= rank.galil %></td></tr>
+          <tr class="armas"><td data-knife="<%= rank.knife.round(1) %>" class="colored"><%= rank.knife %></td></tr>
+          <% pistolas = (rank.usp + rank.glock) %>
+          <tr class="armas"><td data-pistolas="<%= pistolas.round(1) %>" class="colored"><%= pistolas %></td></tr>
+          <tr class="armas"><td data-deagle="<%= rank.deagle.round(1) %>" class="colored"><%= rank.deagle %></td></tr>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
+</div>
+
+<style type="text/css">
+  .colored { color: red }
+  .armas { height: 34px }
+</style>
+
+<script type="text/javascript">
+  $(function() {
+    var killsElements = document.querySelectorAll("[data-kills]");
+    if (killsElements.length > 0) {
+      var kills = $.map(killsElements, function(val, i) { return parseFloat(val.dataset.kills).toFixed(1); });
+      var maxKills = Math.max.apply(Math, kills).toFixed(1);
+      document.querySelector("[data-kills='"+maxKills+"']").style.color = "green";
+
+      var deathsElements = document.querySelectorAll("[data-deaths]");
+      var deaths = $.map(deathsElements, function(val, i) { return parseFloat(val.dataset.deaths).toFixed(1); });
+      var minDeaths = Math.min.apply(Math, deaths).toFixed(1);
+      document.querySelector("[data-deaths='"+minDeaths+"']").style.color = "green";
+
+      var ratioElements = document.querySelectorAll("[data-ratio]");
+      var ratio = $.map(ratioElements, function(val, i) { return parseFloat(val.dataset.ratio).toFixed(2); });
+      var maxRatio = Math.max.apply(Math, ratio).toFixed(2);
+      document.querySelector("[data-ratio='"+maxRatio+"']").style.color = "green";
+
+      var suicidesElements = document.querySelectorAll("[data-suicides]");
+      var suicides = $.map(suicidesElements, function(val, i) { return parseFloat(val.dataset.suicides).toFixed(1); });
+      var minSuicides = Math.min.apply(Math, suicides).toFixed(1);
+      var suicidesList = document.querySelectorAll("[data-suicides='"+minSuicides+"']");
+      for (var i = 0; i < suicidesList.length; i++) {
+        suicidesList[i].style.color = "green";
+      }
+
+      var tkElements = document.querySelectorAll("[data-tk]");
+      var tk = $.map(tkElements, function(val, i) { return parseFloat(val.dataset.tk).toFixed(1); });
+      var minTk = Math.min.apply(Math, tk).toFixed(1);
+      var tkList = document.querySelectorAll("[data-tk='"+minTk+"']");
+      for (var i = 0; i < tkList.length; i++) {
+        tkList[i].style.color = "green";
+      }
+
+      var shotsElements = document.querySelectorAll("[data-shots]");
+      var shots = $.map(shotsElements, function(val, i) { return parseFloat(val.dataset.shots).toFixed(1); });
+      var maxShots = Math.max.apply(Math, shots).toFixed(1);
+      document.querySelector("[data-shots='"+maxShots+"']").style.color = "green";
+
+      var miraElements = document.querySelectorAll("[data-mira]");
+      var mira = $.map(miraElements, function(val, i) { return parseFloat(val.dataset.mira).toFixed(1); });
+      var maxMira = Math.max.apply(Math, mira).toFixed(1);
+      document.querySelector("[data-mira='"+maxMira+"']").style.color = "green";
+
+      var headshotsElements = document.querySelectorAll("[data-headshots]");
+      var headshots = $.map(headshotsElements, function(val, i) { return parseFloat(val.dataset.headshots).toFixed(1); });
+      var maxHeadshots = Math.max.apply(Math, headshots).toFixed(1);
+      document.querySelector("[data-headshots='"+maxHeadshots+"']").style.color = "green";
+
+      var nuheadshotsElements = document.querySelectorAll("[data-nuheadshots]");
+      var nuheadshots = $.map(nuheadshotsElements, function(val, i) { return parseFloat(val.dataset.nuheadshots).toFixed(1); });
+      var maxNuheadshots = Math.max.apply(Math, nuheadshots).toFixed(1);
+      document.querySelector("[data-nuheadshots='"+maxNuheadshots+"']").style.color = "green";
+
+      var c4plantedElements = document.querySelectorAll("[data-c4planted]");
+      var c4planted = $.map(c4plantedElements, function(val, i) { return parseFloat(val.dataset.c4planted).toFixed(1); });
+      var maxC4planted = Math.max.apply(Math, c4planted).toFixed(1);
+      document.querySelector("[data-c4planted='"+maxC4planted+"']").style.color = "green";
+
+      var c4explodedElements = document.querySelectorAll("[data-c4exploded]");
+      var c4exploded = $.map(c4explodedElements, function(val, i) { return parseFloat(val.dataset.c4exploded).toFixed(1); });
+      var maxC4exploded = Math.max.apply(Math, c4exploded).toFixed(1);
+      document.querySelector("[data-c4exploded='"+maxC4exploded+"']").style.color = "green";
+
+      var c4defusedElements = document.querySelectorAll("[data-c4defused]");
+      var c4defused = $.map(c4defusedElements, function(val, i) { return parseFloat(val.dataset.c4defused).toFixed(1); });
+      var maxC4defused = Math.max.apply(Math, c4defused).toFixed(1);
+      document.querySelector("[data-c4defused='"+maxC4defused+"']").style.color = "green";
+
+      var ak47Elements = document.querySelectorAll("[data-ak47]");
+      var ak47 = $.map(ak47Elements, function(val, i) { return parseFloat(val.dataset.ak47).toFixed(1); });
+      var maxAk47 = Math.max.apply(Math, ak47).toFixed(1);
+      document.querySelector("[data-ak47='"+maxAk47+"']").style.color = "green";
+
+      var m4a1Elements = document.querySelectorAll("[data-m4a1]");
+      var m4a1 = $.map(m4a1Elements, function(val, i) { return parseFloat(val.dataset.m4a1).toFixed(1); });
+      var maxM4a1 = Math.max.apply(Math, m4a1).toFixed(1);
+      document.querySelector("[data-m4a1='"+maxM4a1+"']").style.color = "green";
+
+      var awpElements = document.querySelectorAll("[data-awp]");
+      var awp = $.map(awpElements, function(val, i) { return parseFloat(val.dataset.awp).toFixed(1); });
+      var maxAwp = Math.max.apply(Math, awp).toFixed(1);
+      document.querySelector("[data-awp='"+maxAwp+"']").style.color = "green";
+
+      var tecosElements = document.querySelectorAll("[data-tecos]");
+      var tecos = $.map(tecosElements, function(val, i) { return parseFloat(val.dataset.tecos).toFixed(1); });
+      var maxTecos = Math.max.apply(Math, tecos).toFixed(1);
+      document.querySelector("[data-tecos='"+maxTecos+"']").style.color = "green";
+
+      var famasElements = document.querySelectorAll("[data-famas]");
+      var famas = $.map(famasElements, function(val, i) { return parseFloat(val.dataset.famas).toFixed(1); });
+      var maxFamas = Math.max.apply(Math, famas).toFixed(1);
+      document.querySelector("[data-famas='"+maxFamas+"']").style.color = "green";
+
+      var galilElements = document.querySelectorAll("[data-galil]");
+      var galil = $.map(galilElements, function(val, i) { return parseFloat(val.dataset.galil).toFixed(1); });
+      var maxGalil = Math.max.apply(Math, galil).toFixed(1);
+      document.querySelector("[data-galil='"+maxGalil+"']").style.color = "green";
+
+      var pistolasElements = document.querySelectorAll("[data-pistolas]");
+      var pistolas = $.map(pistolasElements, function(val, i) { return parseFloat(val.dataset.pistolas).toFixed(1); });
+      var maxPistolas = Math.max.apply(Math, pistolas).toFixed(1);
+      document.querySelector("[data-pistolas='"+maxPistolas+"']").style.color = "green";
+
+      var deagleElements = document.querySelectorAll("[data-deagle]");
+      var deagle = $.map(deagleElements, function(val, i) { return parseFloat(val.dataset.deagle).toFixed(1); });
+      var maxDeagle = Math.max.apply(Math, deagle).toFixed(1);
+      document.querySelector("[data-deagle='"+maxDeagle+"']").style.color = "green";
+    }
+  });
+</script>

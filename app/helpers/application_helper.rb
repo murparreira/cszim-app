@@ -37,6 +37,10 @@ module ApplicationHelper
     boolean ? "Sim" : "Não"
   end
 
+  def format_float(unit)
+    number_with_precision(unit, precision: 2, separator: '.')
+  end
+
   def format_money(unit="R$", money)
     number_to_currency(money, unit: unit, separator: ',', delimiter: '.').to_s.strip
   end
@@ -132,7 +136,7 @@ module ApplicationHelper
       "http://cszim.com.br/img/#{map.try(:sigla)}.jpg"
     end
   end
-  
+
   def criar_nome_time(user_ids)
     player_names = ""
     user_ids.each do |user_id|

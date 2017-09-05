@@ -41,7 +41,6 @@
                 <th>Kills</th>
                 <th>Deaths</th>
                 <th>Ratio</th>
-                <th>Placar Geral</th>
                 <th>Suicídos</th>
                 <th>Team Kills</th>
               </tr>
@@ -51,7 +50,6 @@
                 <td><%= @rankme.kills %></td>
                 <td><%= @rankme.deaths %></td>
                 <td><%= @rankme.ratio %></td>
-                <td><%= @rankme.score %></td>
                 <td><%= @rankme.suicides %></td>
                 <td><%= @rankme.tk %></td>
               </tr>
@@ -147,17 +145,19 @@
             <div class="column contact-box"" style="padding-left: 80px;">
               <div class="columns is-multiline">
                 <% arms_sort.each do |v| %>
-                <div class="is-card">
-                  <div class="card-image">
-                    <%= image_tag(asset_path("cssweapons/#{v[0][:image]}"), class: 'image anti-image-block is-24x24') %> <%= v[0][:title] %>
-                  </div>
-                  <div class="card-content">
-                    <div class="content">
-                     <strong><%= v[0][:point] %></strong> (<%= v[0][:percent] %>%)<br>
-                      <small><%= v[0][:atalho] %></small>
+                  <% if v[0][:point] > 0 %>
+                    <div class="is-card">
+                      <div class="card-image">
+                        <%= image_tag(asset_path("cssweapons/#{v[0][:image]}"), class: 'image anti-image-block is-24x24') %> <%= v[0][:title] %>
+                      </div>
+                      <div class="card-content">
+                        <div class="content">
+                         <strong><%= v[0][:point] %></strong> (<%= v[0][:percent] %>%)<br>
+                          <small><%= v[0][:atalho] %></small>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
+                  <% end %>
                 <% end %>
               </div>
             </div>

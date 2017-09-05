@@ -1,0 +1,22 @@
+<div class="columns" data-turbolinks="false">
+  <div class="column is-third">
+    <h2 class="title">Selecione os Jogadores para Comparação</h2>
+    <%= select_tag :players, options_for_select(User.all.order(:nome).collect {|u| [u.nome, u.id]}, params[:tournament_id]), {multiple: true, class: 'input history-detail', include_blank: true} %>
+  </div>
+</div>
+
+<div id="compare"></div>
+
+<script type="text/javascript">
+  $('select').select2();
+  $('select').on("change", function() {
+    $.ajax({
+      url: "/compare_players",
+      type: "GET",
+      data: {players: $('select').val()},
+      success: function(html) {
+        $("#compare").html(html);
+      }
+    });
+  });
+</script>
