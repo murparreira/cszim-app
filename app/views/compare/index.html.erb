@@ -1,28 +1,59 @@
 <div class="columns" data-turbolinks="false">
   <div class="column is-third">
     <h2 class="title">Selecione os Jogadores para Comparação</h2>
-    <%= select_tag :players, options_for_select(User.all.order(:nome).collect {|u| [u.nome, u.id]}, params[:tournament_id]), {multiple: true, class: 'input history-detail', include_blank: true} %>
   </div>
 </div>
 
 <div class="columns" data-turbolinks="false">
   <div class="column is-third">
+    <%= select_tag :players, options_for_select(User.all.order(:nome).collect {|u| [u.nome, u.id]}, params[:tournament_id]), {multiple: true, class: 'input history-detail', include_blank: true} %>
+  </div>
+  <div class="column is-third">
+    <a id="todos" class="button">Comparar Todos</a>
+    <a id="limpar" class="button">Limpar Comparação</a>
+  </div>
+</div>
+
+<div class="columns" data-turbolinks="false">
+  <div class="column is-half">
     <%= select_tag :tournament_id, options_for_select(Tournament.all.order(created_at: :desc).collect {|t| [t.nome, t.id]}, params[:tournament_id]), {class: 'input history-detail', include_blank: true} %>
+  </div>
+  <div class="column is-half">
+    <%= select_tag :map_id, options_for_select(Map.all.where(ativo: true).order(nome: :asc).collect {|m| [m.nome, m.id]}, params[:map_id]), {class: 'input history-detail', include_blank: true} %>
   </div>
 </div>
 
 <div id="compare"></div>
 
 <script type="text/javascript">
-  $('#players').select2();
+  $('#players').select2({ placeholder: "Selecione os jogadores" });
+  $('#tournament_id').select2({ placeholder: "Selecione o Torneio" });
+  $('#map_id').select2({ placeholder: "Selecione o Mapa" });
   $('select').on("change", function() {
     $.ajax({
       url: "/compare_players",
       type: "GET",
-      data: {players: $('#players').val(), tournament_id: $('#tournament_id').val()},
+      data: {
+        players: $('#players').val(),
+        tournament_id: $('#tournament_id').val(),
+        map_id: $('#map_id').val()
+      },
       success: function(html) {
         $("#compare").html(html);
       }
     });
+  });
+  $('#todos').on("click", function() {
+    var selectedItems = [];
+    var allOptions = $("#players option");
+    allOptions.each(function() {
+      if ($(this).val().length > 0) {
+        selectedItems.push($(this).val());
+      }
+    });
+    $("#players").val(selectedItems).trigger("change");
+  });
+  $('#limpar').on("click", function() {
+    $("#players").val([]).trigger("change");
   });
 </script>
