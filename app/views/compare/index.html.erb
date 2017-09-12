@@ -27,8 +27,24 @@
 
 <script type="text/javascript">
   $('#players').select2({ placeholder: "Selecione os jogadores" });
-  $('#tournament_id').select2({ placeholder: "Selecione o Torneio" });
-  $('#map_id').select2({ placeholder: "Selecione o Mapa" });
+  $('#tournament_id').select2({ placeholder: "Selecione o Torneio", allowClear: true });
+  $('#map_id').select2({ placeholder: "Selecione o Mapa", allowClear: true });
+  $('#tournament_id').on("change", function() {
+    $.ajax({
+      url: "/get_maps_from_tournament",
+      type: "GET",
+      data: {
+        tournament_id: this.value
+      },
+      success: function(data) {
+        $("#map_id").empty();
+        $("<option value=''></option>").appendTo("#map_id");
+        $.each(data, function() {
+          $("<option value='"+this.id+"'>"+this.nome+"</option>").appendTo("#map_id");
+        });
+      }
+    });
+  });
   $('select').on("change", function() {
     $.ajax({
       url: "/compare_players",

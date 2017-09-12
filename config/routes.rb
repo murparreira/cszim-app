@@ -9,6 +9,7 @@ Rails.application.routes.draw do
 
   get 'compare' => 'compare#index'
   get 'compare_players' => 'compare#compare_players'
+  get 'get_maps_from_tournament' => 'compare#get_maps_from_tournament'
   get 'randomizer' => 'randomizer#index'
   get 'randomizer_raffle' => 'randomizer#raffle'
   get 'randomizer_reset' => 'randomizer#reset'

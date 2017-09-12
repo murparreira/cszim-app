@@ -26,4 +26,13 @@ class CompareController < ApplicationController
     render layout: false
   end
 
+  def get_maps_from_tournament
+    map_ids = Rankme.where(tournament_id: params[:tournament_id]).pluck(:map_id).uniq
+    hash = []
+    map_ids.each do |map_id|
+      hash << { id: map_id, nome: Map.find(map_id).nome }
+    end
+    render json: hash
+  end
+
 end
