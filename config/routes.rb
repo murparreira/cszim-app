@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   get 'compare' => 'compare#index'
   get 'compare_players' => 'compare#compare_players'
   get 'get_maps_from_tournament' => 'compare#get_maps_from_tournament'
+  get 'get_tournaments_from_season' => 'compare#get_tournaments_from_season'
   get 'randomizer' => 'randomizer#index'
   get 'randomizer_raffle' => 'randomizer#raffle'
   get 'randomizer_reset' => 'randomizer#reset'
@@ -23,6 +24,7 @@ Rails.application.routes.draw do
   get 'logout' => 'sessions#destroy'
   delete 'logout' => 'sessions#destroy'
 
+  resources :seasons
   resources :users
   resources :maps do
     member do

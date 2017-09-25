@@ -34,7 +34,7 @@ class RandomizerController < ApplicationController
   def start
     torneio_dia = Tournament.find_by(nome: "Torneio #{Date.today.to_s(:human)}")
     if torneio_dia.nil?
-      torneio_dia = Tournament.create(nome: "Torneio #{Date.today.to_s(:human)}")
+      torneio_dia = Tournament.create(nome: "Torneio #{Date.today.to_s(:human)}", season_id: Season.last.id)
       flash[:success] = "Torneio #{Date.today.to_s(:human)} e mapa iniciado com sucesso!"
     else
       flash[:success] = "Mapa iniciado com sucesso!"
@@ -60,7 +60,7 @@ class RandomizerController < ApplicationController
     if vencedor_ct || vencedor_tr
       # Cria o round com os dados de torneio e mapa
       chosen_map = RandomMap.last
-      round = Round.create(tournament_id: torneio_dia.id, map_id: chosen_map.map_id)
+      round = Round.create(tournament_id: torneio_dia.id, map_id: chosen_map.map_id, season_id: Season.last.id)
       # Pega todos os códigos da steam dos jogadores do time CT
       jogadores_time_ct = RankmeMysql.where("rounds_ct > 0").pluck(:steam).sort
       # Pega todos os ids de usuário dos jogadores do time CT
@@ -94,6 +94,7 @@ class RandomizerController < ApplicationController
         dados_tratados[:tournament_id] = torneio_dia.id
         dados_tratados[:round_id] = round.id
         dados_tratados[:team_id] = time_ct.id
+        dados_tratados[:season_id] = Season.last.id
         # Salva todos os dados do jogador que veio do mysql na tabela rankmes do sistema
         Rankme.create(dados_tratados)
         # Insere o jogador no time CT
@@ -132,6 +133,7 @@ class RandomizerController < ApplicationController
         dados_tratados[:tournament_id] = torneio_dia.id
         dados_tratados[:round_id] = round.id
         dados_tratados[:team_id] = time_tr.id
+        dados_tratados[:season_id] = Season.last.id
         # Salva todos os dados do jogador que veio do mysql na tabela rankmes do sistema
         Rankme.create(dados_tratados)
         # Insere o jogador no time TR

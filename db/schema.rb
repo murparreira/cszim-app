@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170812134421) do
+ActiveRecord::Schema.define(version: 20170925143553) do
 
   create_table "losers", force: :cascade do |t|
     t.integer  "round_id"
@@ -128,6 +128,7 @@ ActiveRecord::Schema.define(version: 20170812134421) do
     t.datetime "updated_at",       null: false
     t.integer  "round_id"
     t.integer  "team_id"
+    t.integer  "season_id"
   end
 
   create_table "rounds", force: :cascade do |t|
@@ -141,8 +142,16 @@ ActiveRecord::Schema.define(version: 20170812134421) do
     t.date     "data_round"
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
+    t.integer  "season_id"
     t.index ["map_id"], name: "index_rounds_on_map_id"
     t.index ["tournament_id"], name: "index_rounds_on_tournament_id"
+  end
+
+  create_table "seasons", force: :cascade do |t|
+    t.string   "nome"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.boolean  "ativo",      default: true
   end
 
   create_table "statistics", force: :cascade do |t|
@@ -169,6 +178,7 @@ ActiveRecord::Schema.define(version: 20170812134421) do
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
     t.boolean  "oficial",    default: false
+    t.integer  "season_id"
   end
 
   create_table "users", force: :cascade do |t|

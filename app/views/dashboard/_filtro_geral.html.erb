@@ -1,8 +1,3 @@
-<div class="columns">
-  <div class="column has-text-centered">
-    <h2 class="subtitle">Artilharia Geral</h2>
-  </div>
-</div>
 <table class="table is-narrow is-striped is-bordered">
   <thead>
       <th>Jogador</th>
@@ -12,7 +7,7 @@
   </thead>
   <tbody>
     <% #data_geral = Statistic.joins(round: :tournament).select("SUM(kills) AS kills, SUM(deaths) AS deaths, user_id").group(:user_id).order("kills DESC, deaths ASC") %>
-    <% data_geral = Rankme.select("SUM(kills) AS kills, SUM(deaths) AS deaths, user_id").group(:user_id).order("kills DESC, deaths ASC") %>
+    <% data_geral = Rankme.where(season_id: season_id).select("SUM(kills) AS kills, SUM(deaths) AS deaths, user_id").group(:user_id).order("kills DESC, deaths ASC") %>
     <% data_geral.each do |statistic| %>
       <% deaths = statistic.deaths.to_i %>
       <% deaths = 1 if statistic.deaths.to_i == 0%>

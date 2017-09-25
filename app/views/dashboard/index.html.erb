@@ -1,3 +1,17 @@
+<% season_id = params[:filtro].blank? ? Season.pluck(:id) : params[:filtro] %>
+
+<div class="columns is-multiline">
+  <div class="column has-text-centered">
+    <% filtro_todos = "" %>
+    <% filtro = "is-primary" if params[:filtro].blank? %>
+    <%= link_to "Todas Temporadas", root_path, class: "button #{filtro}" %>
+    <% Season.all.each do |season| %>
+      <% filtro = "" %>
+      <% filtro = "is-primary" if params[:filtro] == season.id.to_s %>
+      <%= link_to season.nome, root_path(filtro: season.id), class: "button #{filtro}" %>
+    <% end %>
+  </div>
+</div>
 <div class="columns is-multiline">
   <% User.all.each do |user| %>
     <div class="column is-one-third">
@@ -16,21 +30,21 @@
         <div class="columns">
           <div class="column">
             <table class="table is-narrow">
-              <tr><td>Mapas jogados:</td><td><%= Winner.joins(team: :users).where(users: {id: user.id}).count + Loser.joins(team: :users).where(users: {id: user.id}).count %></td></tr>
-              <tr><td>Mapas ganhos:</td><td><%= Winner.joins(team: :users).where(users: {id: user.id}).count %></td></tr>
-              <% user_kills = Rankme.select("COALESCE(SUM(kills), 0) AS kills").find_by(user_id: user.id).kills %>
+              <tr><td>Mapas jogados:</td><td><%= Winner.joins(:round, team: :users).where("rounds.season_id IN (?)", season_id).where(users: {id: user.id}).count + Loser.joins(:round, team: :users).where("rounds.season_id IN (?)", season_id).where(users: {id: user.id}).count %></td></tr>
+              <tr><td>Mapas ganhos:</td><td><%= Winner.joins(:round, team: :users).where("rounds.season_id IN (?)", season_id).where(users: {id: user.id}).count %></td></tr>
+              <% user_kills = Rankme.select("COALESCE(SUM(kills), 0) AS kills").where(season_id: season_id).find_by(user_id: user.id).kills %>
               <tr><td>Kills:</td><td><%= user_kills %></td></tr>
-              <% user_deaths = Rankme.select("COALESCE(SUM(deaths), 0) AS deaths").find_by(user_id: user.id).deaths %>
+              <% user_deaths = Rankme.select("COALESCE(SUM(deaths), 0) AS deaths").where(season_id: season_id).find_by(user_id: user.id).deaths %>
               <tr><td>Deaths:</td><td><%= user_deaths %></td></tr>
               <% user_ratio = (user_kills.to_f/user_deaths.to_f).round(2) %>
               <tr><td>Ratio:</td><td><%= user_ratio %></td></tr>
-              <% user_ct_win = Rankme.select("COALESCE(SUM(ct_win), 0) AS ct_win").find_by(user_id: user.id).ct_win %>
-              <% user_tr_win = Rankme.select("COALESCE(SUM(tr_win), 0) AS tr_win").find_by(user_id: user.id).tr_win %>
+              <% user_ct_win = Rankme.select("COALESCE(SUM(ct_win), 0) AS ct_win").where(season_id: season_id).find_by(user_id: user.id).ct_win %>
+              <% user_tr_win = Rankme.select("COALESCE(SUM(tr_win), 0) AS tr_win").where(season_id: season_id).find_by(user_id: user.id).tr_win %>
               <% user_total_win = user_ct_win + user_tr_win %>
               <tr><td>CT wins:</td><td><%= user_ct_win %> (<%= ((user_ct_win.to_f/user_total_win.to_f)*100.00).round(2) %>%)</td></tr>
               <tr><td>T wins:</td><td><%= user_tr_win %> (<%= ((user_tr_win.to_f/user_total_win.to_f)*100.00).round(2) %>%)</td></tr>
-              <% kill_hash = Rankme.where(user_id: user.id).pluck(:map_id, :kills).map{|r| {r[0] => r[1]} }.inject{|memo, el| memo.merge( el ){|k, old_v, new_v| old_v + new_v}} %>
-              <% death_hash = Rankme.where(user_id: user.id).pluck(:map_id, :deaths).map{|r| {r[0] => r[1]} }.inject{|memo, el| memo.merge( el ){|k, old_v, new_v| old_v + new_v}} %>
+              <% kill_hash = Rankme.where(season_id: season_id).where(user_id: user.id).pluck(:map_id, :kills).map{|r| {r[0] => r[1]} }.inject{|memo, el| memo.merge( el ){|k, old_v, new_v| old_v + new_v}} %>
+              <% death_hash = Rankme.where(season_id: season_id).where(user_id: user.id).pluck(:map_id, :deaths).map{|r| {r[0] => r[1]} }.inject{|memo, el| memo.merge( el ){|k, old_v, new_v| old_v + new_v}} %>
               <% if kill_hash.present? && death_hash.present? %>
                 <% ratio_hash = kill_hash.merge(death_hash) {|k, kill_value, death_value| (kill_value.to_f/death_value.to_f).round(2)} %>
               <% end %>
@@ -72,10 +86,6 @@
 
 <hr>
 
-<%#= high_chart("linechart", Chart.line_chart) %>
-
-<hr>
-
 <div class="columns">
   <div class="column has-text-centered">
     <h1 class="title">Estatísticas de Mapas</h1>
@@ -93,12 +103,12 @@
     <% total_rounds = 0 %>
     <% total_ct = 0 %>
     <% total_tr = 0 %>
-    <% Round.joins(:winner).group(:map_id).count.each do |map_id, value| %>
+    <% Round.joins(:winner).where(season_id: season_id).group(:map_id).count.each do |map_id, value| %>
       <% if map_id %>
         <tr>
           <% map = Map.find(map_id) %>
-          <% vitorias_ct = Rankme.where(map_id: map_id).group(:user_id).sum(:ct_win).values.uniq.max %>
-          <% vitorias_tr = Rankme.where(map_id: map_id).group(:user_id).sum(:tr_win).values.uniq.max %>
+          <% vitorias_ct = Rankme.where(season_id: season_id).where(map_id: map_id).group(:user_id).sum(:ct_win).values.uniq.max %>
+          <% vitorias_tr = Rankme.where(season_id: season_id).where(map_id: map_id).group(:user_id).sum(:tr_win).values.uniq.max %>
           <td><%= image_tag imagem_mapa_url(map), class: 'img-circle image anti-image-block is-24x24' %></td>
           <td><%= map.nome %> - <%= map.sigla %></td>
           <% total = vitorias_ct + vitorias_tr %>
@@ -134,24 +144,26 @@
     <% filtro_torneio = "" %>
     <% filtro_mapa = "" %>
     <% filtro_geral = "is-primary" if params[:filtro].nil? %>
-    <%= link_to "Geral", root_path, class: "button #{filtro_geral}" %>
+    <%#= link_to "Geral", root_path, class: "button #{filtro_geral}" %>
     <% filtro_torneio = "is-primary" if params[:filtro] == 'torneio' %>
-    <%= link_to "Por Torneio", root_path(request.query_parameters.merge(filtro: "torneio")), class: "button #{filtro_torneio}" %>
+    <%#= link_to "Por Torneio", root_path(request.query_parameters.merge(filtro: "torneio")), class: "button #{filtro_torneio}" %>
     <% filtro_mapa = "is-primary" if params[:filtro] == 'mapa' %>
-    <%= link_to "Por Mapa", root_path(request.query_parameters.merge(filtro: "mapa")), class: "button #{filtro_mapa}" %>
+    <%#= link_to "Por Mapa", root_path(request.query_parameters.merge(filtro: "mapa")), class: "button #{filtro_mapa}" %>
   </div>
 </div>
 
-<hr>
+<%# if params[:filtro].nil? %>
+  <%= render partial: "filtro_geral", locals: { season_id: season_id } %>
+<%# end %>
 
-<% if params[:filtro].nil? %>
-  <%= render partial: "filtro_geral" %>
-<% end %>
+<%# if params[:filtro] == 'torneio' %>
+  <%#= render partial: "filtro_torneio" %>
+<%# end %>
 
-<% if params[:filtro] == 'torneio' %>
-  <%= render partial: "filtro_torneio" %>
-<% end %>
+<%# if params[:filtro] == 'mapa' %>
+  <%#= render partial: "filtro_mapa" %>
+<%# end %>
 
-<% if params[:filtro] == 'mapa' %>
-  <%= render partial: "filtro_mapa" %>
-<% end %>
+<script type="text/javascript">
+  $('#season_id').select2({ placeholder: "Selecione a Temporada", allowClear: true });
+</script>

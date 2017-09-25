@@ -31,6 +31,12 @@
           Torneios
         <% end %>
       </li>
+      <li>
+        <%= link_to seasons_path, class: "#{'is-active' if params[:controller] == 'seasons'}" do %>
+          <span class="icon is-small"><i class="fa fa-star"></i></span>&nbsp;
+          Temporadas
+        <% end %>
+      </li>
     <% end %>
   </ul>
   <ul class="menu-list">
