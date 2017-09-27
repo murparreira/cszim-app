@@ -29,6 +29,17 @@
 <div id="compare"></div>
 
 <script type="text/javascript">
+  $(function() {
+    $('#loading-indicator').removeClass('show');  // hide it initially.
+    $(document)
+      .ajaxStart(function() {
+        $('#loading-indicator').addClass('show'); // show on any Ajax event.
+      })
+      .ajaxStop(function() {
+        $('#loading-indicator').removeClass('show'); // hide it when it is done.
+    });
+  });
+
   $('#players').select2({ placeholder: "Selecione os jogadores" });
   $('#season_id').select2({ placeholder: "Selecione a Temporada", allowClear: true });
   $('#tournament_id').select2({ placeholder: "Selecione o Torneio", allowClear: true });
@@ -94,3 +105,21 @@
     $("#players").val([]).trigger("change");
   });
 </script>
+
+<style type="text/css">
+#loading-indicator { display : none; }
+#loading-indicator.show {
+  display : block;
+  position : fixed;
+  z-index: 100;
+  background-image : url(<%= asset_path 'loading.gif' %>);
+  background-color:#666;
+  opacity : 0.4;
+  background-repeat : no-repeat;
+  background-position : center;
+  left : 0;
+  bottom : 0;
+  right : 0;
+  top : 0;
+}
+</style>
