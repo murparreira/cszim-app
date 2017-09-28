@@ -2,6 +2,12 @@
 
 <div class="columns is-multiline">
   <div class="column has-text-centered">
+    <h3 class="subtitle">Jogo Ativo: <%= Game.find_by(ativo: true).nome %></h3>
+  </div>
+</div>
+
+<div class="columns is-multiline">
+  <div class="column has-text-centered">
     <% filtro_todos = "" %>
     <% filtro = "is-primary" if params[:filtro].blank? %>
     <%= link_to "Todas Temporadas", root_path, class: "button #{filtro}" %>

@@ -10,7 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170925143553) do
+ActiveRecord::Schema.define(version: 20170928204748) do
+
+  create_table "games", force: :cascade do |t|
+    t.string   "nome"
+    t.boolean  "ativo",      default: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
 
   create_table "losers", force: :cascade do |t|
     t.integer  "round_id"

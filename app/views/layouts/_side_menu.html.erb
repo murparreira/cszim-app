@@ -37,6 +37,12 @@
           Temporadas
         <% end %>
       </li>
+      <li>
+        <%= link_to games_path, class: "#{'is-active' if params[:controller] == 'games'}" do %>
+          <span class="icon is-small"><i class="fa fa-book"></i></span>&nbsp;
+          Ativar Jogo
+        <% end %>
+      </li>
     <% end %>
   </ul>
   <ul class="menu-list">

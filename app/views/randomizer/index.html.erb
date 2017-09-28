@@ -1,5 +1,7 @@
 <div class="columns" data-turbolinks="false">
   <div class="column is-third">
+    <h2 class="subtitle">Jogo Ativo: <%= Game.find_by(ativo: true).nome %></h2>
+    <br>
     <h2 class="title">Mapas Disponíveis</h2>
     <ul class="ul-mapas-randomizer">
       <% (Map.ativos.pluck(:id) - RandomMap.pluck(:map_id)).shuffle.each do |map_id| %>

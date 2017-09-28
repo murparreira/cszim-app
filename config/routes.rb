@@ -24,6 +24,11 @@ Rails.application.routes.draw do
   get 'logout' => 'sessions#destroy'
   delete 'logout' => 'sessions#destroy'
 
+  resources :games do
+    member do
+      post :toggle_status
+    end
+  end
   resources :seasons
   resources :users
   resources :maps do

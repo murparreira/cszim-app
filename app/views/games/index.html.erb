@@ -1,0 +1,28 @@
+<% if current_user.admin %>
+  <div class="columns">
+    <div class="column is-2">
+      Jogos
+    </div>
+  </div>
+  <hr>
+<% end %>
+
+<div class="columns is-multiline">
+  <% @games.each do |game| %>
+    <div class="column is-one-quarter">
+      <div class="contact-box center-version">
+        <span>
+          <div>
+            <i class="fa fa-star"></i>&nbsp;
+            <h3 style="display: inline;"><strong><%= game.nome %></strong></h3>
+          </div>
+        </span>
+        <div class="contact-box-footer">
+          <% if current_user.admin %>
+            <%= link_to "Ativar", toggle_status_game_path(game), :method => :post, remote: true, :class => 'button' %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
