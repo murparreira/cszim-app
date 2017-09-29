@@ -44,6 +44,7 @@ class RandomizerController < ApplicationController
       ssh.exec! "tmux send-keys 'sm plugins unload rankme' Enter"
     end
     RankmeMysql.delete_all
+    RankmeMysqlCsgo.delete_all
     Net::SSH.start('127.0.0.1', login_jogo, password: 's3nh4123', port: 19922) do| ssh |
       ssh.exec! "tmux send-keys 'mp_warmup_end' Enter"
       ssh.exec! "tmux send-keys 'mp_restartgame 2' Enter"
@@ -66,7 +67,23 @@ class RandomizerController < ApplicationController
     chosen_map = RandomMap.last
     round = Round.create(tournament_id: torneio_dia.id, map_id: chosen_map.map_id, season_id: current_season.id)
     ###############################################################################################################
-    jogadores_time_vencedor = RankmeMysql.where("tr_win + ct_win = ?", current_configuration.numero_partidas).pluck(:steam).sort
+    maximo_jogado = RankmeMysqlCsgo.pluck("rounds_ct + rounds_tr").max
+    RankmeMysqlCsgo.where("rounds_ct + rounds_tr < ?", maximo_jogado).destroy_all
+    maximo_ganhado = RankmeMysqlCsgo.pluck("ct_win + tr_win").max
+    minimo_ganhado = RankmeMysqlCsgo.pluck("ct_win + tr_win").min
+    array = RankmeMysqlCsgo.all.map{|r| { r.id => r.ct_win + r.tr_win }}
+    time_vencedor = []
+    time_perdedor = []
+    array.each do |hash|
+      hash.each do |k, v|
+        if v == maximo_ganhado
+          time_vencedor << k
+        else
+          time_perdedor << k
+        end
+      end
+    end
+    jogadores_time_vencedor = RankmeMysqlCsgo.where("id IN (?)", time_vencedor).pluck(:steam).sort
     # Pega todos os ids de usuário dos jogadores do time VENCEDOR
     ids_jogadores_time_vencedor = User.where(steam: jogadores_time_vencedor).pluck(:id).sort
     # Verificar quais os times existentes que esses jogadores participam
@@ -104,9 +121,9 @@ class RandomizerController < ApplicationController
       # Insere o jogador no time VENCEDOR
       Player.where(team_id: time_vencedor.id, user_id: user.id).first_or_create
     end
-    Winner.create(team_id: time_vencedor.id, round_id: round.id, placar: current_configuration.numero_partidas)
+    Winner.create(team_id: time_vencedor.id, round_id: round.id, placar: maximo_ganhado)
     ############################################################################################################
-    jogadores_time_perdedor = RankmeMysql.where.not("steam IN (?)", jogadores_time_vencedor).pluck(:steam).sort
+    jogadores_time_perdedor = RankmeMysqlCsgo.where("id IN (?)", time_perdedor).pluck(:steam).sort
     # Pega todos os ids de usuário dos jogadores do time PERDEDOR
     ids_jogadores_time_perdedor = User.where(steam: jogadores_time_perdedor).pluck(:id).sort
     # Verificar quais os times existentes que esses jogadores participam
@@ -130,7 +147,7 @@ class RandomizerController < ApplicationController
       # Identifica o jogador na tabela users pelo steam
       user = User.find_by(steam: steam_jogador)
       # Pega todos os dados desse jogador no mysql removendo o id
-      dados_mysql = RankmeMysql.find_by(:steam => user.steam)
+      dados_mysql = RankmeMysqlCsgo.find_by(:steam => user.steam)
       dados_tratados = dados_mysql.as_json.select {|k,v| k != 'id'}
       # Coloca o resto das informações no hash para salvar
       dados_tratados[:user_id] = user.id
@@ -143,9 +160,8 @@ class RandomizerController < ApplicationController
       Rankme.create(dados_tratados)
       # Insere o jogador no time PERDEDOR
       Player.where(team_id: time_perdedor.id, user_id: user.id).first_or_create
-      vitorias_perdedor = dados_tratados[:ct_win] + dados_tratados[:tr_win]
     end
-    Loser.create(team_id: time_perdedor.id, round_id: round.id, placar: vitorias_perdedor)
+    Loser.create(team_id: time_perdedor.id, round_id: round.id, placar: minimo_ganhado)
     flash[:success] = "Mapa finalizado com sucesso!"
   end
 
