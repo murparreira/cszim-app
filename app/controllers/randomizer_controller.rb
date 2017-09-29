@@ -115,7 +115,7 @@ class RandomizerController < ApplicationController
       dados_tratados[:map_id] = chosen_map.map_id
       dados_tratados[:tournament_id] = torneio_dia.id
       dados_tratados[:round_id] = round.id
-      dados_tratados[:team_id] = time_ct.id
+      dados_tratados[:team_id] = time_vencedor.id
       dados_tratados[:season_id] = current_season.id
       # Salva todos os dados do jogador que veio do mysql na tabela rankmes do sistema
       RankmeCsgo.create(dados_tratados)
@@ -156,7 +156,7 @@ class RandomizerController < ApplicationController
       dados_tratados[:map_id] = chosen_map.map_id
       dados_tratados[:tournament_id] = torneio_dia.id
       dados_tratados[:round_id] = round.id
-      dados_tratados[:team_id] = time_tr.id
+      dados_tratados[:team_id] = time_perdedor.id
       dados_tratados[:season_id] = current_season.id
       # Salva todos os dados do jogador que veio do mysql na tabela rankmes do sistema
       Rankme.create(dados_tratados)
