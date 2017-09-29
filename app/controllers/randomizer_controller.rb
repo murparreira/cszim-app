@@ -131,7 +131,7 @@ class RandomizerController < ApplicationController
     # Verificar quais os times existentes que esses jogadores participam
     ids_times_ja_criados = Team.joins(:players).where("players.user_id IN (?)", ids_jogadores_time_perdedor).pluck(:id).uniq.sort
     # Para cada time, consultar os jogadores do mesmo e comparar o resultado em forma de array com os ids do time atual
-    salvar_novo_time = perdedorue
+    salvar_novo_time = true
     time_perdedor = nil
     ids_times_ja_criados.each do |team_id|
       jogadores_desse_time = Team.find(team_id).users.pluck(:id).sort
