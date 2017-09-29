@@ -84,6 +84,7 @@ class RandomizerController < ApplicationController
       end
     end
     jogadores_time_vencedor = RankmeMysqlCsgo.where("id IN (?)", time_vencedor).pluck(:steam).sort
+    jogadores_time_vencedor.map!{|j| j.split(":").last}
     # Pega todos os ids de usuário dos jogadores do time VENCEDOR
     ids_jogadores_time_vencedor = User.where(steam: jogadores_time_vencedor).pluck(:id).sort
     # Verificar quais os times existentes que esses jogadores participam
@@ -124,6 +125,7 @@ class RandomizerController < ApplicationController
     Winner.create(team_id: time_vencedor.id, round_id: round.id, placar: maximo_ganhado)
     ############################################################################################################
     jogadores_time_perdedor = RankmeMysqlCsgo.where("id IN (?)", time_perdedor).pluck(:steam).sort
+    jogadores_time_perdedor.map!{|j| j.split(":").last}
     # Pega todos os ids de usuário dos jogadores do time PERDEDOR
     ids_jogadores_time_perdedor = User.where(steam: jogadores_time_perdedor).pluck(:id).sort
     # Verificar quais os times existentes que esses jogadores participam
@@ -178,6 +180,7 @@ class RandomizerController < ApplicationController
       round = Round.create(tournament_id: torneio_dia.id, map_id: chosen_map.map_id, season_id: current_season.id)
       # Pega todos os códigos da steam dos jogadores do time CT
       jogadores_time_ct = RankmeMysql.where("rounds_ct > 0").pluck(:steam).sort
+      jogadores_time_ct.map!{|j| j.split(":").last}
       # Pega todos os ids de usuário dos jogadores do time CT
       ids_jogadores_time_ct = User.where(steam: jogadores_time_ct).pluck(:id).sort
       # Verificar quais os times existentes que esses jogadores participam
@@ -217,6 +220,7 @@ class RandomizerController < ApplicationController
       end
       # Pega todos os códigos da steam dos jogadores do time TR
       jogadores_time_tr = RankmeMysql.where("rounds_tr > 0").pluck(:steam)
+      jogadores_time_tr.map!{|j| j.split(":").last}
       # Pega todos os ids de usuário dos jogadores do time TR
       ids_jogadores_time_tr = User.where(steam: jogadores_time_tr).pluck(:id).sort
       # Verificar quais os times existentes que esses jogadores participam
