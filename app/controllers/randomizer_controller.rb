@@ -108,7 +108,7 @@ class RandomizerController < ApplicationController
       # Identifica o jogador na tabela users pelo steam
       user = User.find_by(steam: steam_jogador)
       # Pega todos os dados desse jogador no mysql removendo o id
-      dados_mysql = RankmeMysqlCsgo.where("steam ILIKE '%#{user.steam}'").last
+      dados_mysql = RankmeMysqlCsgo.where("steam LIKE '%#{user.steam}'").last
       dados_tratados = dados_mysql.as_json.select {|k,v| k != 'id'}
       # Coloca o resto das informações no hash para salvar
       dados_tratados[:user_id] = user.id
@@ -149,7 +149,7 @@ class RandomizerController < ApplicationController
       # Identifica o jogador na tabela users pelo steam
       user = User.find_by(steam: steam_jogador)
       # Pega todos os dados desse jogador no mysql removendo o id
-      dados_mysql = RankmeMysqlCsgo.where("steam ILIKE '%#{user.steam}'").last
+      dados_mysql = RankmeMysqlCsgo.where("steam LIKE '%#{user.steam}'").last
       dados_tratados = dados_mysql.as_json.select {|k,v| k != 'id'}
       # Coloca o resto das informações no hash para salvar
       dados_tratados[:user_id] = user.id
@@ -204,7 +204,7 @@ class RandomizerController < ApplicationController
         # Identifica o jogador na tabela users pelo steam
         user = User.find_by(steam: steam_jogador)
         # Pega todos os dados desse jogador no mysql removendo o id
-        dados_mysql = RankmeMysql.where("steam ILIKE '%#{user.steam}'").last
+        dados_mysql = RankmeMysql.where("steam LIKE '%#{user.steam}'").last
         dados_tratados = dados_mysql.as_json.select {|k,v| k != 'id'}
         # Coloca o resto das informações no hash para salvar
         dados_tratados[:user_id] = user.id
@@ -244,7 +244,7 @@ class RandomizerController < ApplicationController
         # Identifica o jogador na tabela users pelo steam
         user = User.find_by(steam: steam_jogador)
         # Pega todos os dados desse jogador no mysql removendo o id
-        dados_mysql = RankmeMysql.where("steam ILIKE '%#{user.steam}'").last
+        dados_mysql = RankmeMysql.where("steam LIKE '%#{user.steam}'").last
         dados_tratados = dados_mysql.as_json.select {|k,v| k != 'id'}
         # Coloca o resto das informações no hash para salvar
         dados_tratados[:user_id] = user.id
