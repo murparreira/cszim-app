@@ -21,6 +21,7 @@
           <%= image_tag(imagem_mapa_url(map), class: "is-128x128") %>
           <div><h3><strong><%= map.nome %></strong></h3></div>
           <div><h3><strong><%= map.sigla %></strong></h3></div>
+          <div><h3><strong>Jogo: <%= map.game.sigla %></strong></h3></div>
           <div><%= label_status map.ativo %></div>
           <div>Jogado <%= Round.joins(:winner).where(map_id: map.id).count %> vez(es)</div>
         </span>

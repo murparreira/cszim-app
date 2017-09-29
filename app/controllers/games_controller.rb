@@ -5,6 +5,20 @@ class GamesController < ApplicationController
 		@games = Game.order(id: :desc)
 	end
 
+  def edit
+    @game = Game.find(params[:id])
+  end
+
+  def update
+    @game = Game.find(params[:id])
+    if @game.update_attributes(game_params)
+      flash[:success] = 'Jogo atualizado com sucesso!'
+      redirect_to games_url
+    else
+      render 'edit'
+    end
+  end
+
   def toggle_status
     @game = Game.find params[:id]
     @game.toggle :ativo
@@ -16,6 +30,6 @@ class GamesController < ApplicationController
 	private
 
   def game_params
-    params.require(:game).permit(:nome)
+    params.require(:game).permit(:nome, :sigla, :login)
   end
 end

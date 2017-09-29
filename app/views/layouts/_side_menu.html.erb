@@ -43,6 +43,12 @@
           Ativar Jogo
         <% end %>
       </li>
+      <li>
+        <%= link_to server_configurations_path, class: "#{'is-active' if params[:controller] == 'server_configurations'}" do %>
+          <span class="icon is-small"><i class="fa fa-cog"></i></span>&nbsp;
+          Configuração do Servidor
+        <% end %>
+      </li>
     <% end %>
   </ul>
   <ul class="menu-list">

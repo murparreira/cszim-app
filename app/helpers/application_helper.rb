@@ -1,5 +1,17 @@
 module ApplicationHelper
 
+  def current_game
+    Game.find_by(ativo: true)
+  end
+
+  def current_season
+    Season.last
+  end
+
+  def current_configuration
+    ServerConfiguration.find_by(ativo: true)
+  end
+
   def new_or_edit_path(model)
     model.new_record? ? send("new_#{model.model_name.singular}_path", model) : send("edit_#{model.model_name.singular}_path", model)
   end

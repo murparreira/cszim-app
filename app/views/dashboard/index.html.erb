@@ -2,7 +2,8 @@
 
 <div class="columns is-multiline">
   <div class="column has-text-centered">
-    <h3 class="subtitle">Jogo Ativo: <%= Game.find_by(ativo: true).nome %></h3>
+    <h3 class="subtitle">Jogo Ativo: <%= current_game.nome %></h3>
+    <h3 class="subtitle">Configuração Ativa: <%= current_configuration.nome %></h3>
   </div>
 </div>
 
