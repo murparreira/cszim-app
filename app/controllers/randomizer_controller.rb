@@ -160,7 +160,7 @@ class RandomizerController < ApplicationController
         dados_tratados[:team_id] = time_perdedor.id
         dados_tratados[:season_id] = current_season.id
         # Salva todos os dados do jogador que veio do mysql na tabela rankmes do sistema
-        Rankme.create(dados_tratados)
+        RankmeCsgo.create(dados_tratados)
         # Insere o jogador no time PERDEDOR
         Player.where(team_id: time_perdedor.id, user_id: user.id).first_or_create
       end
