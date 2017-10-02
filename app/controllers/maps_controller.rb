@@ -48,6 +48,6 @@ class MapsController < ApplicationController
 	private
 
   def map_params
-    params.require(:map).permit(:nome, :sigla, :imagem)
+    params.require(:map).permit(:nome, :sigla, :imagem, :game_id)
   end
 end
