@@ -47,48 +47,81 @@
         <%= image_tag(asset_path("cssweapons/300px-Css_xm1014.png"), class: 'image anti-image-block is-16x16') %>
         SHOTGUNS
       </td></tr>
+      <tr><td>
+        <%= image_tag(asset_path("cssweapons/300px-Css_hegrenade.jpg"), class: 'image anti-image-block is-16x16') %>
+        HE GRENADE
+      </td></tr>
+      <tr><td>
+        <%= image_tag(asset_path("cssweapons/300px-Css_molotov.jpg"), class: 'image anti-image-block is-16x16') %>
+        MOLOTOV
+      </td></tr>
     </tbody>
   </table>
   </div>
-  <% @ranks.each do |rank| %>
-    <div class="column is-1">
-      <table class="table is-bordered is-narrow">
-      <tbody>
-          <tr><td><%= rank.nome %></td></tr>
-          <tr><td data-kills="<%= rank.kills.round(1) %>" class="colored"><%= rank.kills %></td></tr>
-          <tr><td data-deaths="<%= rank.deaths.round(1) %>" class="colored"><%= rank.deaths %></td></tr>
-          <tr><td data-ratio="<%= format_float(rank.ratio) %>" class="colored"><%= rank.ratio %></td></tr>
-          <tr><td data-suicides="<%= rank.suicides.round(1) %>" class="colored"><%= rank.suicides %></td></tr>
-          <tr><td data-tk="<%= rank.tk.round(1) %>" class="colored"><%= rank.tk %></td></tr>
-          <tr><td data-shots="<%= rank.shots.round(1) %>" class="colored"><%= rank.shots %></td></tr>
-          <% mira = ((rank.hits.to_f/rank.shots.to_f)*100).round(1) %>
-          <tr><td data-mira="<%= mira.round(1) %>" class="colored"><%= mira %>%</td></tr>
-          <tr><td data-nuheadshots="<%= rank.headshots.round(1) %>" class="colored"><%= rank.headshots %></td></tr>
-          <% headshots = ((rank.headshots.to_f/rank.kills.to_f)*100).round(1) %>
-          <tr><td data-headshots="<%= headshots.round(1) %>" class="colored"><%= headshots %>%</td></tr>
-          <tr><td data-c4planted="<%= rank.c4_planted.round(1) %>" class="colored"><%= rank.c4_planted %></td></tr>
-          <tr><td data-c4exploded="<%= rank.c4_exploded.round(1) %>" class="colored"><%= rank.c4_exploded %></td></tr>
-          <tr><td data-c4defused="<%= rank.c4_defused.round(1) %>" class="colored"><%= rank.c4_defused %></td></tr>
-          <tr class="armas"><td data-ak47="<%= rank.ak47.round(1) %>" class="colored"><%= rank.ak47 %></td></tr>
-          <tr class="armas"><td data-m4a1="<%= rank.m4a1.round(1) %>" class="colored"><%= rank.m4a1 %></td></tr>
-          <tr class="armas"><td data-awp="<%= rank.awp.round(1) %>" class="colored"><%= rank.awp %></td></tr>
-          <% tecos = (rank.sg550 + rank.g3sg1) %>
-          <tr class="armas"><td data-tecos="<%= tecos.round(1) %>" class="colored"><%= tecos %></td></tr>
-          <tr class="armas"><td data-famas="<%= rank.famas.round(1) %>" class="colored"><%= rank.famas %></td></tr>
-          <tr class="armas"><td data-galil="<%= rank.galil.round(1) %>" class="colored"><%= rank.galil %></td></tr>
-          <tr class="armas"><td data-knife="<%= rank.knife.round(1) %>" class="colored"><%= rank.knife %></td></tr>
-          <% pistolas = (rank.usp + rank.glock) %>
-          <tr class="armas"><td data-pistolas="<%= pistolas.round(1) %>" class="colored"><%= pistolas %></td></tr>
-          <% outraspistolas = (rank.fiveseven + rank.p228 + rank.elite) %>
-          <tr class="armas"><td data-outraspistolas="<%= outraspistolas.round(1) %>" class="colored"><%= outraspistolas %></td></tr>
-          <tr class="armas"><td data-deagle="<%= rank.deagle.round(1) %>" class="colored"><%= rank.deagle %></td></tr>
-          <% submachineguns = (rank.p90 + rank.mac10 + rank.ump45 + rank.mp5navy + rank.tmp) %>
-          <tr class="armas"><td data-submachineguns="<%= submachineguns.round(1) %>" class="colored"><%= submachineguns %></td></tr>
-          <% shotguns = (rank.m3 + rank.xm1014) %>
-          <tr class="armas"><td data-shotguns="<%= shotguns.round(1) %>" class="colored"><%= shotguns %></td></tr>
-        </tbody>
-      </table>
-    </div>
+  <% User.where(id: params[:players]).each do |user| %>
+    <% rank = @ranks.select{ |e| e[:nome] == user.nome } %>
+    <% unless rank.empty? %>
+      <div class="column is-1">
+        <table class="table is-bordered is-narrow">
+        <tbody>
+            <tr><td><%= user.nome %></td></tr>
+            <% kills = rank.sum{ |e| e[:kills] } %>
+            <tr><td data-kills="<%= kills.round(1) %>" class="colored"><%= kills %></td></tr>
+            <% deaths = rank.sum{ |e| e[:deaths] } %>
+            <tr><td data-deaths="<%= deaths.round(1) %>" class="colored"><%= deaths %></td></tr>
+            <% ratio = (kills.to_f/deaths.to_f).round(2) %>
+            <tr><td data-ratio="<%= format_float(ratio) %>" class="colored"><%= ratio %></td></tr>
+            <% suicides = rank.sum{ |e| e[:suicides] } %>
+            <tr><td data-suicides="<%= suicides.round(1) %>" class="colored"><%= suicides %></td></tr>
+            <% tk = rank.sum{ |e| e[:tk] } %>
+            <tr><td data-tk="<%= tk.round(1) %>" class="colored"><%= tk %></td></tr>
+            <% shots = rank.sum{ |e| e[:shots] } %>
+            <tr><td data-shots="<%= shots.round(1) %>" class="colored"><%= shots %></td></tr>
+            <% hits = rank.sum{ |e| e[:hits] } %>
+            <% mira = ((hits.to_f/shots.to_f)*100).round(1) %>
+            <tr><td data-mira="<%= mira.round(1) %>" class="colored"><%= mira %>%</td></tr>
+            <% nuheadshots = rank.sum{ |e| e[:headshots] } %>
+            <tr><td data-nuheadshots="<%= nuheadshots.round(1) %>" class="colored"><%= nuheadshots %></td></tr>
+            <% headshots = ((nuheadshots.to_f/kills.to_f)*100).round(1) %>
+            <tr><td data-headshots="<%= headshots.round(1) %>" class="colored"><%= headshots %>%</td></tr>
+            <% c4_planted = rank.sum{ |e| e[:c4_planted] } %>
+            <tr><td data-c4planted="<%= c4_planted.round(1) %>" class="colored"><%= c4_planted %></td></tr>
+            <% c4_exploded = rank.sum{ |e| e[:c4_exploded] } %>
+            <tr><td data-c4exploded="<%= c4_exploded.round(1) %>" class="colored"><%= c4_exploded %></td></tr>
+            <% c4_defused = rank.sum{ |e| e[:c4_defused] } %>
+            <tr><td data-c4defused="<%= c4_defused.round(1) %>" class="colored"><%= c4_defused %></td></tr>
+            <% ak47 = rank.sum{ |e| e[:ak47] } %>
+            <tr class="armas"><td data-ak47="<%= ak47.round(1) %>" class="colored"><%= ak47 %></td></tr>
+            <% m4a1 = rank.sum{ |e| e[:m4a1].to_i + e[:m4a1_silencer].to_i } %>
+            <tr class="armas"><td data-m4a1="<%= m4a1.round(1) %>" class="colored"><%= m4a1 %></td></tr>
+            <% awp = rank.sum{ |e| e[:awp] } %>
+            <tr class="armas"><td data-awp="<%= awp.round(1) %>" class="colored"><%= awp %></td></tr>
+            <% tecos = rank.sum{ |e| e[:scar20].to_i + e[:g3sg1].to_i + e[:sg550].to_i } %>
+            <tr class="armas"><td data-tecos="<%= tecos.round(1) %>" class="colored"><%= tecos %></td></tr>
+            <% famas = rank.sum{ |e| e[:famas] } %>
+            <tr class="armas"><td data-famas="<%= famas.round(1) %>" class="colored"><%= famas %></td></tr>
+            <% galil = rank.sum{ |e| e[:galilar].to_i + e[:galil].to_i } %>
+            <tr class="armas"><td data-galil="<%= galil.round(1) %>" class="colored"><%= galil %></td></tr>
+            <% knife = rank.sum{ |e| e[:knife] } %>
+            <tr class="armas"><td data-knife="<%= knife.round(1) %>" class="colored"><%= knife %></td></tr>
+            <% pistolas = rank.sum{ |e| e[:hkp2000].to_i + e[:usp_silencer].to_i + e[:glock].to_i + + e[:usp].to_i } %>
+            <tr class="armas"><td data-pistolas="<%= pistolas.round(1) %>" class="colored"><%= pistolas %></td></tr>
+            <% outraspistolas = rank.sum{ |e| e[:fiveseven].to_i + e[:p250].to_i + e[:tec9].to_i + + e[:cz75a].to_i + e[:p228].to_i + e[:elite].to_i } %>
+            <tr class="armas"><td data-outraspistolas="<%= outraspistolas.round(1) %>" class="colored"><%= outraspistolas %></td></tr>
+            <% deagle = rank.sum{ |e| e[:deagle] } %>
+            <tr class="armas"><td data-deagle="<%= deagle.round(1) %>" class="colored"><%= deagle %></td></tr>
+            <% submachineguns = rank.sum{ |e| e[:p90].to_i + e[:mac10].to_i + e[:ump45].to_i + + e[:mp9].to_i + e[:mp7].to_i + e[:bizon].to_i + e[:mp5navy].to_i + e[:tmp].to_i } %>
+            <tr class="armas"><td data-submachineguns="<%= submachineguns.round(1) %>" class="colored"><%= submachineguns %></td></tr>
+            <% shotguns = rank.sum{ |e| e[:nova].to_i + e[:xm1014].to_i + e[:mag7].to_i + + e[:m3].to_i } %>
+            <tr class="armas"><td data-shotguns="<%= shotguns.round(1) %>" class="colored"><%= shotguns %></td></tr>
+            <% hegrenade = rank.sum{ |e| e[:hegrenade].to_i } %>
+            <tr class="armas"><td data-hegrenade="<%= hegrenade.round(1) %>" class="colored"><%= hegrenade %></td></tr>
+            <% inferno = rank.sum{ |e| e[:inferno].to_i } %>
+            <tr class="armas"><td data-inferno="<%= inferno.round(1) %>" class="colored"><%= inferno %></td></tr>
+          </tbody>
+        </table>
+      </div>
+    <% end %>
   <% end %>
 </div>
 
@@ -290,6 +323,22 @@
       var shotgunsList = document.querySelectorAll("[data-shotguns='"+maxShotguns+"']");
       for (var i = 0; i < shotgunsList.length; i++) {
         shotgunsList[i].style.color = "green";
+      }
+
+      var hegrenadeElements = document.querySelectorAll("[data-hegrenade]");
+      var hegrenade = $.map(hegrenadeElements, function(val, i) { return parseFloat(val.dataset.hegrenade).toFixed(1); });
+      var maxShotguns = Math.max.apply(Math, hegrenade).toFixed(1);
+      var hegrenadeList = document.querySelectorAll("[data-hegrenade='"+maxShotguns+"']");
+      for (var i = 0; i < hegrenadeList.length; i++) {
+        hegrenadeList[i].style.color = "green";
+      }
+
+      var infernoElements = document.querySelectorAll("[data-inferno]");
+      var inferno = $.map(infernoElements, function(val, i) { return parseFloat(val.dataset.inferno).toFixed(1); });
+      var maxShotguns = Math.max.apply(Math, inferno).toFixed(1);
+      var infernoList = document.querySelectorAll("[data-inferno='"+maxShotguns+"']");
+      for (var i = 0; i < infernoList.length; i++) {
+        infernoList[i].style.color = "green";
       }
     }
   });

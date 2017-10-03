@@ -1,5 +1,7 @@
 class Game < ApplicationRecord
 
+  has_many :maps
+
   def situacao_traduzida
     if ativo
       "<span class='tag is-success'>Jogo Ativo</span>".html_safe

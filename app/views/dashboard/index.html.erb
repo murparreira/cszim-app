@@ -37,21 +37,28 @@
         <div class="columns">
           <div class="column">
             <table class="table is-narrow">
-              <tr><td>Mapas jogados:</td><td><%= Winner.joins(:round, team: :users).where("rounds.season_id IN (?)", season_id).where(users: {id: user.id}).count + Loser.joins(:round, team: :users).where("rounds.season_id IN (?)", season_id).where(users: {id: user.id}).count %></td></tr>
-              <tr><td>Mapas ganhos:</td><td><%= Winner.joins(:round, team: :users).where("rounds.season_id IN (?)", season_id).where(users: {id: user.id}).count %></td></tr>
-              <% user_kills = Rankme.select("COALESCE(SUM(kills), 0) AS kills").where(season_id: season_id).find_by(user_id: user.id).kills %>
+              <% if current_game.sigla == "CSGO" %>
+                <% user_kills = RankmeCsgo.select("COALESCE(SUM(kills), 0) AS kills").where(season_id: season_id).find_by(user_id: user.id).kills %>
+                <% user_deaths = RankmeCsgo.select("COALESCE(SUM(deaths), 0) AS deaths").where(season_id: season_id).find_by(user_id: user.id).deaths %>
+                <% user_ct_win = RankmeCsgo.select("COALESCE(SUM(ct_win), 0) AS ct_win").where(season_id: season_id).find_by(user_id: user.id).ct_win %>
+                <% user_tr_win = RankmeCsgo.select("COALESCE(SUM(tr_win), 0) AS tr_win").where(season_id: season_id).find_by(user_id: user.id).tr_win %>
+                <% kill_hash = RankmeCsgo.where(season_id: season_id).where(user_id: user.id).pluck(:map_id, :kills).map{|r| {r[0] => r[1]} }.inject{|memo, el| memo.merge( el ){|k, old_v, new_v| old_v + new_v}} %>
+                <% death_hash = RankmeCsgo.where(season_id: season_id).where(user_id: user.id).pluck(:map_id, :deaths).map{|r| {r[0] => r[1]} }.inject{|memo, el| memo.merge( el ){|k, old_v, new_v| old_v + new_v}} %>
+              <% else %>
+                <% user_kills = Rankme.select("COALESCE(SUM(kills), 0) AS kills").where(season_id: season_id).find_by(user_id: user.id).kills %>
+                <% user_deaths = Rankme.select("COALESCE(SUM(deaths), 0) AS deaths").where(season_id: season_id).find_by(user_id: user.id).deaths %>
+                <% user_ct_win = Rankme.select("COALESCE(SUM(ct_win), 0) AS ct_win").where(season_id: season_id).find_by(user_id: user.id).ct_win %>
+                <% user_tr_win = Rankme.select("COALESCE(SUM(tr_win), 0) AS tr_win").where(season_id: season_id).find_by(user_id: user.id).tr_win %>
+                <% kill_hash = Rankme.where(season_id: season_id).where(user_id: user.id).pluck(:map_id, :kills).map{|r| {r[0] => r[1]} }.inject{|memo, el| memo.merge( el ){|k, old_v, new_v| old_v + new_v}} %>
+                <% death_hash = Rankme.where(season_id: season_id).where(user_id: user.id).pluck(:map_id, :deaths).map{|r| {r[0] => r[1]} }.inject{|memo, el| memo.merge( el ){|k, old_v, new_v| old_v + new_v}} %>
+              <% end %>
               <tr><td>Kills:</td><td><%= user_kills %></td></tr>
-              <% user_deaths = Rankme.select("COALESCE(SUM(deaths), 0) AS deaths").where(season_id: season_id).find_by(user_id: user.id).deaths %>
               <tr><td>Deaths:</td><td><%= user_deaths %></td></tr>
               <% user_ratio = (user_kills.to_f/user_deaths.to_f).round(2) %>
               <tr><td>Ratio:</td><td><%= user_ratio %></td></tr>
-              <% user_ct_win = Rankme.select("COALESCE(SUM(ct_win), 0) AS ct_win").where(season_id: season_id).find_by(user_id: user.id).ct_win %>
-              <% user_tr_win = Rankme.select("COALESCE(SUM(tr_win), 0) AS tr_win").where(season_id: season_id).find_by(user_id: user.id).tr_win %>
               <% user_total_win = user_ct_win + user_tr_win %>
               <tr><td>CT wins:</td><td><%= user_ct_win %> (<%= ((user_ct_win.to_f/user_total_win.to_f)*100.00).round(2) %>%)</td></tr>
               <tr><td>T wins:</td><td><%= user_tr_win %> (<%= ((user_tr_win.to_f/user_total_win.to_f)*100.00).round(2) %>%)</td></tr>
-              <% kill_hash = Rankme.where(season_id: season_id).where(user_id: user.id).pluck(:map_id, :kills).map{|r| {r[0] => r[1]} }.inject{|memo, el| memo.merge( el ){|k, old_v, new_v| old_v + new_v}} %>
-              <% death_hash = Rankme.where(season_id: season_id).where(user_id: user.id).pluck(:map_id, :deaths).map{|r| {r[0] => r[1]} }.inject{|memo, el| memo.merge( el ){|k, old_v, new_v| old_v + new_v}} %>
               <% if kill_hash.present? && death_hash.present? %>
                 <% ratio_hash = kill_hash.merge(death_hash) {|k, kill_value, death_value| (kill_value.to_f/death_value.to_f).round(2)} %>
               <% end %>
@@ -110,23 +117,26 @@
     <% total_rounds = 0 %>
     <% total_ct = 0 %>
     <% total_tr = 0 %>
-    <% Round.joins(:winner).where(season_id: season_id).group(:map_id).count.each do |map_id, value| %>
-      <% if map_id %>
-        <tr>
-          <% map = Map.find(map_id) %>
-          <% vitorias_ct = Rankme.where(season_id: season_id).where(map_id: map_id).group(:user_id).sum(:ct_win).values.uniq.max %>
-          <% vitorias_tr = Rankme.where(season_id: season_id).where(map_id: map_id).group(:user_id).sum(:tr_win).values.uniq.max %>
-          <td><%= image_tag imagem_mapa_url(map), class: 'img-circle image anti-image-block is-24x24' %></td>
-          <td><%= map.nome %> - <%= map.sigla %></td>
-          <% total = vitorias_ct + vitorias_tr %>
-          <td><%= total %></td>
-          <td><%= vitorias_ct %> (<%= ((vitorias_ct.to_f/total.to_f)*100.00).round(2) %>%)</td>
-          <td><%= vitorias_tr %> (<%= ((vitorias_tr.to_f/total.to_f)*100.00).round(2) %>%)</td>
-        </tr>
-        <% total_rounds += total %>
-        <% total_ct += vitorias_ct %>
-        <% total_tr += vitorias_tr %>
-      <% end %>
+    <% current_game.maps.each do |map| %>
+      <tr>
+        <% if current_game.sigla == "CSGO" %>
+          <% vitorias_ct = RankmeCsgo.where(season_id: season_id).where(map_id: map.id).pluck(:ct_win).uniq.sum %>
+          <% vitorias_tr = RankmeCsgo.where(season_id: season_id).where(map_id: map.id).pluck(:tr_win).uniq.sum %>
+          <% rounds_jogados = RankmeCsgo.where(season_id: season_id).where(map_id: map.id).pluck(:rounds_ct).uniq.sum %>
+        <% else %>
+          <% vitorias_ct = Rankme.where(season_id: season_id).where(map_id: map.id).group(:user_id).sum(:ct_win).values.uniq.max %>
+          <% vitorias_tr = Rankme.where(season_id: season_id).where(map_id: map.id).group(:user_id).sum(:tr_win).values.uniq.max %>
+          <% rounds_jogados = vitorias_tr _ vitorias_ct %>
+        <% end %>
+        <td><%= image_tag imagem_mapa_url(map), class: 'img-circle image anti-image-block is-24x24' %></td>
+        <td><%= map.nome %> - <%= map.sigla %></td>
+        <td><%= rounds_jogados %></td>
+        <td><%= vitorias_ct %> (<%= ((vitorias_ct.to_f/rounds_jogados.to_f)*100.00).round(2) %>%)</td>
+        <td><%= vitorias_tr %> (<%= ((vitorias_tr.to_f/rounds_jogados.to_f)*100.00).round(2) %>%)</td>
+      </tr>
+      <% total_rounds += rounds_jogados %>
+      <% total_ct += vitorias_ct %>
+      <% total_tr += vitorias_tr %>
     <% end %>
     <tr>
       <td colspan="2"></td>

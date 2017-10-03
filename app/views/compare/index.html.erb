@@ -15,13 +15,16 @@
 </div>
 
 <div class="columns" data-turbolinks="false">
-  <div class="column is-third">
+  <div class="column is-quarter">
+    <%= select_tag :game_id, options_for_select(Game.all.order(created_at: :desc).collect {|s| [s.nome, s.id]}, params[:game_id]), {class: 'input history-detail', include_blank: true} %>
+  </div>
+  <div class="column is-quarter">
     <%= select_tag :season_id, options_for_select(Season.all.order(created_at: :desc).collect {|s| [s.nome, s.id]}, params[:season_id]), {class: 'input history-detail', include_blank: true} %>
   </div>
-  <div class="column is-third">
+  <div class="column is-quarter">
     <%= select_tag :tournament_id, options_for_select(Tournament.all.order(created_at: :desc).collect {|t| [t.nome, t.id]}, params[:tournament_id]), {class: 'input history-detail', include_blank: true} %>
   </div>
-  <div class="column is-third">
+  <div class="column is-quarter">
     <%= select_tag :map_id, options_for_select(Map.all.where(ativo: true).order(nome: :asc).collect {|m| [m.nome, m.id]}, params[:map_id]), {class: 'input history-detail', include_blank: true} %>
   </div>
 </div>
@@ -41,6 +44,7 @@
   });
 
   $('#players').select2({ placeholder: "Selecione os jogadores" });
+  $('#game_id').select2({ placeholder: "Selecione o Jogo", allowClear: true });
   $('#season_id').select2({ placeholder: "Selecione a Temporada", allowClear: true });
   $('#tournament_id').select2({ placeholder: "Selecione o Torneio", allowClear: true });
   $('#map_id').select2({ placeholder: "Selecione o Mapa", allowClear: true });
@@ -65,6 +69,7 @@
       url: "/get_maps_from_tournament",
       type: "GET",
       data: {
+        game_id: $("#game_id").val()
         tournament_id: this.value
       },
       success: function(data) {
@@ -82,6 +87,7 @@
       type: "GET",
       data: {
         players: $('#players').val(),
+        game_id: $('#game_id').val(),
         season_id: $('#season_id').val(),
         tournament_id: $('#tournament_id').val(),
         map_id: $('#map_id').val()
