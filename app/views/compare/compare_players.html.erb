@@ -5,7 +5,9 @@
       <tr><td>Jogador</td></tr>
       <tr><td>Kills</td></tr>
       <tr><td>Deaths</td></tr>
+      <tr><td>Assists</td></tr>
       <tr><td>Ratio</td></tr>
+      <tr><td>Dano Causado</td></tr>
       <tr><td>Suicídios</td></tr>
       <tr><td>Team Kills</td></tr>
       <tr><td>Disparos</td></tr>
@@ -26,6 +28,7 @@
       <tr><td><%= image_tag(asset_path("cssweapons/300px-Css_famas.png"), class: 'image anti-image-block is-16x16') %> FAMAS</td></tr>
       <tr><td><%= image_tag(asset_path("cssweapons/300px-Css_galil.png"), class: 'image anti-image-block is-16x16') %> GALIL</td></tr>
       <tr><td><%= image_tag(asset_path("cssweapons/300px-Css_knives.png"), class: 'image anti-image-block is-16x16') %> FACA</td></tr>
+      <tr><td><%= image_tag(asset_path("cssweapons/300px-Css_taser.png"), class: 'image anti-image-block is-16x16') %> TASER</td></tr>
       <tr><td>
         <%= image_tag(asset_path("cssweapons/300px-Css_usp.png"), class: 'image anti-image-block is-16x16') %>
         <%= image_tag(asset_path("cssweapons/300px-Css_glock16.png"), class: 'image anti-image-block is-16x16') %>
@@ -69,8 +72,12 @@
             <tr><td data-kills="<%= kills.round(1) %>" class="colored"><%= kills %></td></tr>
             <% deaths = rank.sum{ |e| e[:deaths] } %>
             <tr><td data-deaths="<%= deaths.round(1) %>" class="colored"><%= deaths %></td></tr>
+            <% assists = rank.sum{ |e| e[:assists].to_i } %>
+            <tr><td data-assists="<%= assists.round(1) %>" class="colored"><%= assists %></td></tr>
             <% ratio = (kills.to_f/deaths.to_f).round(2) %>
             <tr><td data-ratio="<%= format_float(ratio) %>" class="colored"><%= ratio %></td></tr>
+            <% damage = rank.sum{ |e| e[:damage].to_i } %>
+            <tr><td data-damage="<%= damage.round(1) %>" class="colored"><%=  number_with_delimiter(damage, delimiter: ".") %></td></tr>
             <% suicides = rank.sum{ |e| e[:suicides] } %>
             <tr><td data-suicides="<%= suicides.round(1) %>" class="colored"><%= suicides %></td></tr>
             <% tk = rank.sum{ |e| e[:tk] } %>
@@ -104,6 +111,8 @@
             <tr class="armas"><td data-galil="<%= galil.round(1) %>" class="colored"><%= galil %></td></tr>
             <% knife = rank.sum{ |e| e[:knife] } %>
             <tr class="armas"><td data-knife="<%= knife.round(1) %>" class="colored"><%= knife %></td></tr>
+            <% taser = rank.sum{ |e| e[:taser] } %>
+            <tr class="armas"><td data-taser="<%= taser.round(1) %>" class="colored"><%= taser %></td></tr>
             <% pistolas = rank.sum{ |e| e[:hkp2000].to_i + e[:usp_silencer].to_i + e[:glock].to_i + + e[:usp].to_i } %>
             <tr class="armas"><td data-pistolas="<%= pistolas.round(1) %>" class="colored"><%= pistolas %></td></tr>
             <% outraspistolas = rank.sum{ |e| e[:fiveseven].to_i + e[:p250].to_i + e[:tec9].to_i + + e[:cz75a].to_i + e[:p228].to_i + e[:elite].to_i } %>
@@ -149,12 +158,28 @@
         deathsList[i].style.color = "green";
       }
 
+      var assistsElements = document.querySelectorAll("[data-assists]");
+      var assists = $.map(assistsElements, function(val, i) { return parseFloat(val.dataset.assists).toFixed(1); });
+      var maxAssists = Math.max.apply(Math, assists).toFixed(1);
+      var assistsList = document.querySelectorAll("[data-assists='"+maxAssists+"']");
+      for (var i = 0; i < assistsList.length; i++) {
+        assistsList[i].style.color = "green";
+      }
+
       var ratioElements = document.querySelectorAll("[data-ratio]");
       var ratio = $.map(ratioElements, function(val, i) { return parseFloat(val.dataset.ratio).toFixed(2); });
       var maxRatio = Math.max.apply(Math, ratio).toFixed(2);
       var ratioList = document.querySelectorAll("[data-ratio='"+maxRatio+"']");
       for (var i = 0; i < ratioList.length; i++) {
         ratioList[i].style.color = "green";
+      }
+
+      var damageElements = document.querySelectorAll("[data-damage]");
+      var damage = $.map(damageElements, function(val, i) { return parseFloat(val.dataset.damage).toFixed(1); });
+      var maxDamage = Math.max.apply(Math, damage).toFixed(1);
+      var damageList = document.querySelectorAll("[data-damage='"+maxDamage+"']");
+      for (var i = 0; i < damageList.length; i++) {
+        damageList[i].style.color = "green";
       }
 
       var suicidesElements = document.querySelectorAll("[data-suicides]");
@@ -283,6 +308,14 @@
       var knifeList = document.querySelectorAll("[data-knife='"+maxKnife+"']");
       for (var i = 0; i < knifeList.length; i++) {
         knifeList[i].style.color = "green";
+      }
+
+      var taserElements = document.querySelectorAll("[data-taser]");
+      var taser = $.map(taserElements, function(val, i) { return parseFloat(val.dataset.taser).toFixed(1); });
+      var maxTaser = Math.max.apply(Math, taser).toFixed(1);
+      var taserList = document.querySelectorAll("[data-taser='"+maxTaser+"']");
+      for (var i = 0; i < taserList.length; i++) {
+        taserList[i].style.color = "green";
       }
 
       var pistolasElements = document.querySelectorAll("[data-pistolas]");
