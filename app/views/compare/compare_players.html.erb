@@ -111,7 +111,7 @@
             <tr class="armas"><td data-galil="<%= galil.round(1) %>" class="colored"><%= galil %></td></tr>
             <% knife = rank.sum{ |e| e[:knife] } %>
             <tr class="armas"><td data-knife="<%= knife.round(1) %>" class="colored"><%= knife %></td></tr>
-            <% taser = rank.sum{ |e| e[:taser] } %>
+            <% taser = rank.sum{ |e| e[:taser].to_i } %>
             <tr class="armas"><td data-taser="<%= taser.round(1) %>" class="colored"><%= taser %></td></tr>
             <% pistolas = rank.sum{ |e| e[:hkp2000].to_i + e[:usp_silencer].to_i + e[:glock].to_i + + e[:usp].to_i } %>
             <tr class="armas"><td data-pistolas="<%= pistolas.round(1) %>" class="colored"><%= pistolas %></td></tr>
