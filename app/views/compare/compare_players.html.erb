@@ -20,7 +20,8 @@
       <tr><td><%= image_tag(asset_path("cssweapons/300px-Css_ak47.png"), class: 'image anti-image-block is-16x16') %> AK 47</td></tr>
       <tr><td><%= image_tag(asset_path("cssweapons/300px-Css_m4a1.png"), class: 'image anti-image-block is-16x16') %> M4</td></tr>
       <tr><td><%= image_tag(asset_path("cssweapons/300px-Css_aug.png"), class: 'image anti-image-block is-16x16') %> AUG</td></tr>
-      <tr><td><%= image_tag(asset_path("cssweapons/300px-Css_ssg08.png"), class: 'image anti-image-block is-16x16') %> SSG</td></tr>
+      <tr><td><%= image_tag(asset_path("cssweapons/300px-Css_sg556.png"), class: 'image anti-image-block is-16x16') %> SG</td></tr>
+      <tr><td><%= image_tag(asset_path("cssweapons/300px-Css_scout.png"), class: 'image anti-image-block is-16x16') %> SCOUT</td></tr>
       <tr><td><%= image_tag(asset_path("cssweapons/300px-Css_awp.png"), class: 'image anti-image-block is-16x16') %> AWP</td></tr>
       <tr><td>
         <%= image_tag(asset_path("cssweapons/300px-Css_sg-550.png"), class: 'image anti-image-block is-16x16') %>
@@ -105,6 +106,8 @@
             <tr class="armas"><td data-m4a1="<%= m4a1.round(1) %>" class="colored"><%= m4a1 %></td></tr>
             <% aug = rank.sum{ |e| e[:aug].to_i + e[:aug_silencer].to_i } %>
             <tr class="armas"><td data-aug="<%= aug.round(1) %>" class="colored"><%= aug %></td></tr>
+            <% sg556 = rank.sum{ |e| e[:sg556].to_i + e[:sg556_silencer].to_i } %>
+            <tr class="armas"><td data-sg556="<%= sg556.round(1) %>" class="colored"><%= sg556 %></td></tr>
             <% ssg08 = rank.sum{ |e| e[:ssg08].to_i + e[:ssg08_silencer].to_i } %>
             <tr class="armas"><td data-ssg08="<%= ssg08.round(1) %>" class="colored"><%= ssg08 %></td></tr>
             <% awp = rank.sum{ |e| e[:awp] } %>
@@ -282,6 +285,14 @@
       var augList = document.querySelectorAll("[data-aug='"+maxAug+"']");
       for (var i = 0; i < augList.length; i++) {
         augList[i].style.color = "green";
+      }
+
+      var sg556Elements = document.querySelectorAll("[data-sg556]");
+      var sg556 = $.map(sg556Elements, function(val, i) { return parseFloat(val.dataset.sg556).toFixed(1); });
+      var maxSg556 = Math.max.apply(Math, sg556).toFixed(1);
+      var sg556List = document.querySelectorAll("[data-sg556='"+maxSg556+"']");
+      for (var i = 0; i < sg556List.length; i++) {
+        sg556List[i].style.color = "green";
       }
 
       var ssg08Elements = document.querySelectorAll("[data-ssg08]");
