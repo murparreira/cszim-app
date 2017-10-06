@@ -1,7 +1,12 @@
 Rails.application.routes.draw do
 
   resources :tournaments do
-    resources :rounds
+    resources :rounds do
+      collection do
+        get :move_to_winner
+        get :move_to_loser
+      end
+    end
   end
 
   resources :teams

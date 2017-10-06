@@ -69,7 +69,7 @@ class RandomizerController < ApplicationController
       round = Round.create(tournament_id: torneio_dia.id, map_id: chosen_map.map_id, season_id: current_season.id)
       ###############################################################################################################
       maximo_jogado = RankmeMysqlCsgo.pluck("rounds_ct + rounds_tr").max
-      RankmeMysqlCsgo.where("rounds_ct + rounds_tr < ?", maximo_jogado).destroy_all
+      # RankmeMysqlCsgo.where("rounds_ct + rounds_tr < ?", maximo_jogado).destroy_all
       maximo_ganhado = RankmeMysqlCsgo.pluck("ct_win + tr_win").max
       minimo_ganhado = RankmeMysqlCsgo.pluck("ct_win + tr_win").min
       array = RankmeMysqlCsgo.all.map{|r| { r.id => r.ct_win + r.tr_win }}
@@ -103,8 +103,8 @@ class RandomizerController < ApplicationController
       end
       if salvar_novo_time
         time_vencedor = Team.create(nome: "Time #{helpers.criar_nome_time(ids_jogadores_time_vencedor)}")
-        Participant.create(team_id: time_vencedor.id, tournament_id: torneio_dia.id)
       end
+      Participant.create(team_id: time_vencedor.id, tournament_id: torneio_dia.id)
       jogadores_time_vencedor.each do |steam_jogador|
         # Identifica o jogador na tabela users pelo steam
         user = User.find_by(steam: steam_jogador)
@@ -144,8 +144,8 @@ class RandomizerController < ApplicationController
       end
       if salvar_novo_time
         time_perdedor = Team.create(nome: "Time #{helpers.criar_nome_time(ids_jogadores_time_perdedor)}")
-        Participant.create(team_id: time_perdedor.id, tournament_id: torneio_dia.id)
       end
+      Participant.create(team_id: time_perdedor.id, tournament_id: torneio_dia.id)
       jogadores_time_perdedor.each do |steam_jogador|
         # Identifica o jogador na tabela users pelo steam
         user = User.find_by(steam: steam_jogador)
