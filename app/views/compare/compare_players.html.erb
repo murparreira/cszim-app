@@ -19,6 +19,8 @@
       <tr><td>C4 defusadas</td></tr>
       <tr><td><%= image_tag(asset_path("cssweapons/300px-Css_ak47.png"), class: 'image anti-image-block is-16x16') %> AK 47</td></tr>
       <tr><td><%= image_tag(asset_path("cssweapons/300px-Css_m4a1.png"), class: 'image anti-image-block is-16x16') %> M4</td></tr>
+      <tr><td><%= image_tag(asset_path("cssweapons/300px-Css_aug.png"), class: 'image anti-image-block is-16x16') %> AUG</td></tr>
+      <tr><td><%= image_tag(asset_path("cssweapons/300px-Css_ssg08.png"), class: 'image anti-image-block is-16x16') %> SSG</td></tr>
       <tr><td><%= image_tag(asset_path("cssweapons/300px-Css_awp.png"), class: 'image anti-image-block is-16x16') %> AWP</td></tr>
       <tr><td>
         <%= image_tag(asset_path("cssweapons/300px-Css_sg-550.png"), class: 'image anti-image-block is-16x16') %>
@@ -101,6 +103,10 @@
             <tr class="armas"><td data-ak47="<%= ak47.round(1) %>" class="colored"><%= ak47 %></td></tr>
             <% m4a1 = rank.sum{ |e| e[:m4a1].to_i + e[:m4a1_silencer].to_i } %>
             <tr class="armas"><td data-m4a1="<%= m4a1.round(1) %>" class="colored"><%= m4a1 %></td></tr>
+            <% aug = rank.sum{ |e| e[:aug].to_i + e[:aug_silencer].to_i } %>
+            <tr class="armas"><td data-aug="<%= aug.round(1) %>" class="colored"><%= aug %></td></tr>
+            <% ssg08 = rank.sum{ |e| e[:ssg08].to_i + e[:ssg08_silencer].to_i } %>
+            <tr class="armas"><td data-ssg08="<%= ssg08.round(1) %>" class="colored"><%= ssg08 %></td></tr>
             <% awp = rank.sum{ |e| e[:awp] } %>
             <tr class="armas"><td data-awp="<%= awp.round(1) %>" class="colored"><%= awp %></td></tr>
             <% tecos = rank.sum{ |e| e[:scar20].to_i + e[:g3sg1].to_i + e[:sg550].to_i } %>
@@ -268,6 +274,22 @@
       var m4a1List = document.querySelectorAll("[data-m4a1='"+maxM4a1+"']");
       for (var i = 0; i < m4a1List.length; i++) {
         m4a1List[i].style.color = "green";
+      }
+
+      var augElements = document.querySelectorAll("[data-aug]");
+      var aug = $.map(augElements, function(val, i) { return parseFloat(val.dataset.aug).toFixed(1); });
+      var maxAug = Math.max.apply(Math, aug).toFixed(1);
+      var augList = document.querySelectorAll("[data-aug='"+maxAug+"']");
+      for (var i = 0; i < augList.length; i++) {
+        augList[i].style.color = "green";
+      }
+
+      var ssg08Elements = document.querySelectorAll("[data-ssg08]");
+      var ssg08 = $.map(ssg08Elements, function(val, i) { return parseFloat(val.dataset.ssg08).toFixed(1); });
+      var maxSsg08 = Math.max.apply(Math, ssg08).toFixed(1);
+      var ssg08List = document.querySelectorAll("[data-ssg08='"+maxSsg08+"']");
+      for (var i = 0; i < ssg08List.length; i++) {
+        ssg08List[i].style.color = "green";
       }
 
       var awpElements = document.querySelectorAll("[data-awp]");
