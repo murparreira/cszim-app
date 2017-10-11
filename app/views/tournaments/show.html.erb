@@ -49,12 +49,9 @@
                 <td><strong>Vencedor:</strong></td>
                 <td>
                   <%= round.nome_vencedor %>
-                  <% if round.winner %>
-                    <% round.winner.team.users.each do |user| %>
-                      <%= image_tag avatar_url(user), class: 'img-circle image anti-image-block is-24x24' %>
-                        &nbsp;
-                      <% end %>
-                    <% end %>
+                  <% round.winner.team.users.each do |user| %>
+                  <%= image_tag avatar_url(user), class: 'img-circle image anti-image-block is-24x24' %>
+                    &nbsp;
                   <% end %>
                 </td>
               </tr>
@@ -76,12 +73,9 @@
                 <td><strong>Perdedor:</strong></td>
                 <td>
                   <%= round.nome_perdedor %>
-                  <% if round.loser %>
-                    <% round.loser.team.users.each do |user| %>
-                      <%= image_tag avatar_url(user), class: 'img-circle image anti-image-block is-24x24' %>
-                        &nbsp;
-                      <% end %>
-                    <% end %>
+                  <% round.loser.team.users.each do |user| %>
+                  <%= image_tag avatar_url(user), class: 'img-circle image anti-image-block is-24x24' %>
+                    &nbsp;
                   <% end %>
                 </td>
               </tr>
