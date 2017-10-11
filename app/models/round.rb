@@ -6,6 +6,8 @@ class Round < ApplicationRecord
 
     has_one :winner
     has_one :loser
+    has_many :rankme_csgos, dependent: :destroy
+    has_many :rankmes, dependent: :destroy
 
     belongs_to :ct_team, foreign_key: "ct_team_id", class_name: "Team"
     belongs_to :t_team, foreign_key: "t_team_id", class_name: "Team"
@@ -21,7 +23,7 @@ class Round < ApplicationRecord
     end
 
     def nome_vencedor
-      if winner
+      if winner && winner.team
         winner.team.nome
       else
         "Não Informado"
@@ -45,7 +47,7 @@ class Round < ApplicationRecord
     end
 
     def nome_perdedor
-      if loser
+      if loser && loser.team
         loser.team.nome
       else
         "Não Informado"
