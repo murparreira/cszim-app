@@ -33,7 +33,7 @@ class RandomizerController < ApplicationController
 
   def start
     torneio_dia = Tournament.find_by(nome: "Torneio #{Date.today.to_s(:human)}")
-    mapa = RandomMap.last.sigla
+    mapa = RandomMap.last.map.sigla
     if torneio_dia.nil?
       torneio_dia = Tournament.create(nome: "Torneio #{Date.today.to_s(:human)}", season_id: current_season.id)
       flash[:success] = "Torneio #{Date.today.to_s(:human)} e mapa iniciado com sucesso!"
