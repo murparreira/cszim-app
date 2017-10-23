@@ -33,6 +33,7 @@ class RandomizerController < ApplicationController
 
   def start
     torneio_dia = Tournament.find_by(nome: "Torneio #{Date.today.to_s(:human)}")
+    mapa = RandomMap.last.sigla
     if torneio_dia.nil?
       torneio_dia = Tournament.create(nome: "Torneio #{Date.today.to_s(:human)}", season_id: current_season.id)
       flash[:success] = "Torneio #{Date.today.to_s(:human)} e mapa iniciado com sucesso!"
@@ -50,11 +51,17 @@ class RandomizerController < ApplicationController
       ssh.exec! "tmux send-keys 'mp_restartgame 2' Enter"
       ssh.exec! "tmux send-keys 'sm plugins load rankme' Enter"
       ssh.exec! "tmux send-keys 'sm plugins load kento_rankme' Enter"
+      ssh.exec! "tmux send-keys 'tv_enable 1' Enter"
+      nome_replay = mapa + '_' + Time.now.day.to_s + '_' + Time.now.month.to_s + '_' + Time.now.year.to_s
+      ssh.exec! "tmux send-keys 'tv_record #{nome_replay}' Enter"
     end
     redirect_to randomizer_url
   end
 
   def finish
+    Net::SSH.start('127.0.0.1', login_jogo, password: 's3nh4123', port: 19922) do| ssh |
+      ssh.exec! "tmux send-keys 'tv_stoprecord' Enter"
+    end
     finish_csgo if is_csgo?
     finish_css if is_css?
     redirect_to randomizer_url
