@@ -7,7 +7,6 @@
       <tr><td>Deaths</td></tr>
       <tr><td>Assists</td></tr>
       <tr><td>Ratio</td></tr>
-      <tr><td>Dano Causado</td></tr>
       <tr><td>Suicídios</td></tr>
       <tr><td>Team Kills</td></tr>
       <tr><td>Disparos</td></tr>
@@ -72,70 +71,68 @@
         <tbody>
             <tr><td><%= user.nome %></td></tr>
             <% kills = rank.sum{ |e| e[:kills] } %>
-            <tr><td data-kills="<%= kills.round(1) %>" class="colored"><%= kills %></td></tr>
+            <tr><td data-kills="<%= kills.round(1) %>"><%= kills %></td></tr>
             <% deaths = rank.sum{ |e| e[:deaths] } %>
-            <tr><td data-deaths="<%= deaths.round(1) %>" class="colored"><%= deaths %></td></tr>
+            <tr><td data-deaths="<%= deaths.round(1) %>"><%= deaths %></td></tr>
             <% assists = rank.sum{ |e| e[:assists].to_i } %>
-            <tr><td data-assists="<%= assists.round(1) %>" class="colored"><%= assists %></td></tr>
+            <tr><td data-assists="<%= assists.round(1) %>"><%= assists %></td></tr>
             <% ratio = (kills.to_f/deaths.to_f).round(2) %>
-            <tr><td data-ratio="<%= format_float(ratio) %>" class="colored"><%= ratio %></td></tr>
-            <% damage = rank.sum{ |e| e[:damage].to_i } %>
-            <tr><td data-damage="<%= damage.round(1) %>" class="colored"><%=  number_with_delimiter(damage, delimiter: ".") %></td></tr>
+            <tr><td data-ratio="<%= format_float(ratio) %>"><%= ratio %></td></tr>            
             <% suicides = rank.sum{ |e| e[:suicides] } %>
-            <tr><td data-suicides="<%= suicides.round(1) %>" class="colored"><%= suicides %></td></tr>
+            <tr><td data-suicides="<%= suicides.round(1) %>"><%= suicides %></td></tr>
             <% tk = rank.sum{ |e| e[:tk] } %>
-            <tr><td data-tk="<%= tk.round(1) %>" class="colored"><%= tk %></td></tr>
+            <tr><td data-tk="<%= tk.round(1) %>"><%= tk %></td></tr>
             <% shots = rank.sum{ |e| e[:shots] } %>
-            <tr><td data-shots="<%= shots.round(1) %>" class="colored"><%= shots %></td></tr>
+            <tr><td data-shots="<%= shots.round(1) %>"><%= shots %></td></tr>
             <% hits = rank.sum{ |e| e[:hits] } %>
             <% mira = ((hits.to_f/shots.to_f)*100).round(1) %>
-            <tr><td data-mira="<%= mira.round(1) %>" class="colored"><%= mira %>%</td></tr>
+            <tr><td data-mira="<%= mira.round(1) %>"><%= mira %>%</td></tr>
             <% nuheadshots = rank.sum{ |e| e[:headshots] } %>
-            <tr><td data-nuheadshots="<%= nuheadshots.round(1) %>" class="colored"><%= nuheadshots %></td></tr>
+            <tr><td data-nuheadshots="<%= nuheadshots.round(1) %>"><%= nuheadshots %></td></tr>
             <% headshots = ((nuheadshots.to_f/kills.to_f)*100).round(1) %>
-            <tr><td data-headshots="<%= headshots.round(1) %>" class="colored"><%= headshots %>%</td></tr>
+            <tr><td data-headshots="<%= headshots.round(1) %>"><%= headshots %>%</td></tr>
             <% c4_planted = rank.sum{ |e| e[:c4_planted] } %>
-            <tr><td data-c4planted="<%= c4_planted.round(1) %>" class="colored"><%= c4_planted %></td></tr>
+            <tr><td data-c4planted="<%= c4_planted.round(1) %>"><%= c4_planted %></td></tr>
             <% c4_exploded = rank.sum{ |e| e[:c4_exploded] } %>
-            <tr><td data-c4exploded="<%= c4_exploded.round(1) %>" class="colored"><%= c4_exploded %></td></tr>
+            <tr><td data-c4exploded="<%= c4_exploded.round(1) %>"><%= c4_exploded %></td></tr>
             <% c4_defused = rank.sum{ |e| e[:c4_defused] } %>
-            <tr><td data-c4defused="<%= c4_defused.round(1) %>" class="colored"><%= c4_defused %></td></tr>
+            <tr><td data-c4defused="<%= c4_defused.round(1) %>"><%= c4_defused %></td></tr>
             <% ak47 = rank.sum{ |e| e[:ak47] } %>
-            <tr class="armas"><td data-ak47="<%= ak47.round(1) %>" class="colored"><%= ak47 %></td></tr>
+            <tr><td data-ak47="<%= ak47.round(1) %>"><%= ak47 %></td></tr>
             <% m4a1 = rank.sum{ |e| e[:m4a1].to_i + e[:m4a1_silencer].to_i } %>
-            <tr class="armas"><td data-m4a1="<%= m4a1.round(1) %>" class="colored"><%= m4a1 %></td></tr>
+            <tr><td data-m4a1="<%= m4a1.round(1) %>"><%= m4a1 %></td></tr>
             <% aug = rank.sum{ |e| e[:aug].to_i + e[:aug_silencer].to_i } %>
-            <tr class="armas"><td data-aug="<%= aug.round(1) %>" class="colored"><%= aug %></td></tr>
+            <tr><td data-aug="<%= aug.round(1) %>"><%= aug %></td></tr>
             <% sg556 = rank.sum{ |e| e[:sg556].to_i + e[:sg556_silencer].to_i } %>
-            <tr class="armas"><td data-sg556="<%= sg556.round(1) %>" class="colored"><%= sg556 %></td></tr>
+            <tr><td data-sg556="<%= sg556.round(1) %>"><%= sg556 %></td></tr>
             <% ssg08 = rank.sum{ |e| e[:ssg08].to_i + e[:ssg08_silencer].to_i } %>
-            <tr class="armas"><td data-ssg08="<%= ssg08.round(1) %>" class="colored"><%= ssg08 %></td></tr>
+            <tr><td data-ssg08="<%= ssg08.round(1) %>"><%= ssg08 %></td></tr>
             <% awp = rank.sum{ |e| e[:awp] } %>
-            <tr class="armas"><td data-awp="<%= awp.round(1) %>" class="colored"><%= awp %></td></tr>
+            <tr><td data-awp="<%= awp.round(1) %>"><%= awp %></td></tr>
             <% tecos = rank.sum{ |e| e[:scar20].to_i + e[:g3sg1].to_i + e[:sg550].to_i } %>
-            <tr class="armas"><td data-tecos="<%= tecos.round(1) %>" class="colored"><%= tecos %></td></tr>
+            <tr><td data-tecos="<%= tecos.round(1) %>"><%= tecos %></td></tr>
             <% famas = rank.sum{ |e| e[:famas] } %>
-            <tr class="armas"><td data-famas="<%= famas.round(1) %>" class="colored"><%= famas %></td></tr>
+            <tr><td data-famas="<%= famas.round(1) %>"><%= famas %></td></tr>
             <% galil = rank.sum{ |e| e[:galilar].to_i + e[:galil].to_i } %>
-            <tr class="armas"><td data-galil="<%= galil.round(1) %>" class="colored"><%= galil %></td></tr>
+            <tr><td data-galil="<%= galil.round(1) %>"><%= galil %></td></tr>
             <% knife = rank.sum{ |e| e[:knife] } %>
-            <tr class="armas"><td data-knife="<%= knife.round(1) %>" class="colored"><%= knife %></td></tr>
+            <tr><td data-knife="<%= knife.round(1) %>"><%= knife %></td></tr>
             <% taser = rank.sum{ |e| e[:taser].to_i } %>
-            <tr class="armas"><td data-taser="<%= taser.round(1) %>" class="colored"><%= taser %></td></tr>
+            <tr><td data-taser="<%= taser.round(1) %>"><%= taser %></td></tr>
             <% pistolas = rank.sum{ |e| e[:hkp2000].to_i + e[:usp_silencer].to_i + e[:glock].to_i + + e[:usp].to_i } %>
-            <tr class="armas"><td data-pistolas="<%= pistolas.round(1) %>" class="colored"><%= pistolas %></td></tr>
+            <tr><td data-pistolas="<%= pistolas.round(1) %>"><%= pistolas %></td></tr>
             <% outraspistolas = rank.sum{ |e| e[:fiveseven].to_i + e[:p250].to_i + e[:tec9].to_i + + e[:cz75a].to_i + e[:p228].to_i + e[:elite].to_i } %>
-            <tr class="armas"><td data-outraspistolas="<%= outraspistolas.round(1) %>" class="colored"><%= outraspistolas %></td></tr>
+            <tr><td data-outraspistolas="<%= outraspistolas.round(1) %>"><%= outraspistolas %></td></tr>
             <% deagle = rank.sum{ |e| e[:deagle] } %>
-            <tr class="armas"><td data-deagle="<%= deagle.round(1) %>" class="colored"><%= deagle %></td></tr>
+            <tr><td data-deagle="<%= deagle.round(1) %>"><%= deagle %></td></tr>
             <% submachineguns = rank.sum{ |e| e[:p90].to_i + e[:mac10].to_i + e[:ump45].to_i + + e[:mp9].to_i + e[:mp7].to_i + e[:bizon].to_i + e[:mp5navy].to_i + e[:tmp].to_i } %>
-            <tr class="armas"><td data-submachineguns="<%= submachineguns.round(1) %>" class="colored"><%= submachineguns %></td></tr>
+            <tr><td data-submachineguns="<%= submachineguns.round(1) %>"><%= submachineguns %></td></tr>
             <% shotguns = rank.sum{ |e| e[:nova].to_i + e[:xm1014].to_i + e[:mag7].to_i + + e[:m3].to_i } %>
-            <tr class="armas"><td data-shotguns="<%= shotguns.round(1) %>" class="colored"><%= shotguns %></td></tr>
+            <tr><td data-shotguns="<%= shotguns.round(1) %>"><%= shotguns %></td></tr>
             <% hegrenade = rank.sum{ |e| e[:hegrenade].to_i } %>
-            <tr class="armas"><td data-hegrenade="<%= hegrenade.round(1) %>" class="colored"><%= hegrenade %></td></tr>
+            <tr><td data-hegrenade="<%= hegrenade.round(1) %>"><%= hegrenade %></td></tr>
             <% inferno = rank.sum{ |e| e[:inferno].to_i } %>
-            <tr class="armas"><td data-inferno="<%= inferno.round(1) %>" class="colored"><%= inferno %></td></tr>
+            <tr><td data-inferno="<%= inferno.round(1) %>"><%= inferno %></td></tr>
           </tbody>
         </table>
       </div>
@@ -144,8 +141,7 @@
 </div>
 
 <style type="text/css">
-  .colored { color: red }
-  .armas { height: 28px }
+  table tbody tr td { height: 29px }
 </style>
 
 <script type="text/javascript">
@@ -153,258 +149,373 @@
     var killsElements = document.querySelectorAll("[data-kills]");
     if (killsElements.length > 0) {
       var kills = $.map(killsElements, function(val, i) { return parseFloat(val.dataset.kills).toFixed(1); });
-      var maxKills = Math.max.apply(Math, kills).toFixed(1);
-      var killsList = document.querySelectorAll("[data-kills='"+maxKills+"']");
-      for (var i = 0; i < killsList.length; i++) {
-        killsList[i].style.color = "green";
+      var orderedKills = kills.sort(function(a, b) {
+        return parseInt(a) - parseInt(b);
+      }).reverse();
+      for (var i = 0; i < orderedKills.length; i++) {
+        var position = i + 1;
+        var killsList = document.querySelectorAll("[data-kills='"+orderedKills[i]+"']");
+        if (position == 1) {
+          for (var j = 0; j < killsList.length; j++) {
+            if (killsList[j].innerHTML.indexOf("tag") === -1) {
+              killsList[j].innerHTML = "<span class='tag is-success'>"+position+"</span> &nbsp; " + parseInt(orderedKills[i]);
+            }
+          }
+        } else {
+          for (var k = 0; k < killsList.length; k++) {
+            if (killsList[k].innerHTML.indexOf("tag") === -1) {
+              killsList[k].innerHTML = "<span class='tag is-warning'>"+position+"</span> &nbsp; " + parseInt(orderedKills[i]);
+            }
+          }
+        }
       }
 
       var deathsElements = document.querySelectorAll("[data-deaths]");
       var deaths = $.map(deathsElements, function(val, i) { return parseFloat(val.dataset.deaths).toFixed(1); });
-      var minDeaths = Math.min.apply(Math, deaths).toFixed(1);
-      var deathsList = document.querySelectorAll("[data-deaths='"+minDeaths+"']");
-      for (var i = 0; i < deathsList.length; i++) {
-        deathsList[i].style.color = "green";
+      var orderedDeaths = deaths.sort(function(a, b) {
+        return parseInt(a) - parseInt(b);
+      });
+      for (var i = 0; i < orderedDeaths.length; i++) {
+        var position = i + 1;
+        var deathsList = document.querySelectorAll("[data-deaths='"+orderedDeaths[i]+"']");
+        if (position == 1) {
+          for (var j = 0; j < deathsList.length; j++) {
+            if (deathsList[j].innerHTML.indexOf("tag") === -1) {
+              deathsList[j].innerHTML = "<span class='tag is-success'>"+position+"</span> &nbsp; " + parseInt(orderedDeaths[i]);
+            }
+          }
+        } else {
+          for (var k = 0; k < deathsList.length; k++) {
+            if (deathsList[k].innerHTML.indexOf("tag") === -1) {
+              deathsList[k].innerHTML = "<span class='tag is-warning'>"+position+"</span> &nbsp; " + parseInt(orderedDeaths[i]);
+            }
+          }
+        }
       }
 
       var assistsElements = document.querySelectorAll("[data-assists]");
       var assists = $.map(assistsElements, function(val, i) { return parseFloat(val.dataset.assists).toFixed(1); });
-      var maxAssists = Math.max.apply(Math, assists).toFixed(1);
-      var assistsList = document.querySelectorAll("[data-assists='"+maxAssists+"']");
-      for (var i = 0; i < assistsList.length; i++) {
-        assistsList[i].style.color = "green";
+      var orderedAssists = assists.sort(function(a, b) {
+        return parseInt(a) - parseInt(b);
+      }).reverse();
+      for (var i = 0; i < orderedAssists.length; i++) {
+        var position = i + 1;
+        var assistsList = document.querySelectorAll("[data-assists='"+orderedAssists[i]+"']");
+        if (position == 1) {
+          for (var j = 0; j < assistsList.length; j++) {
+            if (assistsList[j].innerHTML.indexOf("tag") === -1) {
+              assistsList[j].innerHTML = "<span class='tag is-success'>"+position+"</span> &nbsp; " + parseInt(orderedAssists[i]);
+            }
+          }
+        } else {
+          for (var k = 0; k < assistsList.length; k++) {
+            if (assistsList[k].innerHTML.indexOf("tag") === -1) {
+              assistsList[k].innerHTML = "<span class='tag is-warning'>"+position+"</span> &nbsp; " + parseInt(orderedAssists[i]);
+            }
+          }
+        }
       }
 
       var ratioElements = document.querySelectorAll("[data-ratio]");
       var ratio = $.map(ratioElements, function(val, i) { return parseFloat(val.dataset.ratio).toFixed(2); });
-      var maxRatio = Math.max.apply(Math, ratio).toFixed(2);
-      var ratioList = document.querySelectorAll("[data-ratio='"+maxRatio+"']");
-      for (var i = 0; i < ratioList.length; i++) {
-        ratioList[i].style.color = "green";
+      var orderedRatio = ratio.sort(function(a, b) {
+        return parseFloat(a) - parseFloat(b);
+      }).reverse();
+      for (var i = 0; i < orderedRatio.length; i++) {
+        var position = i + 1;
+        var ratioList = document.querySelectorAll("[data-ratio='"+orderedRatio[i]+"']");
+        if (position == 1) {
+          for (var j = 0; j < ratioList.length; j++) {
+            if (ratioList[j].innerHTML.indexOf("tag") === -1) {
+              ratioList[j].innerHTML = "<span class='tag is-success'>"+position+"</span> &nbsp; " + parseFloat(orderedRatio[i]);
+            }
+          }
+        } else {
+          for (var k = 0; k < ratioList.length; k++) {
+            if (ratioList[k].innerHTML.indexOf("tag") === -1) {
+              ratioList[k].innerHTML = "<span class='tag is-warning'>"+position+"</span> &nbsp; " + parseFloat(orderedRatio[i]);
+            }
+          }
+        }
       }
 
       var damageElements = document.querySelectorAll("[data-damage]");
       var damage = $.map(damageElements, function(val, i) { return parseFloat(val.dataset.damage).toFixed(1); });
-      var maxDamage = Math.max.apply(Math, damage).toFixed(1);
-      var damageList = document.querySelectorAll("[data-damage='"+maxDamage+"']");
-      for (var i = 0; i < damageList.length; i++) {
-        damageList[i].style.color = "green";
+      var orderedDamage = damage.sort(function(a, b) {
+        return parseFloat(a) - parseFloat(b);
+      }).reverse();
+      for (var i = 0; i < orderedDamage.length; i++) {
+        var position = i + 1;
+        var damageList = document.querySelectorAll("[data-damage='"+orderedDamage[i]+"']");
+        if (position == 1) {
+          for (var j = 0; j < damageList.length; j++) {
+            if (damageList[j].innerHTML.indexOf("tag") === -1) {
+              damageList[j].innerHTML = "<span class='tag is-success'>"+position+"</span> &nbsp; " + parseFloat(orderedDamage[i]);
+            }
+          }
+        } else {
+          for (var k = 0; k < damageList.length; k++) {
+            if (damageList[k].innerHTML.indexOf("tag") === -1) {
+              damageList[k].innerHTML = "<span class='tag is-warning'>"+position+"</span> &nbsp; " + parseFloat(orderedDamage[i]);
+            }
+          }
+        }
       }
 
       var suicidesElements = document.querySelectorAll("[data-suicides]");
       var suicides = $.map(suicidesElements, function(val, i) { return parseFloat(val.dataset.suicides).toFixed(1); });
-      var minSuicides = Math.min.apply(Math, suicides).toFixed(1);
-      var suicidesList = document.querySelectorAll("[data-suicides='"+minSuicides+"']");
-      for (var i = 0; i < suicidesList.length; i++) {
-        suicidesList[i].style.color = "green";
+      var orderedSuicides = suicides.sort(function(a, b) {
+        return parseFloat(a) - parseFloat(b);
+      });
+      for (var i = 0; i < orderedSuicides.length; i++) {
+        var position = i + 1;
+        var suicidesList = document.querySelectorAll("[data-suicides='"+orderedSuicides[i]+"']");
+        if (position == 1) {
+          for (var j = 0; j < suicidesList.length; j++) {
+            if (suicidesList[j].innerHTML.indexOf("tag") === -1) {
+              suicidesList[j].innerHTML = "<span class='tag is-success'>"+position+"</span> &nbsp; " + parseFloat(orderedSuicides[i]);
+            }
+          }
+        } else {
+          for (var k = 0; k < suicidesList.length; k++) {
+            if (suicidesList[k].innerHTML.indexOf("tag") === -1) {
+              suicidesList[k].innerHTML = "<span class='tag is-warning'>"+position+"</span> &nbsp; " + parseFloat(orderedSuicides[i]);
+            }
+          }
+        }
       }
 
       var tkElements = document.querySelectorAll("[data-tk]");
       var tk = $.map(tkElements, function(val, i) { return parseFloat(val.dataset.tk).toFixed(1); });
-      var minTk = Math.min.apply(Math, tk).toFixed(1);
-      var tkList = document.querySelectorAll("[data-tk='"+minTk+"']");
-      for (var i = 0; i < tkList.length; i++) {
-        tkList[i].style.color = "green";
+      var orderedTk = tk.sort(function(a, b) {
+        return parseFloat(a) - parseFloat(b);
+      });
+      for (var i = 0; i < orderedTk.length; i++) {
+        var position = i + 1;
+        var tkList = document.querySelectorAll("[data-tk='"+orderedTk[i]+"']");
+        if (position == 1) {
+          for (var j = 0; j < tkList.length; j++) {
+            if (tkList[j].innerHTML.indexOf("tag") === -1) {
+              tkList[j].innerHTML = "<span class='tag is-success'>"+position+"</span> &nbsp; " + parseFloat(orderedTk[i]);
+            }
+          }
+        } else {
+          for (var k = 0; k < tkList.length; k++) {
+            if (tkList[k].innerHTML.indexOf("tag") === -1) {
+              tkList[k].innerHTML = "<span class='tag is-warning'>"+position+"</span> &nbsp; " + parseFloat(orderedTk[i]);
+            }
+          }
+        }
       }
 
       var shotsElements = document.querySelectorAll("[data-shots]");
       var shots = $.map(shotsElements, function(val, i) { return parseFloat(val.dataset.shots).toFixed(1); });
-      var maxShots = Math.max.apply(Math, shots).toFixed(1);
-      var shotsList = document.querySelectorAll("[data-shots='"+maxShots+"']");
-      for (var i = 0; i < shotsList.length; i++) {
-        shotsList[i].style.color = "green";
+      var orderedShots = shots.sort(function(a, b) {
+        return parseFloat(a) - parseFloat(b);
+      }).reverse();
+      for (var i = 0; i < orderedShots.length; i++) {
+        var position = i + 1;
+        var shotsList = document.querySelectorAll("[data-shots='"+orderedShots[i]+"']");
+        if (position == 1) {
+          for (var j = 0; j < shotsList.length; j++) {
+            if (shotsList[j].innerHTML.indexOf("tag") === -1) {
+              shotsList[j].innerHTML = "<span class='tag is-success'>"+position+"</span> &nbsp; " + parseFloat(orderedShots[i]);
+            }
+          }
+        } else {
+          for (var k = 0; k < shotsList.length; k++) {
+            if (shotsList[k].innerHTML.indexOf("tag") === -1) {
+              shotsList[k].innerHTML = "<span class='tag is-warning'>"+position+"</span> &nbsp; " + parseFloat(orderedShots[i]);
+            }
+          }
+        }
       }
 
       var miraElements = document.querySelectorAll("[data-mira]");
       var mira = $.map(miraElements, function(val, i) { return parseFloat(val.dataset.mira).toFixed(1); });
-      var maxMira = Math.max.apply(Math, mira).toFixed(1);
-      var miraList = document.querySelectorAll("[data-mira='"+maxMira+"']");
-      for (var i = 0; i < miraList.length; i++) {
-        miraList[i].style.color = "green";
+      var orderedMira = mira.sort(function(a, b) {
+        return parseInt(a) - parseInt(b);
+      }).reverse();
+      for (var i = 0; i < orderedMira.length; i++) {
+        var position = i + 1;
+        var miraList = document.querySelectorAll("[data-mira='"+orderedMira[i]+"']");
+        if (position == 1) {
+          for (var j = 0; j < miraList.length; j++) {
+            if (miraList[j].innerHTML.indexOf("tag") === -1) {
+              miraList[j].innerHTML = "<span class='tag is-success'>"+position+"</span> &nbsp; " + parseFloat(orderedMira[i]) + "%";
+            }
+          }
+        } else {
+          for (var k = 0; k < miraList.length; k++) {
+            if (miraList[k].innerHTML.indexOf("tag") === -1) {
+              miraList[k].innerHTML = "<span class='tag is-warning'>"+position+"</span> &nbsp; " + parseFloat(orderedMira[i]) + "%";
+            }
+          }
+        }
       }
 
       var headshotsElements = document.querySelectorAll("[data-headshots]");
       var headshots = $.map(headshotsElements, function(val, i) { return parseFloat(val.dataset.headshots).toFixed(1); });
-      var maxHeadshots = Math.max.apply(Math, headshots).toFixed(1);
-      var headshotsList = document.querySelectorAll("[data-headshots='"+maxHeadshots+"']");
-      for (var i = 0; i < headshotsList.length; i++) {
-        headshotsList[i].style.color = "green";
+      var orderedHeadshots = headshots.sort(function(a, b) {
+        return parseFloat(a) - parseFloat(b);
+      }).reverse();
+      for (var i = 0; i < orderedHeadshots.length; i++) {
+        var position = i + 1;
+        var headshotsList = document.querySelectorAll("[data-headshots='"+orderedHeadshots[i]+"']");
+        if (position == 1) {
+          for (var j = 0; j < headshotsList.length; j++) {
+            if (headshotsList[j].innerHTML.indexOf("tag") === -1) {
+              headshotsList[j].innerHTML = "<span class='tag is-success'>"+position+"</span> &nbsp; " + parseFloat(orderedHeadshots[i]) + "%";
+            }
+          }
+        } else {
+          for (var k = 0; k < headshotsList.length; k++) {
+            if (headshotsList[k].innerHTML.indexOf("tag") === -1) {
+              headshotsList[k].innerHTML = "<span class='tag is-warning'>"+position+"</span> &nbsp; " + parseFloat(orderedHeadshots[i]) + "%";
+            }
+          }
+        }
       }
 
       var nuheadshotsElements = document.querySelectorAll("[data-nuheadshots]");
       var nuheadshots = $.map(nuheadshotsElements, function(val, i) { return parseFloat(val.dataset.nuheadshots).toFixed(1); });
-      var maxNuheadshots = Math.max.apply(Math, nuheadshots).toFixed(1);
-      var nuheadshotsList = document.querySelectorAll("[data-nuheadshots='"+maxNuheadshots+"']");
-      for (var i = 0; i < nuheadshotsList.length; i++) {
-        nuheadshotsList[i].style.color = "green";
+      var orderedNuheadshots = nuheadshots.sort(function(a, b) {
+        return parseFloat(a) - parseFloat(b);
+      }).reverse();
+      for (var i = 0; i < orderedNuheadshots.length; i++) {
+        var position = i + 1;
+        var nuheadshotsList = document.querySelectorAll("[data-nuheadshots='"+orderedNuheadshots[i]+"']");
+        if (position == 1) {
+          for (var j = 0; j < nuheadshotsList.length; j++) {
+            if (nuheadshotsList[j].innerHTML.indexOf("tag") === -1) {
+              nuheadshotsList[j].innerHTML = "<span class='tag is-success'>"+position+"</span> &nbsp; " + parseFloat(orderedNuheadshots[i]);
+            }
+          }
+        } else {
+          for (var k = 0; k < nuheadshotsList.length; k++) {
+            if (nuheadshotsList[k].innerHTML.indexOf("tag") === -1) {
+              nuheadshotsList[k].innerHTML = "<span class='tag is-warning'>"+position+"</span> &nbsp; " + parseFloat(orderedNuheadshots[i]);
+            }
+          }
+        }
       }
 
       var c4plantedElements = document.querySelectorAll("[data-c4planted]");
       var c4planted = $.map(c4plantedElements, function(val, i) { return parseFloat(val.dataset.c4planted).toFixed(1); });
-      var maxC4planted = Math.max.apply(Math, c4planted).toFixed(1);
-      var c4plantedList = document.querySelectorAll("[data-c4planted='"+maxC4planted+"']");
-      for (var i = 0; i < c4plantedList.length; i++) {
-        c4plantedList[i].style.color = "green";
+      var orderedC4planted = c4planted.sort(function(a, b) {
+        return parseFloat(a) - parseFloat(b);
+      }).reverse();
+      for (var i = 0; i < orderedC4planted.length; i++) {
+        var position = i + 1;
+        var c4plantedList = document.querySelectorAll("[data-c4planted='"+orderedC4planted[i]+"']");
+        if (position == 1) {
+          for (var j = 0; j < c4plantedList.length; j++) {
+            if (c4plantedList[j].innerHTML.indexOf("tag") === -1) {
+              c4plantedList[j].innerHTML = "<span class='tag is-success'>"+position+"</span> &nbsp; " + parseFloat(orderedC4planted[i]);
+            }
+          }
+        } else {
+          for (var k = 0; k < c4plantedList.length; k++) {
+            if (c4plantedList[k].innerHTML.indexOf("tag") === -1) {
+              c4plantedList[k].innerHTML = "<span class='tag is-warning'>"+position+"</span> &nbsp; " + parseFloat(orderedC4planted[i]);
+            }
+          }
+        }
       }
 
       var c4explodedElements = document.querySelectorAll("[data-c4exploded]");
       var c4exploded = $.map(c4explodedElements, function(val, i) { return parseFloat(val.dataset.c4exploded).toFixed(1); });
-      var maxC4exploded = Math.max.apply(Math, c4exploded).toFixed(1);
-      var c4explodedList = document.querySelectorAll("[data-c4exploded='"+maxC4exploded+"']");
-      for (var i = 0; i < c4explodedList.length; i++) {
-        c4explodedList[i].style.color = "green";
+      var orderedC4exploded = c4exploded.sort(function(a, b) {
+        return parseFloat(a) - parseFloat(b);
+      }).reverse();
+      for (var i = 0; i < orderedC4exploded.length; i++) {
+        var position = i + 1;
+        var c4explodedList = document.querySelectorAll("[data-c4exploded='"+orderedC4exploded[i]+"']");
+        if (position == 1) {
+          for (var j = 0; j < c4explodedList.length; j++) {
+            if (c4explodedList[j].innerHTML.indexOf("tag") === -1) {
+              c4explodedList[j].innerHTML = "<span class='tag is-success'>"+position+"</span> &nbsp; " + parseFloat(orderedC4exploded[i]);
+            }
+          }
+        } else {
+          for (var k = 0; k < c4explodedList.length; k++) {
+            if (c4explodedList[k].innerHTML.indexOf("tag") === -1) {
+              c4explodedList[k].innerHTML = "<span class='tag is-warning'>"+position+"</span> &nbsp; " + parseFloat(orderedC4exploded[i]);
+            }
+          }
+        }
       }
 
       var c4defusedElements = document.querySelectorAll("[data-c4defused]");
       var c4defused = $.map(c4defusedElements, function(val, i) { return parseFloat(val.dataset.c4defused).toFixed(1); });
-      var maxC4defused = Math.max.apply(Math, c4defused).toFixed(1);
-      var c4defusedList = document.querySelectorAll("[data-c4defused='"+maxC4defused+"']");
-      for (var i = 0; i < c4defusedList.length; i++) {
-        c4defusedList[i].style.color = "green";
+      var orderedC4defused = c4defused.sort(function(a, b) {
+        return parseFloat(a) - parseFloat(b);
+      }).reverse();
+      for (var i = 0; i < orderedC4defused.length; i++) {
+        var position = i + 1;
+        var c4defusedList = document.querySelectorAll("[data-c4defused='"+orderedC4defused[i]+"']");
+        if (position == 1) {
+          for (var j = 0; j < c4defusedList.length; j++) {
+            if (c4defusedList[j].innerHTML.indexOf("tag") === -1) {
+              c4defusedList[j].innerHTML = "<span class='tag is-success'>"+position+"</span> &nbsp; " + parseFloat(orderedC4defused[i]);
+            }
+          }
+        } else {
+          for (var k = 0; k < c4defusedList.length; k++) {
+            if (c4defusedList[k].innerHTML.indexOf("tag") === -1) {
+              c4defusedList[k].innerHTML = "<span class='tag is-warning'>"+position+"</span> &nbsp; " + parseFloat(orderedC4defused[i]);
+            }
+          }
+        }
       }
 
       var ak47Elements = document.querySelectorAll("[data-ak47]");
       var ak47 = $.map(ak47Elements, function(val, i) { return parseFloat(val.dataset.ak47).toFixed(1); });
-      var maxAk47 = Math.max.apply(Math, ak47).toFixed(1);
-      var ak47List = document.querySelectorAll("[data-ak47='"+maxAk47+"']");
-      for (var i = 0; i < ak47List.length; i++) {
-        ak47List[i].style.color = "green";
+      var orderedAk47 = ak47.sort(function(a, b) {
+        return parseFloat(a) - parseFloat(b);
+      }).reverse();
+      for (var i = 0; i < orderedAk47.length; i++) {
+        var position = i + 1;
+        var ak47List = document.querySelectorAll("[data-ak47='"+orderedAk47[i]+"']");
+        if (position == 1) {
+          for (var j = 0; j < ak47List.length; j++) {
+            if (ak47List[j].innerHTML.indexOf("tag") === -1) {
+              ak47List[j].innerHTML = "<span class='tag is-success'>"+position+"</span> &nbsp; " + parseFloat(orderedAk47[i]);
+            }
+          }
+        } else {
+          for (var k = 0; k < ak47List.length; k++) {
+            if (ak47List[k].innerHTML.indexOf("tag") === -1) {
+              ak47List[k].innerHTML = "<span class='tag is-warning'>"+position+"</span> &nbsp; " + parseFloat(orderedAk47[i]);
+            }
+          }
+        }
       }
 
-      var m4a1Elements = document.querySelectorAll("[data-m4a1]");
-      var m4a1 = $.map(m4a1Elements, function(val, i) { return parseFloat(val.dataset.m4a1).toFixed(1); });
-      var maxM4a1 = Math.max.apply(Math, m4a1).toFixed(1);
-      var m4a1List = document.querySelectorAll("[data-m4a1='"+maxM4a1+"']");
-      for (var i = 0; i < m4a1List.length; i++) {
-        m4a1List[i].style.color = "green";
-      }
-
-      var augElements = document.querySelectorAll("[data-aug]");
-      var aug = $.map(augElements, function(val, i) { return parseFloat(val.dataset.aug).toFixed(1); });
-      var maxAug = Math.max.apply(Math, aug).toFixed(1);
-      var augList = document.querySelectorAll("[data-aug='"+maxAug+"']");
-      for (var i = 0; i < augList.length; i++) {
-        augList[i].style.color = "green";
-      }
-
-      var sg556Elements = document.querySelectorAll("[data-sg556]");
-      var sg556 = $.map(sg556Elements, function(val, i) { return parseFloat(val.dataset.sg556).toFixed(1); });
-      var maxSg556 = Math.max.apply(Math, sg556).toFixed(1);
-      var sg556List = document.querySelectorAll("[data-sg556='"+maxSg556+"']");
-      for (var i = 0; i < sg556List.length; i++) {
-        sg556List[i].style.color = "green";
-      }
-
-      var ssg08Elements = document.querySelectorAll("[data-ssg08]");
-      var ssg08 = $.map(ssg08Elements, function(val, i) { return parseFloat(val.dataset.ssg08).toFixed(1); });
-      var maxSsg08 = Math.max.apply(Math, ssg08).toFixed(1);
-      var ssg08List = document.querySelectorAll("[data-ssg08='"+maxSsg08+"']");
-      for (var i = 0; i < ssg08List.length; i++) {
-        ssg08List[i].style.color = "green";
-      }
-
-      var awpElements = document.querySelectorAll("[data-awp]");
-      var awp = $.map(awpElements, function(val, i) { return parseFloat(val.dataset.awp).toFixed(1); });
-      var maxAwp = Math.max.apply(Math, awp).toFixed(1);
-      var awpList = document.querySelectorAll("[data-awp='"+maxAwp+"']");
-      for (var i = 0; i < awpList.length; i++) {
-        awpList[i].style.color = "green";
-      }
-
-      var tecosElements = document.querySelectorAll("[data-tecos]");
-      var tecos = $.map(tecosElements, function(val, i) { return parseFloat(val.dataset.tecos).toFixed(1); });
-      var maxTecos = Math.max.apply(Math, tecos).toFixed(1);
-      var tecosList = document.querySelectorAll("[data-tecos='"+maxTecos+"']");
-      for (var i = 0; i < tecosList.length; i++) {
-        tecosList[i].style.color = "green";
-      }
-
-      var famasElements = document.querySelectorAll("[data-famas]");
-      var famas = $.map(famasElements, function(val, i) { return parseFloat(val.dataset.famas).toFixed(1); });
-      var maxFamas = Math.max.apply(Math, famas).toFixed(1);
-      var famasList = document.querySelectorAll("[data-famas='"+maxFamas+"']");
-      for (var i = 0; i < famasList.length; i++) {
-        famasList[i].style.color = "green";
-      }
-
-      var galilElements = document.querySelectorAll("[data-galil]");
-      var galil = $.map(galilElements, function(val, i) { return parseFloat(val.dataset.galil).toFixed(1); });
-      var maxGalil = Math.max.apply(Math, galil).toFixed(1);
-      var galilList = document.querySelectorAll("[data-galil='"+maxGalil+"']");
-      for (var i = 0; i < galilList.length; i++) {
-        galilList[i].style.color = "green";
-      }
-
-      var knifeElements = document.querySelectorAll("[data-knife]");
-      var knife = $.map(knifeElements, function(val, i) { return parseFloat(val.dataset.knife).toFixed(1); });
-      var maxKnife = Math.max.apply(Math, knife).toFixed(1);
-      var knifeList = document.querySelectorAll("[data-knife='"+maxKnife+"']");
-      for (var i = 0; i < knifeList.length; i++) {
-        knifeList[i].style.color = "green";
-      }
-
-      var taserElements = document.querySelectorAll("[data-taser]");
-      var taser = $.map(taserElements, function(val, i) { return parseFloat(val.dataset.taser).toFixed(1); });
-      var maxTaser = Math.max.apply(Math, taser).toFixed(1);
-      var taserList = document.querySelectorAll("[data-taser='"+maxTaser+"']");
-      for (var i = 0; i < taserList.length; i++) {
-        taserList[i].style.color = "green";
-      }
-
-      var pistolasElements = document.querySelectorAll("[data-pistolas]");
-      var pistolas = $.map(pistolasElements, function(val, i) { return parseFloat(val.dataset.pistolas).toFixed(1); });
-      var maxPistolas = Math.max.apply(Math, pistolas).toFixed(1);
-      var pistolasList = document.querySelectorAll("[data-pistolas='"+maxPistolas+"']");
-      for (var i = 0; i < pistolasList.length; i++) {
-        pistolasList[i].style.color = "green";
-      }
-
-      var deagleElements = document.querySelectorAll("[data-deagle]");
-      var deagle = $.map(deagleElements, function(val, i) { return parseFloat(val.dataset.deagle).toFixed(1); });
-      var maxDeagle = Math.max.apply(Math, deagle).toFixed(1);
-      var deagleList = document.querySelectorAll("[data-deagle='"+maxDeagle+"']");
-      for (var i = 0; i < deagleList.length; i++) {
-        deagleList[i].style.color = "green";
-      }
-
-      var submachinegunsElements = document.querySelectorAll("[data-submachineguns]");
-      var submachineguns = $.map(submachinegunsElements, function(val, i) { return parseFloat(val.dataset.submachineguns).toFixed(1); });
-      var maxSubmachineguns = Math.max.apply(Math, submachineguns).toFixed(1);
-      var submachinegunsList = document.querySelectorAll("[data-submachineguns='"+maxSubmachineguns+"']");
-      for (var i = 0; i < submachinegunsList.length; i++) {
-        submachinegunsList[i].style.color = "green";
-      }
-
-      var outraspistolasElements = document.querySelectorAll("[data-outraspistolas]");
-      var outraspistolas = $.map(outraspistolasElements, function(val, i) { return parseFloat(val.dataset.outraspistolas).toFixed(1); });
-      var maxOutraspistolas = Math.max.apply(Math, outraspistolas).toFixed(1);
-      var outraspistolasList = document.querySelectorAll("[data-outraspistolas='"+maxOutraspistolas+"']");
-      for (var i = 0; i < outraspistolasList.length; i++) {
-        outraspistolasList[i].style.color = "green";
-      }
-
-      var shotgunsElements = document.querySelectorAll("[data-shotguns]");
-      var shotguns = $.map(shotgunsElements, function(val, i) { return parseFloat(val.dataset.shotguns).toFixed(1); });
-      var maxShotguns = Math.max.apply(Math, shotguns).toFixed(1);
-      var shotgunsList = document.querySelectorAll("[data-shotguns='"+maxShotguns+"']");
-      for (var i = 0; i < shotgunsList.length; i++) {
-        shotgunsList[i].style.color = "green";
-      }
-
-      var hegrenadeElements = document.querySelectorAll("[data-hegrenade]");
-      var hegrenade = $.map(hegrenadeElements, function(val, i) { return parseFloat(val.dataset.hegrenade).toFixed(1); });
-      var maxShotguns = Math.max.apply(Math, hegrenade).toFixed(1);
-      var hegrenadeList = document.querySelectorAll("[data-hegrenade='"+maxShotguns+"']");
-      for (var i = 0; i < hegrenadeList.length; i++) {
-        hegrenadeList[i].style.color = "green";
-      }
-
-      var infernoElements = document.querySelectorAll("[data-inferno]");
-      var inferno = $.map(infernoElements, function(val, i) { return parseFloat(val.dataset.inferno).toFixed(1); });
-      var maxShotguns = Math.max.apply(Math, inferno).toFixed(1);
-      var infernoList = document.querySelectorAll("[data-inferno='"+maxShotguns+"']");
-      for (var i = 0; i < infernoList.length; i++) {
-        infernoList[i].style.color = "green";
+      var ar = ["m4a1", "aug", "sg556", "ssg08", "awp", "tecos", "famas", "galil", "knife", "taser", "pistolas", "deagle", "submachineguns", "outraspistolas", "shotguns", "hegrenade", "inferno"];
+      for (var i = 0; i < ar.length; i++) {
+        var elements = document.querySelectorAll("[data-"+ar[i]+"]");
+        var element = $.map(elements, function(val, h) { return parseFloat(val.dataset[ar[i]]).toFixed(1); });
+        var orderedElements = element.sort(function(a, b) {
+          return parseFloat(a) - parseFloat(b);
+        }).reverse();
+        for (var j = 0; j < orderedElements.length; j++) {
+          var position = j + 1;
+          var elementsList = document.querySelectorAll("[data-"+ar[i]+"='"+orderedElements[j]+"']");
+          if (position == 1) {
+            for (var k = 0; k < elementsList.length; k++) {
+              if (elementsList[k].innerHTML.indexOf("tag") === -1) {
+                elementsList[k].innerHTML = "<span class='tag is-success'>"+position+"</span> &nbsp; " + parseFloat(orderedElements[j]);
+              }
+            }
+          } else {
+            for (var l = 0; l < elementsList.length; l++) {
+              if (elementsList[l].innerHTML.indexOf("tag") === -1) {
+                elementsList[l].innerHTML = "<span class='tag is-warning'>"+position+"</span> &nbsp; " + parseFloat(orderedElements[j]);
+              }
+            }
+          }
+        }
       }
     }
   });
