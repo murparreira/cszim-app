@@ -77,7 +77,7 @@
             <% assists = rank.sum{ |e| e[:assists].to_i } %>
             <tr><td data-assists="<%= assists.round(1) %>"><%= assists %></td></tr>
             <% ratio = (kills.to_f/deaths.to_f).round(2) %>
-            <tr><td data-ratio="<%= format_float(ratio) %>"><%= ratio %></td></tr>            
+            <tr><td data-ratio="<%= format_float(ratio) %>"><%= ratio %></td></tr>
             <% suicides = rank.sum{ |e| e[:suicides] } %>
             <tr><td data-suicides="<%= suicides.round(1) %>"><%= suicides %></td></tr>
             <% tk = rank.sum{ |e| e[:tk] } %>
@@ -146,25 +146,25 @@
 
 <script type="text/javascript">
   $(function() {
-    var killsElements = document.querySelectorAll("[data-kills]");
-    if (killsElements.length > 0) {
-      var kills = $.map(killsElements, function(val, i) { return parseFloat(val.dataset.kills).toFixed(1); });
-      var orderedKills = kills.sort(function(a, b) {
-        return parseInt(a) - parseInt(b);
+
+      var ratiosElements = document.querySelectorAll("[data-ratio]");
+      var ratios = $.map(ratiosElements, function(val, i) { return parseFloat(val.dataset.ratio).toFixed(2); });
+      var orderedRatios = ratios.sort(function(a, b) {
+        return parseFloat(a) - parseFloat(b);
       }).reverse();
-      for (var i = 0; i < orderedKills.length; i++) {
+      for (var i = 0; i < orderedRatios.length; i++) {
         var position = i + 1;
-        var killsList = document.querySelectorAll("[data-kills='"+orderedKills[i]+"']");
+        var ratiosList = document.querySelectorAll("[data-ratio='"+orderedRatios[i]+"']");
         if (position == 1) {
-          for (var j = 0; j < killsList.length; j++) {
-            if (killsList[j].innerHTML.indexOf("tag") === -1) {
-              killsList[j].innerHTML = "<span class='tag is-success'>"+position+"</span> &nbsp; " + parseInt(orderedKills[i]);
+          for (var j = 0; j < ratiosList.length; j++) {
+            if (ratiosList[j].innerHTML.indexOf("tag") === -1) {
+              ratiosList[j].innerHTML = "<span class='tag is-success'>"+position+"</span> &nbsp; " + parseFloat(orderedRatios[i]);
             }
           }
         } else {
-          for (var k = 0; k < killsList.length; k++) {
-            if (killsList[k].innerHTML.indexOf("tag") === -1) {
-              killsList[k].innerHTML = "<span class='tag is-warning'>"+position+"</span> &nbsp; " + parseInt(orderedKills[i]);
+          for (var k = 0; k < ratiosList.length; k++) {
+            if (ratiosList[k].innerHTML.indexOf("tag") === -1) {
+              ratiosList[k].innerHTML = "<span class='tag is-warning'>"+position+"</span> &nbsp; " + parseFloat(orderedRatios[i]);
             }
           }
         }
@@ -188,75 +188,6 @@
           for (var k = 0; k < deathsList.length; k++) {
             if (deathsList[k].innerHTML.indexOf("tag") === -1) {
               deathsList[k].innerHTML = "<span class='tag is-warning'>"+position+"</span> &nbsp; " + parseInt(orderedDeaths[i]);
-            }
-          }
-        }
-      }
-
-      var assistsElements = document.querySelectorAll("[data-assists]");
-      var assists = $.map(assistsElements, function(val, i) { return parseFloat(val.dataset.assists).toFixed(1); });
-      var orderedAssists = assists.sort(function(a, b) {
-        return parseInt(a) - parseInt(b);
-      }).reverse();
-      for (var i = 0; i < orderedAssists.length; i++) {
-        var position = i + 1;
-        var assistsList = document.querySelectorAll("[data-assists='"+orderedAssists[i]+"']");
-        if (position == 1) {
-          for (var j = 0; j < assistsList.length; j++) {
-            if (assistsList[j].innerHTML.indexOf("tag") === -1) {
-              assistsList[j].innerHTML = "<span class='tag is-success'>"+position+"</span> &nbsp; " + parseInt(orderedAssists[i]);
-            }
-          }
-        } else {
-          for (var k = 0; k < assistsList.length; k++) {
-            if (assistsList[k].innerHTML.indexOf("tag") === -1) {
-              assistsList[k].innerHTML = "<span class='tag is-warning'>"+position+"</span> &nbsp; " + parseInt(orderedAssists[i]);
-            }
-          }
-        }
-      }
-
-      var ratioElements = document.querySelectorAll("[data-ratio]");
-      var ratio = $.map(ratioElements, function(val, i) { return parseFloat(val.dataset.ratio).toFixed(2); });
-      var orderedRatio = ratio.sort(function(a, b) {
-        return parseFloat(a) - parseFloat(b);
-      }).reverse();
-      for (var i = 0; i < orderedRatio.length; i++) {
-        var position = i + 1;
-        var ratioList = document.querySelectorAll("[data-ratio='"+orderedRatio[i]+"']");
-        if (position == 1) {
-          for (var j = 0; j < ratioList.length; j++) {
-            if (ratioList[j].innerHTML.indexOf("tag") === -1) {
-              ratioList[j].innerHTML = "<span class='tag is-success'>"+position+"</span> &nbsp; " + parseFloat(orderedRatio[i]);
-            }
-          }
-        } else {
-          for (var k = 0; k < ratioList.length; k++) {
-            if (ratioList[k].innerHTML.indexOf("tag") === -1) {
-              ratioList[k].innerHTML = "<span class='tag is-warning'>"+position+"</span> &nbsp; " + parseFloat(orderedRatio[i]);
-            }
-          }
-        }
-      }
-
-      var damageElements = document.querySelectorAll("[data-damage]");
-      var damage = $.map(damageElements, function(val, i) { return parseFloat(val.dataset.damage).toFixed(1); });
-      var orderedDamage = damage.sort(function(a, b) {
-        return parseFloat(a) - parseFloat(b);
-      }).reverse();
-      for (var i = 0; i < orderedDamage.length; i++) {
-        var position = i + 1;
-        var damageList = document.querySelectorAll("[data-damage='"+orderedDamage[i]+"']");
-        if (position == 1) {
-          for (var j = 0; j < damageList.length; j++) {
-            if (damageList[j].innerHTML.indexOf("tag") === -1) {
-              damageList[j].innerHTML = "<span class='tag is-success'>"+position+"</span> &nbsp; " + parseFloat(orderedDamage[i]);
-            }
-          }
-        } else {
-          for (var k = 0; k < damageList.length; k++) {
-            if (damageList[k].innerHTML.indexOf("tag") === -1) {
-              damageList[k].innerHTML = "<span class='tag is-warning'>"+position+"</span> &nbsp; " + parseFloat(orderedDamage[i]);
             }
           }
         }
@@ -308,29 +239,6 @@
         }
       }
 
-      var shotsElements = document.querySelectorAll("[data-shots]");
-      var shots = $.map(shotsElements, function(val, i) { return parseFloat(val.dataset.shots).toFixed(1); });
-      var orderedShots = shots.sort(function(a, b) {
-        return parseFloat(a) - parseFloat(b);
-      }).reverse();
-      for (var i = 0; i < orderedShots.length; i++) {
-        var position = i + 1;
-        var shotsList = document.querySelectorAll("[data-shots='"+orderedShots[i]+"']");
-        if (position == 1) {
-          for (var j = 0; j < shotsList.length; j++) {
-            if (shotsList[j].innerHTML.indexOf("tag") === -1) {
-              shotsList[j].innerHTML = "<span class='tag is-success'>"+position+"</span> &nbsp; " + parseFloat(orderedShots[i]);
-            }
-          }
-        } else {
-          for (var k = 0; k < shotsList.length; k++) {
-            if (shotsList[k].innerHTML.indexOf("tag") === -1) {
-              shotsList[k].innerHTML = "<span class='tag is-warning'>"+position+"</span> &nbsp; " + parseFloat(orderedShots[i]);
-            }
-          }
-        }
-      }
-
       var miraElements = document.querySelectorAll("[data-mira]");
       var mira = $.map(miraElements, function(val, i) { return parseFloat(val.dataset.mira).toFixed(1); });
       var orderedMira = mira.sort(function(a, b) {
@@ -377,122 +285,7 @@
         }
       }
 
-      var nuheadshotsElements = document.querySelectorAll("[data-nuheadshots]");
-      var nuheadshots = $.map(nuheadshotsElements, function(val, i) { return parseFloat(val.dataset.nuheadshots).toFixed(1); });
-      var orderedNuheadshots = nuheadshots.sort(function(a, b) {
-        return parseFloat(a) - parseFloat(b);
-      }).reverse();
-      for (var i = 0; i < orderedNuheadshots.length; i++) {
-        var position = i + 1;
-        var nuheadshotsList = document.querySelectorAll("[data-nuheadshots='"+orderedNuheadshots[i]+"']");
-        if (position == 1) {
-          for (var j = 0; j < nuheadshotsList.length; j++) {
-            if (nuheadshotsList[j].innerHTML.indexOf("tag") === -1) {
-              nuheadshotsList[j].innerHTML = "<span class='tag is-success'>"+position+"</span> &nbsp; " + parseFloat(orderedNuheadshots[i]);
-            }
-          }
-        } else {
-          for (var k = 0; k < nuheadshotsList.length; k++) {
-            if (nuheadshotsList[k].innerHTML.indexOf("tag") === -1) {
-              nuheadshotsList[k].innerHTML = "<span class='tag is-warning'>"+position+"</span> &nbsp; " + parseFloat(orderedNuheadshots[i]);
-            }
-          }
-        }
-      }
-
-      var c4plantedElements = document.querySelectorAll("[data-c4planted]");
-      var c4planted = $.map(c4plantedElements, function(val, i) { return parseFloat(val.dataset.c4planted).toFixed(1); });
-      var orderedC4planted = c4planted.sort(function(a, b) {
-        return parseFloat(a) - parseFloat(b);
-      }).reverse();
-      for (var i = 0; i < orderedC4planted.length; i++) {
-        var position = i + 1;
-        var c4plantedList = document.querySelectorAll("[data-c4planted='"+orderedC4planted[i]+"']");
-        if (position == 1) {
-          for (var j = 0; j < c4plantedList.length; j++) {
-            if (c4plantedList[j].innerHTML.indexOf("tag") === -1) {
-              c4plantedList[j].innerHTML = "<span class='tag is-success'>"+position+"</span> &nbsp; " + parseFloat(orderedC4planted[i]);
-            }
-          }
-        } else {
-          for (var k = 0; k < c4plantedList.length; k++) {
-            if (c4plantedList[k].innerHTML.indexOf("tag") === -1) {
-              c4plantedList[k].innerHTML = "<span class='tag is-warning'>"+position+"</span> &nbsp; " + parseFloat(orderedC4planted[i]);
-            }
-          }
-        }
-      }
-
-      var c4explodedElements = document.querySelectorAll("[data-c4exploded]");
-      var c4exploded = $.map(c4explodedElements, function(val, i) { return parseFloat(val.dataset.c4exploded).toFixed(1); });
-      var orderedC4exploded = c4exploded.sort(function(a, b) {
-        return parseFloat(a) - parseFloat(b);
-      }).reverse();
-      for (var i = 0; i < orderedC4exploded.length; i++) {
-        var position = i + 1;
-        var c4explodedList = document.querySelectorAll("[data-c4exploded='"+orderedC4exploded[i]+"']");
-        if (position == 1) {
-          for (var j = 0; j < c4explodedList.length; j++) {
-            if (c4explodedList[j].innerHTML.indexOf("tag") === -1) {
-              c4explodedList[j].innerHTML = "<span class='tag is-success'>"+position+"</span> &nbsp; " + parseFloat(orderedC4exploded[i]);
-            }
-          }
-        } else {
-          for (var k = 0; k < c4explodedList.length; k++) {
-            if (c4explodedList[k].innerHTML.indexOf("tag") === -1) {
-              c4explodedList[k].innerHTML = "<span class='tag is-warning'>"+position+"</span> &nbsp; " + parseFloat(orderedC4exploded[i]);
-            }
-          }
-        }
-      }
-
-      var c4defusedElements = document.querySelectorAll("[data-c4defused]");
-      var c4defused = $.map(c4defusedElements, function(val, i) { return parseFloat(val.dataset.c4defused).toFixed(1); });
-      var orderedC4defused = c4defused.sort(function(a, b) {
-        return parseFloat(a) - parseFloat(b);
-      }).reverse();
-      for (var i = 0; i < orderedC4defused.length; i++) {
-        var position = i + 1;
-        var c4defusedList = document.querySelectorAll("[data-c4defused='"+orderedC4defused[i]+"']");
-        if (position == 1) {
-          for (var j = 0; j < c4defusedList.length; j++) {
-            if (c4defusedList[j].innerHTML.indexOf("tag") === -1) {
-              c4defusedList[j].innerHTML = "<span class='tag is-success'>"+position+"</span> &nbsp; " + parseFloat(orderedC4defused[i]);
-            }
-          }
-        } else {
-          for (var k = 0; k < c4defusedList.length; k++) {
-            if (c4defusedList[k].innerHTML.indexOf("tag") === -1) {
-              c4defusedList[k].innerHTML = "<span class='tag is-warning'>"+position+"</span> &nbsp; " + parseFloat(orderedC4defused[i]);
-            }
-          }
-        }
-      }
-
-      var ak47Elements = document.querySelectorAll("[data-ak47]");
-      var ak47 = $.map(ak47Elements, function(val, i) { return parseFloat(val.dataset.ak47).toFixed(1); });
-      var orderedAk47 = ak47.sort(function(a, b) {
-        return parseFloat(a) - parseFloat(b);
-      }).reverse();
-      for (var i = 0; i < orderedAk47.length; i++) {
-        var position = i + 1;
-        var ak47List = document.querySelectorAll("[data-ak47='"+orderedAk47[i]+"']");
-        if (position == 1) {
-          for (var j = 0; j < ak47List.length; j++) {
-            if (ak47List[j].innerHTML.indexOf("tag") === -1) {
-              ak47List[j].innerHTML = "<span class='tag is-success'>"+position+"</span> &nbsp; " + parseFloat(orderedAk47[i]);
-            }
-          }
-        } else {
-          for (var k = 0; k < ak47List.length; k++) {
-            if (ak47List[k].innerHTML.indexOf("tag") === -1) {
-              ak47List[k].innerHTML = "<span class='tag is-warning'>"+position+"</span> &nbsp; " + parseFloat(orderedAk47[i]);
-            }
-          }
-        }
-      }
-
-      var ar = ["m4a1", "aug", "sg556", "ssg08", "awp", "tecos", "famas", "galil", "knife", "taser", "pistolas", "deagle", "submachineguns", "outraspistolas", "shotguns", "hegrenade", "inferno"];
+      var ar = ["assists", "kills", "ratio", "shots", "nuheadshots", "c4planted", "c4exploded", "c4defused", "ak47", "m4a1", "aug", "sg556", "ssg08", "awp", "tecos", "famas", "galil", "knife", "taser", "pistolas", "deagle", "submachineguns", "outraspistolas", "shotguns", "hegrenade", "inferno"];
       for (var i = 0; i < ar.length; i++) {
         var elements = document.querySelectorAll("[data-"+ar[i]+"]");
         var element = $.map(elements, function(val, h) { return parseFloat(val.dataset[ar[i]]).toFixed(1); });
@@ -517,6 +310,5 @@
           }
         }
       }
-    }
   });
 </script>
