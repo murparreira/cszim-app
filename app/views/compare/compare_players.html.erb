@@ -7,6 +7,7 @@
       <tr><td>Deaths</td></tr>
       <tr><td>Assists</td></tr>
       <tr><td>Ratio</td></tr>
+      <tr><td>Vitórias (Rounds)</td></tr>
       <tr><td>Suicídios</td></tr>
       <tr><td>Team Kills</td></tr>
       <tr><td>Disparos</td></tr>
@@ -78,6 +79,8 @@
             <tr><td data-assists="<%= assists.round(1) %>"><%= assists %></td></tr>
             <% ratio = (kills.to_f/deaths.to_f).round(2) %>
             <tr><td data-ratio="<%= format_float(ratio) %>"><%= ratio %></td></tr>
+            <% rounds = rank.sum{ |e| e[:ct_win].to_i + e[:tr_win].to_i } %>
+            <tr><td data-rounds="<%= rounds.round(1) %>"><%= rounds %></td></tr>
             <% suicides = rank.sum{ |e| e[:suicides] } %>
             <tr><td data-suicides="<%= suicides.round(1) %>"><%= suicides %></td></tr>
             <% tk = rank.sum{ |e| e[:tk] } %>
@@ -146,7 +149,6 @@
 
 <script type="text/javascript">
   $(function() {
-
       var ratiosElements = document.querySelectorAll("[data-ratio]");
       var ratios = $.map(ratiosElements, function(val, i) { return parseFloat(val.dataset.ratio).toFixed(2); });
       var orderedRatios = ratios.sort(function(a, b) {
@@ -285,7 +287,7 @@
         }
       }
 
-      var ar = ["assists", "kills", "ratio", "shots", "nuheadshots", "c4planted", "c4exploded", "c4defused", "ak47", "m4a1", "aug", "sg556", "ssg08", "awp", "tecos", "famas", "galil", "knife", "taser", "pistolas", "deagle", "submachineguns", "outraspistolas", "shotguns", "hegrenade", "inferno"];
+      var ar = ["assists", "kills", "ratio", "rounds", "shots", "nuheadshots", "c4planted", "c4exploded", "c4defused", "ak47", "m4a1", "aug", "sg556", "ssg08", "awp", "tecos", "famas", "galil", "knife", "taser", "pistolas", "deagle", "submachineguns", "outraspistolas", "shotguns", "hegrenade", "inferno"];
       for (var i = 0; i < ar.length; i++) {
         var elements = document.querySelectorAll("[data-"+ar[i]+"]");
         var element = $.map(elements, function(val, h) { return parseFloat(val.dataset[ar[i]]).toFixed(1); });
