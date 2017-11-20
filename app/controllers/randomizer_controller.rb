@@ -51,6 +51,7 @@ class RandomizerController < ApplicationController
       ssh.exec! "tmux send-keys 'mp_restartgame 2' Enter"
       ssh.exec! "tmux send-keys 'sm plugins load rankme' Enter"
       ssh.exec! "tmux send-keys 'sm plugins load kento_rankme' Enter"
+      ssh.exec! "tmux send-keys 'tv_stoprecord' Enter"
       ssh.exec! "tmux send-keys 'tv_enable 1' Enter"
       nome_replay = mapa + '_' + Time.now.day.to_s + '_' + Time.now.month.to_s + '_' + Time.now.year.to_s
       ssh.exec! "tmux send-keys 'tv_record #{nome_replay}' Enter"
