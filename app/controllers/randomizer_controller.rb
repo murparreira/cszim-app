@@ -117,19 +117,21 @@ class RandomizerController < ApplicationController
         # Identifica o jogador na tabela users pelo steam
         user = User.find_by(steam: steam_jogador)
         # Pega todos os dados desse jogador no mysql removendo o id
-        dados_mysql = RankmeMysqlCsgo.where("steam LIKE '%#{user.steam}'").last
-        dados_tratados = dados_mysql.as_json.select {|k,v| k != 'id'}
-        # Coloca o resto das informações no hash para salvar
-        dados_tratados[:user_id] = user.id
-        dados_tratados[:map_id] = chosen_map.map_id
-        dados_tratados[:tournament_id] = torneio_dia.id
-        dados_tratados[:round_id] = round.id
-        dados_tratados[:team_id] = time_vencedor.id
-        dados_tratados[:season_id] = current_season.id
-        # Salva todos os dados do jogador que veio do mysql na tabela rankmes do sistema
-        RankmeCsgo.create(dados_tratados)
-        # Insere o jogador no time VENCEDOR
-        Player.where(team_id: time_vencedor.id, user_id: user.id).first_or_create
+        unless user.nil?
+          dados_mysql = RankmeMysqlCsgo.where("steam LIKE '%#{user.steam}'").last
+          dados_tratados = dados_mysql.as_json.select {|k,v| k != 'id'}
+          # Coloca o resto das informações no hash para salvar
+          dados_tratados[:user_id] = user.id
+          dados_tratados[:map_id] = chosen_map.map_id
+          dados_tratados[:tournament_id] = torneio_dia.id
+          dados_tratados[:round_id] = round.id
+          dados_tratados[:team_id] = time_vencedor.id
+          dados_tratados[:season_id] = current_season.id
+          # Salva todos os dados do jogador que veio do mysql na tabela rankmes do sistema
+          RankmeCsgo.create(dados_tratados)
+          # Insere o jogador no time VENCEDOR
+          Player.where(team_id: time_vencedor.id, user_id: user.id).first_or_create
+        end
       end
       Winner.create(team_id: time_vencedor.id, round_id: round.id, placar: maximo_ganhado)
       ############################################################################################################
@@ -158,19 +160,21 @@ class RandomizerController < ApplicationController
         # Identifica o jogador na tabela users pelo steam
         user = User.find_by(steam: steam_jogador)
         # Pega todos os dados desse jogador no mysql removendo o id
-        dados_mysql = RankmeMysqlCsgo.where("steam LIKE '%#{user.steam}'").last
-        dados_tratados = dados_mysql.as_json.select {|k,v| k != 'id'}
-        # Coloca o resto das informações no hash para salvar
-        dados_tratados[:user_id] = user.id
-        dados_tratados[:map_id] = chosen_map.map_id
-        dados_tratados[:tournament_id] = torneio_dia.id
-        dados_tratados[:round_id] = round.id
-        dados_tratados[:team_id] = time_perdedor.id
-        dados_tratados[:season_id] = current_season.id
-        # Salva todos os dados do jogador que veio do mysql na tabela rankmes do sistema
-        RankmeCsgo.create(dados_tratados)
-        # Insere o jogador no time PERDEDOR
-        Player.where(team_id: time_perdedor.id, user_id: user.id).first_or_create
+        unless user.nil?
+          dados_mysql = RankmeMysqlCsgo.where("steam LIKE '%#{user.steam}'").last
+          dados_tratados = dados_mysql.as_json.select {|k,v| k != 'id'}
+          # Coloca o resto das informações no hash para salvar
+          dados_tratados[:user_id] = user.id
+          dados_tratados[:map_id] = chosen_map.map_id
+          dados_tratados[:tournament_id] = torneio_dia.id
+          dados_tratados[:round_id] = round.id
+          dados_tratados[:team_id] = time_perdedor.id
+          dados_tratados[:season_id] = current_season.id
+          # Salva todos os dados do jogador que veio do mysql na tabela rankmes do sistema
+          RankmeCsgo.create(dados_tratados)
+          # Insere o jogador no time PERDEDOR
+          Player.where(team_id: time_perdedor.id, user_id: user.id).first_or_create
+        end
       end
       Loser.create(team_id: time_perdedor.id, round_id: round.id, placar: minimo_ganhado)
     end
