@@ -12,6 +12,29 @@
   <hr>
 <% end %>
 
+<% winners = Tournament.joins(rounds: :winner).where(id: @tournament.id).pluck(:team_id) %>
+<% new_winners = winners.each_with_object(Hash.new(0)) { |team_id, counts| counts[team_id] += 1 } %>
+<table class="table is-bordered is-narrow">
+  <thead>
+    <th colspan="3">VITÓRIAS DOS TIMES</th>
+  </thead>
+  <tbody>
+    <% new_winners.each do |k, v| %>
+      <tr>
+        <% team = Team.find(k) %>
+        <td><%= team.nome %></td>
+        <td>
+          <% team.users.each do |user| %>
+          <%= image_tag avatar_url(user), class: 'img-circle image anti-image-block is-24x24' %>
+            &nbsp;
+          <% end %>
+        </td>
+        <td><%= v %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
 <% @tournament.rounds.order("rounds.id DESC").each do |round| %>
   <div class="card">
     <div class="card-content">
