@@ -123,4 +123,10 @@ class RankmeCsgo < ApplicationRecord
 	def smokegrenade_percentage
 		((smokegrenade.to_f/kills.to_f)*100).round(2)
 	end
+
+	WEAPONS = [:knife, :glock, :hkp2000, :usp_silencer, :p250, :deagle, :elite, :fiveseven, :tec9, :cz75a, :revolver,
+		:nova, :xm1014, :mag7, :sawedoff, :bizon, :mac10, :mp9, :mp7, :ump45, :p90, :galilar, :ak47, :scar20,
+		:famas, :m4a1, :m4a1_silencer, :aug, :ssg08, :sg556, :awp, :g3sg1, :m249, :negev, :hegrenade,
+		:flashbang, :smokegrenade, :inferno, :decoy, :taser]
+
 end

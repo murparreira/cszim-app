@@ -5,32 +5,17 @@
         <div class="column is-one-third">
           <%= image_tag avatar_url(@user), class: 'img-circle' %>
         </div>
-        <div class="column">
-          <h3 class="subtitle">
-            <strong><%= @user.nome %></strong><br>
-            Partidas: <%= Winner.joins(team: :users).where(users: {id: @user.id}).count + Loser.joins(team: :users).where(users: {id: @user.id}).count %><br>
-            Vitórias: <%= Winner.joins(team: :users).where(users: {id: @user.id}).count %><br>
-            Derrotas: <%= Loser.joins(team: :users).where(users: {id: @user.id}).count %>
-          </h3>
+        <div class="column is-quarter">
+          <%= select_tag :season_id, options_for_select(Season.all.order(created_at: :desc).collect {|s| [s.nome, s.id]}, params[:season_id]), {class: 'input history-detail', include_blank: true} %>
         </div>
-        <div class="column">
-          <div class="field">
-            <label class="label">Torneio</label>
-            <p class="control">
-              <%= select_tag :tournament_id, options_for_select(Tournament.all.order(created_at: :desc).collect {|t| [t.nome, t.id]}, params[:tournament_id]), {class: 'input history-detail', include_blank: true} %>
-            </p>
-          </div>
+        <div class="column is-quarter">
+          <%= select_tag :tournament_id, options_for_select(Tournament.all.order(created_at: :desc).collect {|t| [t.nome, t.id]}, params[:tournament_id]), {class: 'input history-detail', include_blank: true} %>
         </div>
-        <div class="column">
-          <div class="field">
-            <label class="label">Mapa</label>
-            <p class="control">
-              <%= select_tag :map_id, options_for_select(Map.all.where(ativo: true).order(nome: :asc).collect {|m| [m.nome, m.id]}, params[:map_id]), {class: 'input history-detail', include_blank: true} %>
-            </p>
-          </div>
+        <div class="column is-quarter">
+          <%= select_tag :map_id, options_for_select(Map.all.where(ativo: true).order(nome: :asc).collect {|m| [m.nome, m.id]}, params[:map_id]), {class: 'input history-detail', include_blank: true} %>
         </div>
       </div>
-      <div class="columns">
+      <div id="data" class="columns">
         <div class="column">
           <table class="table is-bordered is-striped is-narrow is-fullwidth">
             <thead>
@@ -94,44 +79,10 @@
             </tbody>
           </table>
           <hr>
-          <%
-          arms = [
-              [image: '300px-Css_frag.png', title: 'hegrenade', atalho: '(04)', point: @rankme.hegrenade, percent: @rankme.hegrenade_percentage],
-              [image: 'Css_flashbang.png', title: 'flashbang', atalho: '(03)', point: @rankme.flashbang, percent: @rankme.flashbang_percentage],
-              [image: 'Css_smoke.png', title: 'smokegrenade', atalho: '(05)', point: @rankme.smokegrenade, percent: @rankme.smokegrenade_percentage],
-              [image: '300px-Css_knives.png', title: 'knife', atalho: '(3)', point: @rankme.knife, percent: @rankme.knife_percentage],
-              [image: '300px-Css_glock16.png', title: 'glock', atalho: '(B11)', point: @rankme.glock, percent: @rankme.glock_percentage],
-              [image: '300px-Css_usp.png', title: 'usp', atalho: '(B12)', point: @rankme.usp, percent: @rankme.usp_percentage],
-              [image: '300px-Css_p228.png', title: 'p228', atalho: '(B13)', point: @rankme.p228, percent: @rankme.p228_percentage],
-              [image: '300px-Css_deagle.png', title: 'deagle', atalho: '(B14)TR', point: @rankme.deagle, percent: @rankme.deagle_percentage],
-              [image: '300px-Css_beretta.png', title: 'elite', atalho: '(B15)TR', point: @rankme.elite, percent: @rankme.elite_percentage],
-              [image: '300px-Css_es57.png', title: 'fiveseven', atalho: '(B15)CT', point: @rankme.fiveseven, percent: @rankme.fiveseven_percentage],
-              [image: '300px-Css_m3.png', title: 'm3', atalho: '(B21)', point: @rankme.m3, percent: @rankme.m3_percentage],
-              [image: '300px-Css_xm1014.png', title: 'xm1014', atalho: '(B22)', point: @rankme.xm1014, percent: @rankme.xm1014_percentage],
-              [image: '300px-Css_mac10.png', title: 'mac10', atalho: '(B31)TR', point: @rankme.mac10, percent: @rankme.mac10_percentage],
-              [image: '300px-Css_tmp.png', title: 'tmp', atalho: '(B31)CT', point: @rankme.tmp, percent: @rankme.tmp_percentage],
-              [image: '300px-Css_mp5.png', title: 'mp5navy', atalho: '(B32)', point: @rankme.mp5navy, percent: @rankme.mp5navy_percentage],
-              [image: '300px-Css_ump.png', title: 'ump45', atalho: '(B33)', point: @rankme.ump45, percent: @rankme.ump45_percentage],
-              [image: '300px-Css_p90.png', title: 'p90', atalho: '(B34)', point: @rankme.p90, percent: @rankme.p90_percentage],
-              [image: '300px-Css_galil.png', title: 'galil', atalho: '(B41)TR', point: @rankme.galil, percent: @rankme.galil_percentage],
-              [image: '300px-Css_ak47.png', title: 'ak47', atalho: '(B42)TR', point: @rankme.ak47, percent: @rankme.ak47_percentage],
-              [image: '300px-Css_sg-550.png', title: 'sg550', atalho: '(B46)CT', point: @rankme.sg550, percent: @rankme.sg550_percentage],
-              [image: '300px-Css_famas.png', title: 'famas', atalho: '(B41)CT', point: @rankme.famas, percent: @rankme.famas_percentage],
-              [image: '300px-Css_m4a1.png', title: 'm4a1', atalho: '(B43)CT', point: @rankme.m4a1, percent: @rankme.m4a1_percentage],
-              [image: '300px-Css_aug.png', title: 'aug', atalho: '(B44)CT', point: @rankme.aug, percent: @rankme.aug_percentage],
-              [image: '300px-Css_scout.png', title: 'scout', atalho: '(B43)TR(B42CT)', point: @rankme.scout, percent: @rankme.scout_percentage],
-              [image: '300px-Css_sg-552.png', title: 'sg552', atalho: '(B44)TR', point: @rankme.sg552, percent: @rankme.sg552_percentage],
-              [image: '300px-Css_awp.png', title: 'awp', atalho: '(B45)TR(B46)CT', point: @rankme.awp, percent: @rankme.awp_percentage],
-              [image: '300px-Css_sg-1.png', title: 'g3sg1', atalho: '(B46)TR', point: @rankme.g3sg1, percent: @rankme.g3sg1_percentage],
-              [image: '300px-Css_m249.png', title: 'm249', atalho: '(B51)', point: @rankme.m249, percent: @rankme.m249_percentage]
-          ]
-          arms_sort = arms.sort_by{ |h| h[0][:point] }.reverse!
-          offset = rand(User.count)
-          %>
           <div class="columns">
             <div class="column is-one-quarter">
               <div class="csbody">
-                <div class="csperfil"><%= image_tag avatar_url(User.offset(offset).first), class: 'img-circle' %></div>
+                <div class="csperfil"></div>
                 <div class="cshead"><span><%= @rankme.head %> (<%= ((@rankme.head.to_f/@rankme.hits.to_f)*100).round(2) %>%)</span></div>
                 <div class="cschest"><span><%= @rankme.chest %> (<%= ((@rankme.chest.to_f/@rankme.hits.to_f)*100).round(2) %>%)</span></div>
                 <div class="csstomach"><span><%= @rankme.stomach %> (<%= ((@rankme.stomach.to_f/@rankme.hits.to_f)*100).round(2) %>%)</span></div>
@@ -142,18 +93,17 @@
                 <%= image_tag(asset_path("csbody.png")) %>
               </div>
             </div>
-            <div class="column contact-box"" style="padding-left: 80px;">
+            <div class="column contact-box" style="padding-left: 80px;">
               <div class="columns is-multiline">
-                <% arms_sort.each do |v| %>
-                  <% if v[0][:point] > 0 %>
+                <% RankmeCsgo::WEAPONS.each do |attr| %>
+                  <% if @rankme.send(attr.to_sym).to_i > 0 %>
                     <div class="is-card">
                       <div class="card-image">
-                        <%= image_tag(asset_path("cssweapons/#{v[0][:image]}"), class: 'image anti-image-block is-24x24') %> <%= v[0][:title] %>
+                        <%= image_tag(asset_path("weapon_#{attr}.svg"), class: 'image anti-image-block is-36x36') %>
                       </div>
                       <div class="card-content">
                         <div class="content">
-                         <strong><%= v[0][:point] %></strong> (<%= v[0][:percent] %>%)<br>
-                          <small><%= v[0][:atalho] %></small>
+                         <strong><%= @rankme.send(attr.to_sym) %></strong> (<%= ((@rankme.send(attr.to_sym).to_f/@rankme.kills.to_f)*100.00).round(2) %>%)<br>
                         </div>
                       </div>
                     </div>
@@ -170,10 +120,61 @@
 
 <hr>
 <script type="text/javascript">
-$(".history-detail").on("change", function() {
-  window.location.href = "/users/<%= @user.id %>?tournament_id="+$("#tournament_id").val()+"&map_id="+$("#map_id").val();
+$(function() {
+  $('#season_id').select2({ placeholder: "Selecione a Temporada", allowClear: true });
+  $('#tournament_id').select2({ placeholder: "Selecione o Torneio", allowClear: true });
+  $('#map_id').select2({ placeholder: "Selecione o Mapa", allowClear: true });
+  $('#season_id').on("change", function() {
+    $.ajax({
+      url: "/get_tournaments_from_season",
+      type: "GET",
+      data: {
+        season_id: this.value
+      },
+      success: function(data) {
+        $("#tournament_id").empty();
+        $("<option value=''></option>").appendTo("#tournament_id");
+        $.each(data, function() {
+          $("<option value='"+this.id+"'>"+this.nome+"</option>").appendTo("#tournament_id");
+        });
+      }
+    });
+  });
+  $('#tournament_id').on("change", function() {
+    $.ajax({
+      url: "/get_maps_from_tournament",
+      type: "GET",
+      data: {
+        game_id: "<%= current_game.id %>",
+        tournament_id: this.value
+      },
+      success: function(data) {
+        $("#map_id").empty();
+        $("<option value=''></option>").appendTo("#map_id");
+        $.each(data, function() {
+          $("<option value='"+this.id+"'>"+this.nome+"</option>").appendTo("#map_id");
+        });
+      }
+    });
+  });
+  $('select').on("change", function() {
+    $.ajax({
+      url: "<%= get_data_user_path(@user.id) %>",
+      type: "GET",
+      data: {
+        game_id: "<%= current_game.id %>",
+        season_id: $('#season_id').val(),
+        tournament_id: $('#tournament_id').val(),
+        map_id: $('#map_id').val()
+      },
+      success: function(html) {
+        $("#data").html(html);
+      }
+    });
+  });
 });
 </script>
+
 <style type="text/css">
 .is-card {
   -webkit-box-flex: 0;

@@ -1,3 +1,11 @@
+<div class="columns">
+  <% Game.all.each do |game| %>
+    <div class="column is-2">
+      <%= link_to game.nome, maps_path(game_id: game.id), :class => "button #{'is-primary' if params[:game_id] == game.id.to_s}" %>
+    </div>
+  <% end %>
+</div>
+<hr>
 <% if current_user.admin %>
   <div class="columns">
     <div class="column is-2">

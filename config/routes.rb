@@ -40,7 +40,12 @@ Rails.application.routes.draw do
     end
   end
   resources :seasons
-  resources :users
+  resources :users do
+    member do
+      get :get_data
+    end
+  end
+
   resources :maps do
     member do
       post :toggle_status

@@ -1,0 +1,97 @@
+<div class="column">
+  <table class="table is-bordered is-striped is-narrow is-fullwidth">
+    <thead>
+      <tr>
+        <th colspan="12">Estatísticas de KDR</th>
+      </tr>
+      <tr>
+        <th>Kills</th>
+        <th>Deaths</th>
+        <th>Ratio</th>
+        <th>Suicídos</th>
+        <th>Team Kills</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%= @rankme.kills %></td>
+        <td><%= @rankme.deaths %></td>
+        <td><%= @rankme.ratio %></td>
+        <td><%= @rankme.suicides %></td>
+        <td><%= @rankme.tk %></td>
+      </tr>
+    </tbody>
+  </table>
+  <hr>
+  <table class="table is-bordered is-striped is-narrow is-fullwidth">
+    <thead>
+      <tr>
+        <th colspan="12">Estatísticas Gerais</th>
+      </tr>
+      <tr>
+        <th>Disparos/Acertos/Mira(%)</th>
+        <th>Kills por headshot</th>
+        <th>Rounds como TR/Vitórias como TR</th>
+        <th>Rounds como CT/Vitórias como CT</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%= @rankme.shots %>/<%= @rankme.hits %>/<%= ((@rankme.hits.to_f/@rankme.shots.to_f)*100).round(2) %>%</td>
+        <td><%= @rankme.headshots %> (<%= ((@rankme.headshots.to_f/@rankme.kills.to_f)*100).round(2) %>%)</td>
+        <td><%= @rankme.rounds_tr %>/<%= @rankme.tr_win %> (<%= ((@rankme.tr_win.to_f/@rankme.rounds_tr.to_f)*100).round(2) %>%)</td>
+        <td><%= @rankme.rounds_ct %>/<%= @rankme.ct_win %> (<%= ((@rankme.ct_win.to_f/@rankme.rounds_ct.to_f)*100).round(2) %>%)</td>
+      </tr>
+    </tbody>
+    <thead>
+      <tr>
+        <th>C4 plantadas</th>
+        <th>C4 explodidas</th>
+        <th>C4 defusadas</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%= @rankme.c4_planted %></td>
+        <td><%= @rankme.c4_exploded %></td>
+        <td><%= @rankme.c4_defused %></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <hr>
+  <div class="columns">
+    <div class="column is-one-quarter">
+      <div class="csbody">
+        <div class="csperfil"></div>
+        <div class="cshead"><span><%= @rankme.head %> (<%= ((@rankme.head.to_f/@rankme.hits.to_f)*100).round(2) %>%)</span></div>
+        <div class="cschest"><span><%= @rankme.chest %> (<%= ((@rankme.chest.to_f/@rankme.hits.to_f)*100).round(2) %>%)</span></div>
+        <div class="csstomach"><span><%= @rankme.stomach %> (<%= ((@rankme.stomach.to_f/@rankme.hits.to_f)*100).round(2) %>%)</span></div>
+        <div class="csleftarm"><span><%= @rankme.left_arm %> (<%= ((@rankme.left_arm.to_f/@rankme.hits.to_f)*100).round(2) %>%)</span></div>
+        <div class="csrightarm"><span><%= @rankme.right_arm %> (<%= ((@rankme.right_arm.to_f/@rankme.hits.to_f)*100).round(2) %>%)</span></div>
+        <div class="csleftleg"><span><%= @rankme.left_leg %> (<%= ((@rankme.left_leg.to_f/@rankme.hits.to_f)*100).round(2) %>%)</span></div>
+        <div class="csrightleg"><span><%= @rankme.right_leg %> (<%= ((@rankme.right_leg.to_f/@rankme.hits.to_f)*100).round(2) %>%)</span></div>
+        <%= image_tag(asset_path("csbody.png")) %>
+      </div>
+    </div>
+    <div class="column contact-box" style="padding-left: 80px;">
+      <div class="columns is-multiline">
+        <% RankmeCsgo::WEAPONS.each do |attr| %>
+          <% if @rankme.send(attr.to_sym).to_i > 0 %>
+            <div class="is-card">
+              <div class="card-image">
+                <%= image_tag(asset_path("weapon_#{attr}.svg"), class: 'image anti-image-block is-36x36') %>
+              </div>
+              <div class="card-content">
+                <div class="content">
+                 <strong><%= @rankme.send(attr.to_sym) %></strong> (<%= ((@rankme.send(attr.to_sym).to_f/@rankme.kills.to_f)*100.00).round(2) %>%)<br>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
