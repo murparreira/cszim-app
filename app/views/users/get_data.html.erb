@@ -98,23 +98,23 @@
     <div class="column">
       <table class="table is-bordered is-striped is-narrow is-fullwidth">
         <thead>
-          <th>Vitórias em Mapas</th>
-          <th></th>
+          <th>Estatísticas em Mapas</th>
+          <th>V/D/T</th>
         </thead>
         <tbody>
           <% hash = {} %>
           <% Map.where(game_id: current_game.id).each do |map| %>
             <% if params[:season_id].present? %>
-              <% hash[map.nome] = Winner.joins(:round, team: :users).where("users.id = ? AND rounds.map_id = ? AND rounds.season_id = ?", params[:id], map.id, params[:season_id]).count %>
+              <% hash[map.nome] = {id: map.id, vitorias: Winner.joins(:round, team: :users).where("users.id = ? AND rounds.map_id = ? AND rounds.season_id = ?", params[:id], map.id, params[:season_id]).count, derrotas: Loser.joins(:round, team: :users).where("users.id = ? AND rounds.map_id = ? AND rounds.season_id = ?", params[:id], map.id, params[:season_id]).count} %>
             <% else %>
-              <% hash[map.nome] = Winner.joins(:round, team: :users).where("users.id = ? AND rounds.map_id = ?", params[:id], map.id).count %>
+              <% hash[map.nome] = {id: map.id, vitorias: Winner.joins(:round, team: :users).where("users.id = ? AND rounds.map_id = ?", params[:id], map.id).count, derrotas: Loser.joins(:round, team: :users).where("users.id = ? AND rounds.map_id = ?", params[:id], map.id).count} %>
             <% end %>
           <% end %>
-          <% hash = hash.sort_by{|k,v| -v}.reject{|k,v| v == 0} %>
+          <% hash = hash.sort_by{|k,v| -v[:vitorias]}.reject{|k,v| v[:vitorias] == 0 && v[:derrotas] == 0} %>
           <% hash.each do |k, v| %>
             <tr>
               <td><%= k %></td>
-              <td><%= v %></td>
+              <td><%= v[:vitorias] %>/<%= v[:derrotas] %>/<%= v[:vitorias] + v[:derrotas] %></td>
             </tr>
           <% end %>
         </tbody>
