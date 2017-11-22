@@ -41,6 +41,7 @@ class RandomizerController < ApplicationController
       flash[:success] = "Mapa iniciado com sucesso!"
     end
     Net::SSH.start('127.0.0.1', login_jogo, password: 's3nh4123', port: 19922) do| ssh |
+      ssh.exec! "tmux send-keys 'tv_stoprecord' Enter"
       ssh.exec! "tmux send-keys 'sm plugins unload kento_rankme' Enter"
       ssh.exec! "tmux send-keys 'sm plugins unload rankme' Enter"
     end
@@ -51,9 +52,8 @@ class RandomizerController < ApplicationController
       ssh.exec! "tmux send-keys 'mp_restartgame 2' Enter"
       ssh.exec! "tmux send-keys 'sm plugins load rankme' Enter"
       ssh.exec! "tmux send-keys 'sm plugins load kento_rankme' Enter"
-      ssh.exec! "tmux send-keys 'tv_stoprecord' Enter"
       ssh.exec! "tmux send-keys 'tv_enable 1' Enter"
-      nome_replay = mapa + '_' + Time.now.day.to_s + '_' + Time.now.month.to_s + '_' + Time.now.year.to_s
+      nome_replay = Time.now.day.to_s.rjust(2, "0") + '_' + Time.now.month.to_s + '_' + Time.now.year.to_s + '_' + mapa
       ssh.exec! "tmux send-keys 'tv_record #{nome_replay}' Enter"
     end
     redirect_to randomizer_url
