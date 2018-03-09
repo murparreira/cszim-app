@@ -18,6 +18,11 @@ module SessionsHelper
     end
   end
 
+  # Returns the current season.
+  def current_season
+    Season.last    
+  end
+
   # Returns true if the user is logged in, false otherwise.
   def logged_in?
     !current_user.nil?

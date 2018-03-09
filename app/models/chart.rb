@@ -7,7 +7,9 @@ class Chart
     pie_death = []
     data.each do |statistic|
       user = User.find(statistic.user_id)
-      ratio = statistic.ratio
+      deaths = statistic.deaths.to_i
+      deaths = 1 if statistic.deaths.to_i == 0
+      ratio = statistic.kills.to_i/deaths
       media = (statistic.kills.to_f+statistic.deaths.to_f)/2
       nome << user.nome + '<br>' + ratio.to_s
       kill << statistic.kills
@@ -15,8 +17,8 @@ class Chart
       pie_kill << {name: user.nome.to_s, y: statistic.kills}
       pie_death << {name: user.nome.to_s, y: statistic.deaths}
     end
-    line_kill = (data.map {|k| k['kills']}.reduce(0, :+))/data.size
-    line_death = (data.map {|d| d['deaths']}.reduce(0, :+))/data.size
+    line_kill = (data.map {|k| k['kills']}.reduce(0, :+))/data.size if data.size > 0
+    line_death = (data.map {|d| d['deaths']}.reduce(0, :+))/data.size if data.size > 0
     LazyHighCharts::HighChart.new('graph') do |f|
       f.title(text: "Kikiu")
       f.xAxis(categories: nome)
@@ -44,7 +46,7 @@ class Chart
         data = []
         n_kills = 0
         tournaments.each do |tournament|
-          statistic = Statistic.joins(round: :tournament).select("SUM(kills) AS kills").where("user_id = ? AND tournaments.id = ?", user.id, tournament.id).first
+          statistic = Rankme.select("COALESCE(SUM(kills), 0) AS kills").where("user_id = ? AND tournaments.id = ?", user.id, tournament.id).first
           kills = statistic.kills || 0
           n_kills += kills
           data << n_kills
@@ -66,7 +68,8 @@ class Chart
       f.yAxis(title: "Ratio", categories: [])
       data = []
       categories = []
-      result = ActiveRecord::Base.connection.execute "SELECT round(CAST(SUM(kills) AS float)/CAST(SUM(deaths) AS float), 2) AS ratio, tournament_id FROM statistics s INNER JOIN rounds r ON s.round_id = r.id INNER JOIN tournaments t ON r.tournament_id = t.id WHERE map_id IS NOT NULL AND user_id = #{user_id} GROUP BY tournament_id ORDER BY tournament_id ASC"
+      result = ActiveRecord::Base.connection.execute "SELECT round(CAST(SUM(kills) AS float)/CAST(SUM(deaths) AS float), 2) AS ratio, tournament_id FROM rankmes s WHERE map_id IS NOT NULL AND user_id = #{user_id} GROUP BY tournament_id ORDER BY tournament_id ASC"
+      # result = ActiveRecord::Base.connection.execute "SELECT round(CAST(SUM(kills) AS float)/CAST(SUM(deaths) AS float), 2) AS ratio, tournament_id FROM statistics s INNER JOIN rounds r ON s.round_id = r.id INNER JOIN tournaments t ON r.tournament_id = t.id WHERE map_id IS NOT NULL AND user_id = #{user_id} GROUP BY tournament_id ORDER BY tournament_id ASC"
       result.each do |hash|
         data << hash["ratio"]
         tournament = Tournament.find(hash["tournament_id"])

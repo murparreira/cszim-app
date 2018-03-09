@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :authenticate_user, except: [:show]
+  before_action :authenticate_user, except: [:show, :get_data]
 
 	def index
     @users = User.order(:nome)
@@ -7,6 +7,39 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
+    if current_game.sigla == "CSGO"
+      @rankme = RankmeCsgo.select_fields
+    else
+      @rankme = Rankme.select_fields
+    end
+    if params[:tournament_id].present? && params[:map_id].present?
+      @rankme = @rankme.by_players([@user.id]).where("tournament_id = ? AND map_id = ?", params[:tournament_id], params[:map_id]).group(:user_id).first
+    elsif params[:tournament_id].present?
+      @rankme = @rankme.by_players([@user.id]).where("tournament_id = ?", params[:tournament_id]).group(:user_id).first
+    elsif params[:map_id].present?
+      @rankme = @rankme.by_players([@user.id]).where("map_id = ?", params[:map_id]).group(:user_id).first
+    else
+     @rankme = @rankme.by_players([@user.id]).group(:user_id).first
+    end
+  end
+
+  def get_data
+    @user = User.find(params[:id])
+    if current_game.sigla == "CSGO"
+      @rankme = RankmeCsgo.select_fields
+    else
+      @rankme = Rankme.select_fields
+    end
+    if params[:tournament_id].present? && params[:map_id].present?
+      @rankme = @rankme.by_players([@user.id]).where("tournament_id = ? AND map_id = ?", params[:tournament_id], params[:map_id]).group(:user_id).first
+    elsif params[:tournament_id].present?
+      @rankme = @rankme.by_players([@user.id]).where("tournament_id = ?", params[:tournament_id]).group(:user_id).first
+    elsif params[:map_id].present?
+      @rankme = @rankme.by_players([@user.id]).where("map_id = ?", params[:map_id]).group(:user_id).first
+    else
+     @rankme = @rankme.by_players([@user.id]).group(:user_id).first
+    end
+    render layout: false
   end
 
   def edit
@@ -60,6 +93,6 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:nome, :login, :steamid, :email, :password, :password_confirmation)
+    params.require(:user).permit(:nome, :login, :steamid, :steam, :email, :password, :password_confirmation)
   end
 end

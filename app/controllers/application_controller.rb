@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
   include Pundit
 
   protect_from_forgery with: :exception
-  
+
   include SessionsHelper
 
   rescue_from ActiveRecord::RecordNotFound do
@@ -29,5 +29,17 @@ class ApplicationController < ActionController::Base
       end
     end
   end
-  
+
+  def current_game
+    Game.find_by(ativo: true)
+  end
+
+  def current_season
+    Season.last
+  end
+
+  def current_configuration
+    ServerConfiguration.find_by(ativo: true)
+  end
+
 end

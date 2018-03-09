@@ -24,22 +24,7 @@
           <h3><strong><%= link_to tournament.nome, tournament %></strong></h3>
           <div><%= tournament.texto_oficial %></div>
           <hr>
-          <h3><strong>Times</strong></h3>
-          <div class="columns">
-            <% tournament.teams.each do |team| %>
-              <div class="column is-half">
-                <%= team.nome %>
-                <br><br>
-                <% team.users.each do |user| %>
-                  <%= image_tag avatar_url(user), class: 'img-circle image anti-image-block is-24x24' %>
-                <% end %>
-                <br><br>
-                <%= Winner.joins(:round).where(team_id: team.id).sum("rounds.pontos") %> pontos
-                -
-                <%= Winner.joins(:round).where(team_id: team.id).count %> vitória(s)
-              </div>
-            <% end %>
-          </div>
+          <h3><strong>Rounds jogados: <%= tournament.rounds.count %></strong></h3>
         </span>
         <div class="contact-box-footer">
           <% if current_user.admin %>

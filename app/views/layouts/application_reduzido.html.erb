@@ -9,8 +9,11 @@
     <%= javascript_include_tag "application" %>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.0.47/jquery.fancybox.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.0.47/jquery.fancybox.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
   </head>
   <body data-no-turbolink>
+    <div id="loading-indicator"></div>
     <%= render :partial => 'layouts/top_menu' %>
     <section class="section">
       <div id="container">

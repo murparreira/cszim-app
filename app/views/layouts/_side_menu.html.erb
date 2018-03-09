@@ -31,13 +31,39 @@
           Torneios
         <% end %>
       </li>
+      <li>
+        <%= link_to seasons_path, class: "#{'is-active' if params[:controller] == 'seasons'}" do %>
+          <span class="icon is-small"><i class="fa fa-star"></i></span>&nbsp;
+          Temporadas
+        <% end %>
+      </li>
+      <li>
+        <%= link_to games_path, class: "#{'is-active' if params[:controller] == 'games'}" do %>
+          <span class="icon is-small"><i class="fa fa-book"></i></span>&nbsp;
+          Ativar Jogo
+        <% end %>
+      </li>
+      <li>
+        <%= link_to server_configurations_path, class: "#{'is-active' if params[:controller] == 'server_configurations'}" do %>
+          <span class="icon is-small"><i class="fa fa-cog"></i></span>&nbsp;
+          Configuração do Servidor
+        <% end %>
+      </li>
     <% end %>
   </ul>
   <ul class="menu-list">
+    <% if logged_in? %>
+      <li>
+        <%= link_to randomizer_path, class: "#{'is-active' if params[:controller] == 'randomizer'}" do %>
+          <span class="icon is-small"><i class="fa fa-random"></i></span>&nbsp;
+          Randomizador
+        <% end %>
+      </li>
+    <% end %>
     <li>
-      <%= link_to randomizer_path, class: "#{'is-active' if params[:controller] == 'randomizer'}" do %>
-        <span class="icon is-small"><i class="fa fa-random"></i></span>&nbsp;
-        Randomizador
+      <%= link_to compare_path, class: "#{'is-active' if params[:controller] == 'compare'}" do %>
+        <span class="icon is-small"><i class="fa fa-arrows-alt"></i></span>&nbsp;
+        Comparar
       <% end %>
     </li>
   </ul>

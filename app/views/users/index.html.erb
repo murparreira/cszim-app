@@ -7,12 +7,14 @@
           <h3><strong><%= user.nome %></strong></h3>
           <div><%= user.email %></div>
           <div><a target="_blank" href="<%= user.steamid %>">Perfil da Steam</a></div>
+          <div><%= user.steam %></div>
           <div><%= user.login %></div>
         </span>
         <div class="contact-box-footer">
           <% if user.id == current_user.id || current_user.admin %>
             <%= link_to "Editar", edit_user_path(user), :class => 'button' %>
           <% end %>
+          <%= link_to "Histórico", user, class: 'button' %>
         </div>
       </div>
     </div>

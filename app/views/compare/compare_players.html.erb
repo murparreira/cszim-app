@@ -1,0 +1,316 @@
+<div class="columns" data-turbolinks="false">
+  <div class="column is-2">
+    <table class="table is-bordered is-narrow">
+    <tbody>
+      <tr><td>Jogador</td></tr>
+      <tr><td>Kills</td></tr>
+      <tr><td>Deaths</td></tr>
+      <tr><td>Assists</td></tr>
+      <tr><td>Ratio</td></tr>
+      <tr><td>Vitórias (Rounds)</td></tr>
+      <tr><td>Suicídios</td></tr>
+      <tr><td>Team Kills</td></tr>
+      <tr><td>Disparos</td></tr>
+      <tr><td>Mira(%)</td></tr>
+      <tr><td>Kills por headshot</td></tr>
+      <tr><td>Kills por headshot (%)</td></tr>
+      <tr><td>C4 plantadas</td></tr>
+      <tr><td>C4 explodidas</td></tr>
+      <tr><td>C4 defusadas</td></tr>
+      <tr><td><%= image_tag(asset_path("cssweapons/300px-Css_ak47.png"), class: 'image anti-image-block is-16x16') %> AK 47</td></tr>
+      <tr><td><%= image_tag(asset_path("cssweapons/300px-Css_m4a1.png"), class: 'image anti-image-block is-16x16') %> M4</td></tr>
+      <tr><td><%= image_tag(asset_path("cssweapons/300px-Css_aug.png"), class: 'image anti-image-block is-16x16') %> AUG</td></tr>
+      <tr><td><%= image_tag(asset_path("cssweapons/300px-Css_sg-550.png"), class: 'image anti-image-block is-16x16') %> SG</td></tr>
+      <tr><td><%= image_tag(asset_path("cssweapons/300px-Css_scout.png"), class: 'image anti-image-block is-16x16') %> SCOUT</td></tr>
+      <tr><td><%= image_tag(asset_path("cssweapons/300px-Css_awp.png"), class: 'image anti-image-block is-16x16') %> AWP</td></tr>
+      <tr><td>
+        <%= image_tag(asset_path("cssweapons/300px-Css_sg-550.png"), class: 'image anti-image-block is-16x16') %>
+        <%= image_tag(asset_path("cssweapons/300px-Css_sg-1.png"), class: 'image anti-image-block is-16x16') %>
+        TECOS
+      </td></tr>
+      <tr><td><%= image_tag(asset_path("cssweapons/300px-Css_famas.png"), class: 'image anti-image-block is-16x16') %> FAMAS</td></tr>
+      <tr><td><%= image_tag(asset_path("cssweapons/300px-Css_galil.png"), class: 'image anti-image-block is-16x16') %> GALIL</td></tr>
+      <tr><td><%= image_tag(asset_path("cssweapons/300px-Css_knives.png"), class: 'image anti-image-block is-16x16') %> FACA</td></tr>
+      <tr><td><%= image_tag(asset_path("cssweapons/300px-Css_taser.png"), class: 'image anti-image-block is-16x16') %> TASER</td></tr>
+      <tr><td>
+        <%= image_tag(asset_path("cssweapons/300px-Css_usp.png"), class: 'image anti-image-block is-16x16') %>
+        <%= image_tag(asset_path("cssweapons/300px-Css_glock16.png"), class: 'image anti-image-block is-16x16') %>
+        USP + GLOCK
+      </td></tr>
+      <tr><td>
+        <%= image_tag(asset_path("cssweapons/300px-Css_beretta.png"), class: 'image anti-image-block is-16x16') %>
+        <%= image_tag(asset_path("cssweapons/300px-Css_es57.png"), class: 'image anti-image-block is-16x16') %>
+        OUTRAS PISTOLAS
+      </td></tr>
+      <tr><td><%= image_tag(asset_path("cssweapons/300px-Css_deagle.png"), class: 'image anti-image-block is-16x16') %> DEAGLE</td></tr>
+      <tr><td>
+        <%= image_tag(asset_path("cssweapons/300px-Css_p90.png"), class: 'image anti-image-block is-16x16') %>
+        <%= image_tag(asset_path("cssweapons/300px-Css_ump.png"), class: 'image anti-image-block is-16x16') %>
+        SUBMACHINES
+      </td></tr>
+      <tr><td>
+        <%= image_tag(asset_path("cssweapons/300px-Css_m3.png"), class: 'image anti-image-block is-16x16') %>
+        <%= image_tag(asset_path("cssweapons/300px-Css_xm1014.png"), class: 'image anti-image-block is-16x16') %>
+        SHOTGUNS
+      </td></tr>
+      <tr><td>
+        <%= image_tag(asset_path("cssweapons/300px-Css_hegrenade.jpg"), class: 'image anti-image-block is-16x16') %>
+        HE GRENADE
+      </td></tr>
+      <tr><td>
+        <%= image_tag(asset_path("cssweapons/300px-Css_molotov.jpg"), class: 'image anti-image-block is-16x16') %>
+        MOLOTOV
+      </td></tr>
+    </tbody>
+  </table>
+  </div>
+  <% User.where(id: params[:players]).each do |user| %>
+    <% rank = @ranks.select{ |e| e[:nome] == user.nome } %>
+    <% unless rank.empty? %>
+      <div class="column is-1">
+        <table class="table is-bordered is-narrow">
+        <tbody>
+            <tr><td><%= user.nome %></td></tr>
+            <% kills = rank.sum{ |e| e[:kills] } %>
+            <tr><td data-kills="<%= kills.round(1) %>"><%= kills %></td></tr>
+            <% deaths = rank.sum{ |e| e[:deaths] } %>
+            <tr><td data-deaths="<%= deaths.round(1) %>"><%= deaths %></td></tr>
+            <% assists = rank.sum{ |e| e[:assists].to_i } %>
+            <tr><td data-assists="<%= assists.round(1) %>"><%= assists %></td></tr>
+            <% ratio = (kills.to_f/deaths.to_f).round(2) %>
+            <tr><td data-ratio="<%= format_float(ratio) %>"><%= ratio %></td></tr>
+            <% rounds = rank.sum{ |e| e[:ct_win].to_i + e[:tr_win].to_i } %>
+            <tr><td data-rounds="<%= rounds.round(1) %>"><%= rounds %></td></tr>
+            <% suicides = rank.sum{ |e| e[:suicides] } %>
+            <tr><td data-suicides="<%= suicides.round(1) %>"><%= suicides %></td></tr>
+            <% tk = rank.sum{ |e| e[:tk] } %>
+            <tr><td data-tk="<%= tk.round(1) %>"><%= tk %></td></tr>
+            <% shots = rank.sum{ |e| e[:shots] } %>
+            <tr><td data-shots="<%= shots.round(1) %>"><%= shots %></td></tr>
+            <% hits = rank.sum{ |e| e[:hits] } %>
+            <% mira = ((hits.to_f/shots.to_f)*100).round(1) %>
+            <tr><td data-mira="<%= mira.round(1) %>"><%= mira %>%</td></tr>
+            <% nuheadshots = rank.sum{ |e| e[:headshots] } %>
+            <tr><td data-nuheadshots="<%= nuheadshots.round(1) %>"><%= nuheadshots %></td></tr>
+            <% headshots = ((nuheadshots.to_f/kills.to_f)*100).round(1) %>
+            <tr><td data-headshots="<%= headshots.round(1) %>"><%= headshots %>%</td></tr>
+            <% c4_planted = rank.sum{ |e| e[:c4_planted] } %>
+            <tr><td data-c4planted="<%= c4_planted.round(1) %>"><%= c4_planted %></td></tr>
+            <% c4_exploded = rank.sum{ |e| e[:c4_exploded] } %>
+            <tr><td data-c4exploded="<%= c4_exploded.round(1) %>"><%= c4_exploded %></td></tr>
+            <% c4_defused = rank.sum{ |e| e[:c4_defused] } %>
+            <tr><td data-c4defused="<%= c4_defused.round(1) %>"><%= c4_defused %></td></tr>
+            <% ak47 = rank.sum{ |e| e[:ak47] } %>
+            <tr><td data-ak47="<%= ak47.round(1) %>"><%= ak47 %></td></tr>
+            <% m4a1 = rank.sum{ |e| e[:m4a1].to_i + e[:m4a1_silencer].to_i } %>
+            <tr><td data-m4a1="<%= m4a1.round(1) %>"><%= m4a1 %></td></tr>
+            <% aug = rank.sum{ |e| e[:aug].to_i + e[:aug_silencer].to_i } %>
+            <tr><td data-aug="<%= aug.round(1) %>"><%= aug %></td></tr>
+            <% sg556 = rank.sum{ |e| e[:sg556].to_i + e[:sg556_silencer].to_i } %>
+            <tr><td data-sg556="<%= sg556.round(1) %>"><%= sg556 %></td></tr>
+            <% ssg08 = rank.sum{ |e| e[:ssg08].to_i + e[:ssg08_silencer].to_i } %>
+            <tr><td data-ssg08="<%= ssg08.round(1) %>"><%= ssg08 %></td></tr>
+            <% awp = rank.sum{ |e| e[:awp] } %>
+            <tr><td data-awp="<%= awp.round(1) %>"><%= awp %></td></tr>
+            <% tecos = rank.sum{ |e| e[:scar20].to_i + e[:g3sg1].to_i + e[:sg550].to_i } %>
+            <tr><td data-tecos="<%= tecos.round(1) %>"><%= tecos %></td></tr>
+            <% famas = rank.sum{ |e| e[:famas] } %>
+            <tr><td data-famas="<%= famas.round(1) %>"><%= famas %></td></tr>
+            <% galil = rank.sum{ |e| e[:galilar].to_i + e[:galil].to_i } %>
+            <tr><td data-galil="<%= galil.round(1) %>"><%= galil %></td></tr>
+            <% knife = rank.sum{ |e| e[:knife] } %>
+            <tr><td data-knife="<%= knife.round(1) %>"><%= knife %></td></tr>
+            <% taser = rank.sum{ |e| e[:taser].to_i } %>
+            <tr><td data-taser="<%= taser.round(1) %>"><%= taser %></td></tr>
+            <% pistolas = rank.sum{ |e| e[:hkp2000].to_i + e[:usp_silencer].to_i + e[:glock].to_i + + e[:usp].to_i } %>
+            <tr><td data-pistolas="<%= pistolas.round(1) %>"><%= pistolas %></td></tr>
+            <% outraspistolas = rank.sum{ |e| e[:fiveseven].to_i + e[:p250].to_i + e[:tec9].to_i + + e[:cz75a].to_i + e[:p228].to_i + e[:elite].to_i } %>
+            <tr><td data-outraspistolas="<%= outraspistolas.round(1) %>"><%= outraspistolas %></td></tr>
+            <% deagle = rank.sum{ |e| e[:deagle] } %>
+            <tr><td data-deagle="<%= deagle.round(1) %>"><%= deagle %></td></tr>
+            <% submachineguns = rank.sum{ |e| e[:p90].to_i + e[:mac10].to_i + e[:ump45].to_i + + e[:mp9].to_i + e[:mp7].to_i + e[:bizon].to_i + e[:mp5navy].to_i + e[:tmp].to_i } %>
+            <tr><td data-submachineguns="<%= submachineguns.round(1) %>"><%= submachineguns %></td></tr>
+            <% shotguns = rank.sum{ |e| e[:nova].to_i + e[:xm1014].to_i + e[:mag7].to_i + + e[:m3].to_i } %>
+            <tr><td data-shotguns="<%= shotguns.round(1) %>"><%= shotguns %></td></tr>
+            <% hegrenade = rank.sum{ |e| e[:hegrenade].to_i } %>
+            <tr><td data-hegrenade="<%= hegrenade.round(1) %>"><%= hegrenade %></td></tr>
+            <% inferno = rank.sum{ |e| e[:inferno].to_i } %>
+            <tr><td data-inferno="<%= inferno.round(1) %>"><%= inferno %></td></tr>
+          </tbody>
+        </table>
+      </div>
+    <% end %>
+  <% end %>
+</div>
+
+<style type="text/css">
+  table tbody tr td { height: 29px }
+</style>
+
+<script type="text/javascript">
+  $(function() {
+      var ratiosElements = document.querySelectorAll("[data-ratio]");
+      var ratios = $.map(ratiosElements, function(val, i) { return parseFloat(val.dataset.ratio).toFixed(2); });
+      var orderedRatios = ratios.sort(function(a, b) {
+        return parseFloat(a) - parseFloat(b);
+      }).reverse();
+      for (var i = 0; i < orderedRatios.length; i++) {
+        var position = i + 1;
+        var ratiosList = document.querySelectorAll("[data-ratio='"+orderedRatios[i]+"']");
+        if (position == 1) {
+          for (var j = 0; j < ratiosList.length; j++) {
+            if (ratiosList[j].innerHTML.indexOf("tag") === -1) {
+              ratiosList[j].innerHTML = "<span class='tag is-success'>"+position+"</span> &nbsp; " + parseFloat(orderedRatios[i]);
+            }
+          }
+        } else {
+          for (var k = 0; k < ratiosList.length; k++) {
+            if (ratiosList[k].innerHTML.indexOf("tag") === -1) {
+              ratiosList[k].innerHTML = "<span class='tag is-warning'>"+position+"</span> &nbsp; " + parseFloat(orderedRatios[i]);
+            }
+          }
+        }
+      }
+
+      var deathsElements = document.querySelectorAll("[data-deaths]");
+      var deaths = $.map(deathsElements, function(val, i) { return parseFloat(val.dataset.deaths).toFixed(1); });
+      var orderedDeaths = deaths.sort(function(a, b) {
+        return parseInt(a) - parseInt(b);
+      });
+      for (var i = 0; i < orderedDeaths.length; i++) {
+        var position = i + 1;
+        var deathsList = document.querySelectorAll("[data-deaths='"+orderedDeaths[i]+"']");
+        if (position == 1) {
+          for (var j = 0; j < deathsList.length; j++) {
+            if (deathsList[j].innerHTML.indexOf("tag") === -1) {
+              deathsList[j].innerHTML = "<span class='tag is-success'>"+position+"</span> &nbsp; " + parseInt(orderedDeaths[i]);
+            }
+          }
+        } else {
+          for (var k = 0; k < deathsList.length; k++) {
+            if (deathsList[k].innerHTML.indexOf("tag") === -1) {
+              deathsList[k].innerHTML = "<span class='tag is-warning'>"+position+"</span> &nbsp; " + parseInt(orderedDeaths[i]);
+            }
+          }
+        }
+      }
+
+      var suicidesElements = document.querySelectorAll("[data-suicides]");
+      var suicides = $.map(suicidesElements, function(val, i) { return parseFloat(val.dataset.suicides).toFixed(1); });
+      var orderedSuicides = suicides.sort(function(a, b) {
+        return parseFloat(a) - parseFloat(b);
+      });
+      for (var i = 0; i < orderedSuicides.length; i++) {
+        var position = i + 1;
+        var suicidesList = document.querySelectorAll("[data-suicides='"+orderedSuicides[i]+"']");
+        if (position == 1) {
+          for (var j = 0; j < suicidesList.length; j++) {
+            if (suicidesList[j].innerHTML.indexOf("tag") === -1) {
+              suicidesList[j].innerHTML = "<span class='tag is-success'>"+position+"</span> &nbsp; " + parseFloat(orderedSuicides[i]);
+            }
+          }
+        } else {
+          for (var k = 0; k < suicidesList.length; k++) {
+            if (suicidesList[k].innerHTML.indexOf("tag") === -1) {
+              suicidesList[k].innerHTML = "<span class='tag is-warning'>"+position+"</span> &nbsp; " + parseFloat(orderedSuicides[i]);
+            }
+          }
+        }
+      }
+
+      var tkElements = document.querySelectorAll("[data-tk]");
+      var tk = $.map(tkElements, function(val, i) { return parseFloat(val.dataset.tk).toFixed(1); });
+      var orderedTk = tk.sort(function(a, b) {
+        return parseFloat(a) - parseFloat(b);
+      });
+      for (var i = 0; i < orderedTk.length; i++) {
+        var position = i + 1;
+        var tkList = document.querySelectorAll("[data-tk='"+orderedTk[i]+"']");
+        if (position == 1) {
+          for (var j = 0; j < tkList.length; j++) {
+            if (tkList[j].innerHTML.indexOf("tag") === -1) {
+              tkList[j].innerHTML = "<span class='tag is-success'>"+position+"</span> &nbsp; " + parseFloat(orderedTk[i]);
+            }
+          }
+        } else {
+          for (var k = 0; k < tkList.length; k++) {
+            if (tkList[k].innerHTML.indexOf("tag") === -1) {
+              tkList[k].innerHTML = "<span class='tag is-warning'>"+position+"</span> &nbsp; " + parseFloat(orderedTk[i]);
+            }
+          }
+        }
+      }
+
+      var miraElements = document.querySelectorAll("[data-mira]");
+      var mira = $.map(miraElements, function(val, i) { return parseFloat(val.dataset.mira).toFixed(1); });
+      var orderedMira = mira.sort(function(a, b) {
+        return parseInt(a) - parseInt(b);
+      }).reverse();
+      for (var i = 0; i < orderedMira.length; i++) {
+        var position = i + 1;
+        var miraList = document.querySelectorAll("[data-mira='"+orderedMira[i]+"']");
+        if (position == 1) {
+          for (var j = 0; j < miraList.length; j++) {
+            if (miraList[j].innerHTML.indexOf("tag") === -1) {
+              miraList[j].innerHTML = "<span class='tag is-success'>"+position+"</span> &nbsp; " + parseFloat(orderedMira[i]) + "%";
+            }
+          }
+        } else {
+          for (var k = 0; k < miraList.length; k++) {
+            if (miraList[k].innerHTML.indexOf("tag") === -1) {
+              miraList[k].innerHTML = "<span class='tag is-warning'>"+position+"</span> &nbsp; " + parseFloat(orderedMira[i]) + "%";
+            }
+          }
+        }
+      }
+
+      var headshotsElements = document.querySelectorAll("[data-headshots]");
+      var headshots = $.map(headshotsElements, function(val, i) { return parseFloat(val.dataset.headshots).toFixed(1); });
+      var orderedHeadshots = headshots.sort(function(a, b) {
+        return parseFloat(a) - parseFloat(b);
+      }).reverse();
+      for (var i = 0; i < orderedHeadshots.length; i++) {
+        var position = i + 1;
+        var headshotsList = document.querySelectorAll("[data-headshots='"+orderedHeadshots[i]+"']");
+        if (position == 1) {
+          for (var j = 0; j < headshotsList.length; j++) {
+            if (headshotsList[j].innerHTML.indexOf("tag") === -1) {
+              headshotsList[j].innerHTML = "<span class='tag is-success'>"+position+"</span> &nbsp; " + parseFloat(orderedHeadshots[i]) + "%";
+            }
+          }
+        } else {
+          for (var k = 0; k < headshotsList.length; k++) {
+            if (headshotsList[k].innerHTML.indexOf("tag") === -1) {
+              headshotsList[k].innerHTML = "<span class='tag is-warning'>"+position+"</span> &nbsp; " + parseFloat(orderedHeadshots[i]) + "%";
+            }
+          }
+        }
+      }
+
+      var ar = ["assists", "kills", "ratio", "rounds", "shots", "nuheadshots", "c4planted", "c4exploded", "c4defused", "ak47", "m4a1", "aug", "sg556", "ssg08", "awp", "tecos", "famas", "galil", "knife", "taser", "pistolas", "deagle", "submachineguns", "outraspistolas", "shotguns", "hegrenade", "inferno"];
+      for (var i = 0; i < ar.length; i++) {
+        var elements = document.querySelectorAll("[data-"+ar[i]+"]");
+        var element = $.map(elements, function(val, h) { return parseFloat(val.dataset[ar[i]]).toFixed(1); });
+        var orderedElements = element.sort(function(a, b) {
+          return parseFloat(a) - parseFloat(b);
+        }).reverse();
+        for (var j = 0; j < orderedElements.length; j++) {
+          var position = j + 1;
+          var elementsList = document.querySelectorAll("[data-"+ar[i]+"='"+orderedElements[j]+"']");
+          if (position == 1) {
+            for (var k = 0; k < elementsList.length; k++) {
+              if (elementsList[k].innerHTML.indexOf("tag") === -1) {
+                elementsList[k].innerHTML = "<span class='tag is-success'>"+position+"</span> &nbsp; " + parseFloat(orderedElements[j]);
+              }
+            }
+          } else {
+            for (var l = 0; l < elementsList.length; l++) {
+              if (elementsList[l].innerHTML.indexOf("tag") === -1) {
+                elementsList[l].innerHTML = "<span class='tag is-warning'>"+position+"</span> &nbsp; " + parseFloat(orderedElements[j]);
+              }
+            }
+          }
+        }
+      }
+  });
+</script>

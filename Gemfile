@@ -22,6 +22,7 @@ gem 'kaminari'
 gem 'cocoon'
 gem 'lazy_high_charts'
 gem 'faker'
+gem 'mysql2', '~> 0.3.18'
 
 group :production do
   gem 'pg'

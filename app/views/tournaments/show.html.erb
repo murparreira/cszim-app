@@ -1,199 +1,90 @@
 <% if current_user.admin %>
-<div class="columns">
-  <div class="column is-4 has-text-centered">
-    <h1 class="title"><%= @tournament.nome %></h1>
+  <div class="columns">
+    <div class="column is-4 has-text-centered">
+      <h1 class="title"><%= @tournament.nome %></h1>
+    </div>
+    <div class="column">
+      <%= link_to new_tournament_round_path(@tournament), :class => 'button is-primary' do %>
+      <i class="fa fa-plus"></i>&nbsp; Novo Round
+      <% end %>
+    </div>
   </div>
-  <div class="column">
-    <%= link_to new_tournament_round_path(@tournament), :class => 'button is-primary' do %>
-    <i class="fa fa-plus"></i>&nbsp; Novo Round
-    <% end %>
-  </div>
-</div>
-<hr>
+  <hr>
 <% end %>
 
-<% @tournament.rounds.order("rounds.id DESC").each do |round| %>
-<div class="card">
-  <div class="card-content">
-    <div class="columns">
-      <div class="column"></div>
-      <div class="column is-1">
-        <%= link_to "Editar", edit_tournament_round_path(@tournament, round), class: "button" %>
-      </div>
-    </div>
-    <div class="columns">
-      <div class="column">
-        <table class="table is-narrow is-striped is-bordered">
-          <tbody>
-            <tr>
-              <td width="15%">
-                <strong>Round Nº<%= round.id %></strong>
-              </td>
-              <td>
-                <strong>Pontuação:
-                  <%= round.pontos %></strong>
-              </td>
-            </tr>
-            <tr>
-              <td style="text">
-                <strong>Mapa:</strong>
-              </td>
-              <td>
-                <%= image_tag imagem_mapa_url(round.map), class: 'img-circle image anti-image-block is-24x24' %>
-                <%= round.nome_mapa %>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <% if round.winner && round.loser %>
-    <div class="columns">
-      <div class="column">
-        <table class="table is-narrow is-striped is-bordered">
-          <tbody>
-            <tr>
-              <td>
-                <strong>Vencedor:</strong>
-              </td>
-              <td>
-                <%= round.nome_vencedor %>
-                <% round.winner.team.users.each do |user| %>
-                <%= image_tag avatar_url(user), class: 'img-circle image anti-image-block is-24x24' %>
-                &nbsp;
-                <% end %>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <strong>Placar:</strong>
-              </td>
-              <td><%= round.placar_vencedor %></td>
-            </tr>
-            <tr>
-              <td>
-                <strong>Lado:</strong>
-              </td>
-              <td><%= translate_lado round.lado_vencedor %></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="column">
-        <table class="table is-narrow is-striped is-bordered">
-          <tbody>
-            <tr>
-              <td>
-                <strong>Perdedor:</strong>
-              </td>
-              <td>
-                <%= round.nome_perdedor %>
-                <% round.loser.team.users.each do |user| %>
-                <%= image_tag avatar_url(user), class: 'img-circle image anti-image-block is-24x24' %>
-                &nbsp;
-                <% end %>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <strong>Placar:</strong>
-              </td>
-              <td><%= round.placar_perdedor %></td>
-            </tr>
-            <tr>
-              <td>
-                <strong>Lado:</strong>
-              </td>
-              <td><%= translate_lado round.lado_perdedor %></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <% statistics = Statistic.where(team_id: round.try(:winner).try(:team).try(:id), round_id: round.id).order(kills: :desc) %>
-    <% if statistics.empty? %>
-    <div class="columns">
-      <div class="column is-half is-offset-one-quarter has-text-centered">
-        Não há estatísticas para essa partida
-      </div>
-    </div>
-  <% else %>
-    <div class="columns">
-      <div class="column is-half is-offset-one-quarter has-text-centered">
-        <h3 class="title">Estatísticas</h3>
-      </div>
-    </div>
-
-    <div class="columns">
-      <div class="column">
-        <table class="table is-narrow is-striped is-bordered">
-          <thead>
-            <th>Jogador</th>
-            <th>Kills</th>
-            <th>Deaths</th>
-          </thead>
-          <tbody>
-            <% Statistic.where(team_id: round.winner.team.id, round_id: round.id).order(kills: :desc).each do |statistic| %>
-            <tr>
-              <td>
-                <%= image_tag avatar_url(statistic.user), class: 'img-circle image anti-image-block is-24x24' %>
-                &nbsp;
-                <%= statistic.user.nome %>
-              </td>
-              <td><%= statistic.kills %></td>
-              <td><%= statistic.deaths %></td>
-            </tr>
-            <% end %>
-          </tbody>
-        </table>
-      </div>
-      <div class="column">
-        <table class="table is-narrow is-striped is-bordered">
-          <thead>
-            <th>Jogador</th>
-            <th>Kills</th>
-            <th>Deaths</th>
-          </thead>
-          <tbody>
-            <% Statistic.where(team_id: round.loser.team.id, round_id: round.id).order(kills: :desc).each do |statistic| %>
-            <tr>
-              <td>
-                <%= image_tag avatar_url(statistic.user), class: 'img-circle image anti-image-block is-24x24' %>
-                &nbsp;
-                <%= statistic.user.nome %>
-              </td>
-              <td><%= statistic.kills %></td>
-              <td><%= statistic.deaths %></td>
-            </tr>
-            <% end %>
-          </tbody>
-        </table>
-      </div>
-    </div>
+<% winners = Tournament.joins(rounds: :winner).where(id: @tournament.id).pluck(:team_id) %>
+<% new_winners = winners.each_with_object(Hash.new(0)) { |team_id, counts| counts[team_id] += 1 } %>
+<table class="table is-bordered is-narrow">
+  <thead>
+    <th colspan="3">VITÓRIAS DOS TIMES</th>
+  </thead>
+  <tbody>
+    <% new_winners.each do |k, v| %>
+      <tr>
+        <% team = Team.find(k) %>
+        <td><%= team.nome %></td>
+        <td>
+          <% team.users.each do |user| %>
+          <%= image_tag avatar_url(user), class: 'img-circle image anti-image-block is-24x24' %>
+            &nbsp;
+          <% end %>
+        </td>
+        <td><%= v %></td>
+      </tr>
     <% end %>
-  <% else %>
-    <% if round.ct_team_id && round.t_team_id %>
+  </tbody>
+</table>
+
+<% @tournament.rounds.order("rounds.id DESC").each do |round| %>
+  <div class="card">
+    <div class="card-content">
+      <div class="columns">
+        <div class="column"></div>
+        <div class="column is-1">
+          <%= link_to "Editar", edit_tournament_round_path(@tournament, round), class: "button" %>
+        </div>
+      </div>
       <div class="columns">
         <div class="column">
           <table class="table is-narrow is-striped is-bordered">
             <tbody>
               <tr>
+                <td width="15%"><strong>Round Nº<%= round.id %></strong></td>
+                <td><strong>Pontuação: <%= round.pontos %></strong></td>
+              </tr>
+              <tr>
+                <td style="text"><strong>Mapa:</strong></td>
                 <td>
-                  <strong>Time:</strong>
+                  <%= image_tag imagem_mapa_url(round.map), class: 'img-circle image anti-image-block is-24x24' %>
+                  <%= round.nome_mapa %>
                 </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <% if round.winner && round.loser %>
+      <div class="columns">
+        <div class="column">
+          <table class="table is-narrow is-striped is-bordered">
+            <tbody>
+              <tr>
+                <td><strong>Vencedor:</strong></td>
                 <td>
-                  <%= round.ct_team.nome %>
-                  <% round.ct_team.users.each do |user| %>
+                  <%= round.nome_vencedor %>
+                  <% round.winner.team.users.each do |user| %>
                   <%= image_tag avatar_url(user), class: 'img-circle image anti-image-block is-24x24' %>
-                  &nbsp;
+                    &nbsp;
                   <% end %>
                 </td>
               </tr>
               <tr>
-                <td>
-                  <strong>Lado:</strong>
-                </td>
-                <td><%= translate_lado "ct" %></td>
+                <td><strong>Placar:</strong></td>
+                <td><%= round.placar_vencedor %></td>
+              </tr>
+              <tr>
+                <td><strong>Lado:</strong></td>
+                <td><%= translate_lado round.lado_vencedor %></td>
               </tr>
             </tbody>
           </table>
@@ -202,30 +93,202 @@
           <table class="table is-narrow is-striped is-bordered">
             <tbody>
               <tr>
+                <td><strong>Perdedor:</strong></td>
                 <td>
-                  <strong>Time:</strong>
-                </td>
-                <td>
-                  <%= round.t_team.nome %>
-                  <% round.t_team.users.each do |user| %>
+                  <%= round.nome_perdedor %>
+                  <% round.loser.team.users.each do |user| %>
                   <%= image_tag avatar_url(user), class: 'img-circle image anti-image-block is-24x24' %>
-                  &nbsp;
+                    &nbsp;
                   <% end %>
                 </td>
               </tr>
               <tr>
-                <td>
-                  <strong>Lado:</strong>
-                </td>
-                <td><%= translate_lado "t" %></td>
+                <td><strong>Placar:</strong></td>
+                <td><%= round.placar_perdedor %></td>
+              </tr>
+              <tr>
+                <td><strong>Lado:</strong></td>
+                <td><%= translate_lado round.lado_perdedor %></td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
-    <% end %>
-    <% end %>
+      <% statistics = Rankme.where(team_id: round.try(:winner).try(:team).try(:id), round_id: round.id).order(kills: :desc) %>
+      <% if statistics.empty? %>
+        <div class="columns">
+          <div class="column is-half is-offset-one-quarter has-text-centered">
+            Não há estatísticas do CSS para essa partida
+          </div>
+        </div>
+      <% else %>
+        <div class="columns">
+          <div class="column is-half is-offset-one-quarter has-text-centered">
+            <h3 class="title">Estatísticas</h3>
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column">
+            <table class="table is-narrow is-striped is-bordered">
+              <thead>
+                <th>Jogador</th>
+                <th>Kills</th>
+                <th>Deaths</th>
+              </thead>
+              <tbody>
+                <% Rankme.where(team_id: round.winner.team.id, round_id: round.id).order(kills: :desc).each do |statistic| %>
+                <tr>
+                  <td>
+                    <%= image_tag avatar_url(statistic.user), class: 'img-circle image anti-image-block is-24x24' %>
+                    &nbsp;
+                    <%= statistic.user.nome %>
+                  </td>
+                  <td><%= statistic.kills %></td>
+                  <td><%= statistic.deaths %></td>
+                </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+          <div class="column">
+            <table class="table is-narrow is-striped is-bordered">
+              <thead>
+                <th>Jogador</th>
+                <th>Kills</th>
+                <th>Deaths</th>
+              </thead>
+              <tbody>
+                <% Rankme.where(team_id: round.loser.team.id, round_id: round.id).order(kills: :desc).each do |statistic| %>
+                <tr>
+                  <td>
+                    <%= image_tag avatar_url(statistic.user), class: 'img-circle image anti-image-block is-24x24' %>
+                    &nbsp;
+                    <%= statistic.user.nome %>
+                  </td>
+                  <td><%= statistic.kills %></td>
+                  <td><%= statistic.deaths %></td>
+                </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      <% end %>
+      <% statistics_csgo = RankmeCsgo.where(team_id: round.try(:winner).try(:team).try(:id), round_id: round.id).order(kills: :desc) %>
+      <% if statistics_csgo.empty? %>
+        <div class="columns">
+          <div class="column is-half is-offset-one-quarter has-text-centered">
+            Não há estatísticas do CSGO para essa partida
+          </div>
+        </div>
+      <% else %>
+        <div class="columns">
+          <div class="column is-half is-offset-one-quarter has-text-centered">
+            <h3 class="title">Estatísticas</h3>
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column">
+            <table class="table is-narrow is-striped is-bordered">
+              <thead>
+                <th>Jogador</th>
+                <th>Kills</th>
+                <th>Deaths</th>
+              </thead>
+              <tbody>
+                <% RankmeCsgo.where(team_id: round.winner.team.id, round_id: round.id).order(kills: :desc).each do |statistic| %>
+                <tr>
+                  <td>
+                    <%= image_tag avatar_url(statistic.user), class: 'img-circle image anti-image-block is-24x24' %>
+                    &nbsp;
+                    <%= statistic.user.nome %>
+                  </td>
+                  <td><%= statistic.kills %></td>
+                  <td><%= statistic.deaths %></td>
+                </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+          <div class="column">
+            <table class="table is-narrow is-striped is-bordered">
+              <thead>
+                <th>Jogador</th>
+                <th>Kills</th>
+                <th>Deaths</th>
+              </thead>
+              <tbody>
+                <% RankmeCsgo.where(team_id: round.loser.team.id, round_id: round.id).order(kills: :desc).each do |statistic| %>
+                <tr>
+                  <td>
+                    <%= image_tag avatar_url(statistic.user), class: 'img-circle image anti-image-block is-24x24' %>
+                    &nbsp;
+                    <%= statistic.user.nome %>
+                  </td>
+                  <td><%= statistic.kills %></td>
+                  <td><%= statistic.deaths %></td>
+                </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <% if round.ct_team_id && round.t_team_id %>
+        <div class="columns">
+          <div class="column">
+            <table class="table is-narrow is-striped is-bordered">
+              <tbody>
+                <tr>
+                  <td>
+                    <strong>Time:</strong>
+                  </td>
+                  <td>
+                    <%= round.ct_team.nome %>
+                    <% round.ct_team.users.each do |user| %>
+                    <%= image_tag avatar_url(user), class: 'img-circle image anti-image-block is-24x24' %>
+                    &nbsp;
+                    <% end %>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <strong>Lado:</strong>
+                  </td>
+                  <td><%= translate_lado "ct" %></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="column">
+            <table class="table is-narrow is-striped is-bordered">
+              <tbody>
+                <tr>
+                  <td>
+                    <strong>Time:</strong>
+                  </td>
+                  <td>
+                    <%= round.t_team.nome %>
+                    <% round.t_team.users.each do |user| %>
+                    <%= image_tag avatar_url(user), class: 'img-circle image anti-image-block is-24x24' %>
+                    &nbsp;
+                    <% end %>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <strong>Lado:</strong>
+                  </td>
+                  <td><%= translate_lado "t" %></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      <% end %>
+      <% end %>
+    </div>
   </div>
-</div>
-<hr>
+  <hr>
 <% end %>

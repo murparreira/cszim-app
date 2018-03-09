@@ -127,6 +127,7 @@ GEM
     mini_portile2 (2.1.0)
     minitest (5.10.2)
     multi_json (1.12.1)
+    mysql2 (0.3.21)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (4.1.0)
@@ -235,6 +236,7 @@ DEPENDENCIES
   kaminari
   lazy_high_charts
   listen (~> 3.0.5)
+  mysql2 (~> 0.3.18)
   pg
   puma (~> 3.0)
   pundit
@@ -250,4 +252,4 @@ DEPENDENCIES
   web-console (>= 3.3.0)
 
 BUNDLED WITH
-   1.14.6
+   1.15.1

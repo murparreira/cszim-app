@@ -16,7 +16,14 @@
 			  </p>
 			</div>
 		</div>
-		<div class="column is-third"></div>
+		<div class="column is-third">
+			<div class="field">
+				<label class="label">Jogo</label>
+				<p class="control">
+					<%= f.select(:game_id, Game.all.collect {|g| [g.nome, g.id]}, { :prompt => 'Selecione...' }, { :class => 'input' }) %>
+				</p>
+			</div>
+		</div>
 	</div>
 
 	<div class="columns">

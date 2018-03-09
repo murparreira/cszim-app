@@ -2,7 +2,11 @@ class MapsController < ApplicationController
     before_action :authenticate_user
 
 	def index
-		@maps = Map.order(:nome)
+    if params[:game_id]
+      @maps = Map.where(game_id: params[:game_id])      
+    else
+      @maps = Map.order(:nome)
+    end
 	end
 
 	def edit
@@ -48,6 +52,6 @@ class MapsController < ApplicationController
 	private
 
   def map_params
-    params.require(:map).permit(:nome, :sigla, :imagem)
+    params.require(:map).permit(:nome, :sigla, :imagem, :game_id)
   end
 end

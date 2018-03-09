@@ -66,6 +66,88 @@ class RoundsController < ApplicationController
 
   end
 
+  def move_to_winner
+    ActiveRecord::Base.transaction do
+      round_id = params[:round_id]
+      user_id = params[:user_id]
+      round = Round.find(round_id)
+      novo_time_perdedor_user_ids = round.loser.team.players.pluck(:user_id) - [user_id.to_i]
+      novo_time_perdedor = Team.joins(:users).group('teams.id').having('SUM( CASE WHEN users.id in (?) THEN 1 ELSE -1 END ) = ?', novo_time_perdedor_user_ids, novo_time_perdedor_user_ids.size).last
+      placar = round.loser.placar
+      round.loser.destroy
+      if novo_time_perdedor
+        Loser.create(team_id: novo_time_perdedor.id, round_id: round.id, placar: placar)
+      else
+        novo_time_perdedor = Team.create(nome: "Time #{helpers.criar_nome_time(novo_time_perdedor_user_ids)}")
+        novo_time_perdedor_user_ids.each do |user_id|
+          Player.where(team_id: novo_time_perdedor.id, user_id: user_id).first_or_create
+        end
+        Loser.create(team_id: novo_time_perdedor.id, round_id: round.id, placar: placar)
+      end
+      novo_time_perdedor_user_ids.each do |user_id|
+        RankmeCsgo.where(round_id: round.id, user_id: user_id).each { |r| r.update_attributes(team_id: novo_time_perdedor.id) }
+      end
+      novo_time_vencedor_user_ids = round.winner.team.players.pluck(:user_id) + [user_id.to_i]
+      novo_time_vencedor = Team.joins(:users).group('teams.id').having('SUM( CASE WHEN users.id in (?) THEN 1 ELSE -1 END ) = ?', novo_time_vencedor_user_ids, novo_time_vencedor_user_ids.size).last
+      placar = round.winner.placar
+      round.winner.destroy
+      if novo_time_vencedor
+        Winner.create(team_id: novo_time_vencedor.id, round_id: round.id, placar: placar)
+      else
+        novo_time_vencedor = Team.create(nome: "Time #{helpers.criar_nome_time(novo_time_vencedor_user_ids)}")
+        novo_time_vencedor_user_ids.each do |user_id|
+          Player.where(team_id: novo_time_vencedor.id, user_id: user_id).first_or_create
+        end
+        Winner.create(team_id: novo_time_vencedor.id, round_id: round.id, placar: placar)
+      end
+      novo_time_vencedor_user_ids.each do |user_id|
+        RankmeCsgo.where(round_id: round.id, user_id: user_id).each { |r| r.update_attributes(team_id: novo_time_vencedor.id) }
+      end
+      redirect_to tournament_path(id: params[:tournament_id])
+    end
+  end
+
+  def move_to_loser
+    ActiveRecord::Base.transaction do
+      round_id = params[:round_id]
+      user_id = params[:user_id]
+      round = Round.find(round_id)
+      novo_time_vencedor_user_ids = round.winner.team.players.pluck(:user_id) - [user_id.to_i]
+      novo_time_vencedor = Team.joins(:users).group('teams.id').having('SUM( CASE WHEN users.id in (?) THEN 1 ELSE -1 END ) = ?', novo_time_vencedor_user_ids, novo_time_vencedor_user_ids.size).last
+      placar = round.winner.placar
+      round.winner.destroy
+      if novo_time_vencedor
+        Winner.create(team_id: novo_time_vencedor.id, round_id: round.id, placar: placar)
+      else
+        novo_time_vencedor = Team.create(nome: "Time #{helpers.criar_nome_time(novo_time_vencedor_user_ids)}")
+        novo_time_vencedor_user_ids.each do |user_id|
+          Player.where(team_id: novo_time_vencedor.id, user_id: user_id).first_or_create
+        end
+        Winner.create(team_id: novo_time_vencedor.id, round_id: round.id, placar: placar)
+      end
+      novo_time_vencedor_user_ids.each do |user_id|
+        RankmeCsgo.where(round_id: round.id, user_id: user_id).each { |r| r.update_attributes(team_id: novo_time_vencedor.id) }
+      end
+      novo_time_perdedor_user_ids = round.loser.team.players.pluck(:user_id) + [user_id.to_i]
+      novo_time_perdedor = Team.joins(:users).group('teams.id').having('SUM( CASE WHEN users.id in (?) THEN 1 ELSE -1 END ) = ?', novo_time_perdedor_user_ids, novo_time_perdedor_user_ids.size).last
+      placar = round.loser.placar
+      round.loser.destroy
+      if novo_time_perdedor
+        Loser.create(team_id: novo_time_perdedor.id, round_id: round.id, placar: placar)
+      else
+        novo_time_perdedor = Team.create(nome: "Time #{helpers.criar_nome_time(novo_time_perdedor_user_ids)}")
+        novo_time_perdedor_user_ids.each do |user_id|
+          Player.where(team_id: novo_time_perdedor.id, user_id: user_id).first_or_create
+        end
+        Loser.create(team_id: novo_time_perdedor.id, round_id: round.id, placar: placar)
+      end
+      novo_time_perdedor_user_ids.each do |user_id|
+        RankmeCsgo.where(round_id: round.id, user_id: user_id).each { |r| r.update_attributes(team_id: novo_time_perdedor.id) }
+      end
+      redirect_to tournament_path(id: params[:tournament_id])
+    end
+  end
+
 	private
 
   def round_params

@@ -1,5 +1,17 @@
 module ApplicationHelper
 
+  def current_game
+    Game.find_by(ativo: true)
+  end
+
+  def current_season
+    Season.last
+  end
+
+  def current_configuration
+    ServerConfiguration.find_by(ativo: true)
+  end
+
   def new_or_edit_path(model)
     model.new_record? ? send("new_#{model.model_name.singular}_path", model) : send("edit_#{model.model_name.singular}_path", model)
   end
@@ -35,6 +47,10 @@ module ApplicationHelper
 
   def format_boolean(boolean)
     boolean ? "Sim" : "Não"
+  end
+
+  def format_float(unit)
+    number_with_precision(unit, precision: 2, separator: '.')
   end
 
   def format_money(unit="R$", money)
@@ -131,6 +147,14 @@ module ApplicationHelper
     else
       "http://cszim.com.br/img/#{map.try(:sigla)}.jpg"
     end
+  end
+
+  def criar_nome_time(user_ids)
+    player_names = ""
+    user_ids.each do |user_id|
+      player_names += User.find(user_id).nome.first
+    end
+    player_names
   end
 
 end

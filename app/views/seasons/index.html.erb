@@ -1,0 +1,36 @@
+<% if current_user.admin %>
+  <div class="columns">
+    <div class="column is-2">
+      <%= link_to new_season_path, :class => 'button is-primary' do %>
+        <i class="fa fa-plus"></i>&nbsp;
+        Temporada
+      <% end %>
+    </div>
+    <div class="column">
+      Clique no botão ao lado para criar uma nova Temporada.
+    </div>
+  </div>
+  <hr>
+<% end %>
+
+<div class="columns is-multiline">
+  <% @seasons.each do |season| %>
+    <div class="column is-one-quarter">
+      <div class="contact-box center-version">
+        <span>
+          <div>
+            <i class="fa fa-star"></i>&nbsp;
+            <h3 style="display: inline;"><strong><%= season.nome %></strong></h3>
+          </div>
+          <div><h3><strong>Partidas:</strong> <%= Round.where(season_id: season.id).count %></h3></div>
+          <div><%= season.situacao_traduzida %></div>
+        </span>
+        <div class="contact-box-footer">
+          <% if current_user.admin %>
+            <%= link_to "Editar", edit_season_path(season), :class => 'button' %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
