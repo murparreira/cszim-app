@@ -47,4 +47,4 @@ group :development do
 end
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-gem 'dragonfly', '~> 1.1.2'
+gem 'dragonfly', '~> 1.4.0'
