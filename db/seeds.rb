@@ -12,6 +12,7 @@ ActiveRecord::Base.transaction do
   Season.destroy_all
   User.destroy_all
   Map.destroy_all
+  RandomMap.destroy_all
   Rankme.destroy_all
   Tournament.destroy_all
   Team.destroy_all
@@ -28,7 +29,7 @@ ActiveRecord::Base.transaction do
     server_name_or_ip: ENV['SERVER_NAME_OR_IP'],
     server_port: ENV['SERVER_PORT'],
     server_user: ENV['SERVER_USER'],
-    server_password: ENV['SERVER_PORT'],
+    server_password: ENV['SERVER_PASSWORD'],
     ativo: true
   )
 
