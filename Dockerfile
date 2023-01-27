@@ -17,7 +17,7 @@ COPY . /code
 RUN bundle install
 
 # Run seeds
-RUN rake db:drop && rake db:create && rake db:migrate
+RUN rake db:drop && rake db:create
 
 # Set "rails server -b 0.0.0.0" as the command to
 # run when this container starts.
