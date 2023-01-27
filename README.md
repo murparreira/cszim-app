@@ -10,8 +10,8 @@
 * Tenha o **docker** e o **docker-compose** instalado na sua máquina.
 * Use **docker-compose build** para buildar a imagem
 * Use **docker-compose up** para subir o container
-* Use **docker-compose run web rake:migrate** para rodar as migrations no BD se o build não o fez
-* Use **docker-compose run web rake:seed** para criar os dados iniciais
+* Use **docker-compose run web rake db:migrate** para rodar as migrations no BD se o build não o fez
+* Use **docker-compose run web rake db:seed** para criar os dados iniciais
 * Logue com o seu usuário (Informações dos usuários podem ser vistas no arquivo db/seeds.rb)
 * Fork o projeto e clone para uma pasta no sistema:
 * Navegue para a pasta do projeto:
