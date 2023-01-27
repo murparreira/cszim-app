@@ -27,3 +27,4 @@ config/deploy.rb
 Capfile
 
 .rvmrc
+.env
