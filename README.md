@@ -11,6 +11,13 @@
 * Use **docker-compose build** para buildar a imagem
 * Use **docker-compose up** para subir o container
 * Use **docker-compose run web rake:migrate** para rodar as migrations no BD se o build não o fez
+* Crie um arquivo **.env** na raiz do projeto com o seguinte conteúdo
+    ````
+    SERVER_NAME_OR_IP=
+    SERVER_PORT=
+    SERVER_USER=
+    SERVER_PASSWORD=
+    ````
 * Use **docker-compose run web rake:seed** para criar os dados iniciais
 * Logue com o seu usuário (Informações dos usuários podem ser vistas no arquivo db/seeds.rb)
 * Fork o projeto e clone para uma pasta no sistema:
