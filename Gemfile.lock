@@ -78,6 +78,10 @@ GEM
       execjs
     coffee-script-source (1.12.2)
     concurrent-ruby (1.0.5)
+    dotenv (2.8.1)
+    dotenv-rails (2.8.1)
+      dotenv (= 2.8.1)
+      railties (>= 3.2)
     dragonfly (1.1.2)
       addressable (~> 2.3)
       multi_json (~> 1.0)
@@ -213,6 +217,7 @@ DEPENDENCIES
   capistrano3-puma
   cocoon
   coffee-rails (~> 4.2)
+  dotenv-rails
   dragonfly (~> 1.1.2)
   faker
   jbuilder (~> 2.5)

@@ -31,6 +31,8 @@ group :development, :test do
   gem 'byebug', platform: :mri
 end
 
+gem 'dotenv-rails', groups: [:development, :test]
+
 group :development do
   gem 'sqlite3'
   gem 'web-console', '>= 3.3.0'
