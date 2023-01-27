@@ -10,7 +10,6 @@ gem 'puma', '~> 3.0'
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.2'
-gem 'therubyracer', platforms: :ruby
 
 gem 'jquery-rails'
 gem 'turbolinks', '~> 5'
@@ -18,15 +17,15 @@ gem 'jbuilder', '~> 2.5'
 # gem 'redis', '~> 3.0'
 gem 'bcrypt', '~> 3.1.7'
 gem 'pundit'
-gem 'kaminari'
+# gem 'kaminari'
 gem 'cocoon'
 gem 'lazy_high_charts'
 gem 'faker'
 gem 'mysql2', '~> 0.3.18'
 
-group :production do
-  gem 'pg'
-end
+# group :production do
+#   gem 'pg'
+# end
 
 group :development, :test do
   gem 'byebug', platform: :mri
@@ -46,5 +45,5 @@ group :development do
   gem 'capistrano-upload-config'
 end
 
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+gem 'tzinfo-data'
 gem 'dragonfly', '~> 1.1.2'
