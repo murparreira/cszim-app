@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180305175410) do
+ActiveRecord::Schema.define(version: 20230127211831) do
 
   create_table "games", force: :cascade do |t|
     t.string   "nome"
@@ -255,9 +255,13 @@ ActiveRecord::Schema.define(version: 20180305175410) do
   create_table "server_configurations", force: :cascade do |t|
     t.string   "nome"
     t.string   "numero_partidas"
-    t.boolean  "ativo",           default: false
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.boolean  "ativo",             default: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+    t.text     "server_name_or_ip"
+    t.integer  "server_port"
+    t.text     "server_password"
+    t.text     "server_user"
   end
 
   create_table "statistics", force: :cascade do |t|

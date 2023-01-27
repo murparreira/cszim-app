@@ -8,10 +8,13 @@ class RandomizerController < ApplicationController
 
   def open_map
     map = Map.find(RandomMap.last.map_id)
-    Net::SSH.start('127.0.0.1', login_jogo, password: 's3nh4123', port: 19922) do| ssh |
+    Net::SSH.start(current_configuration.server_name_or_ip, current_configuration.server_user, password: current_configuration.server_password, port: current_configuration.server_port) do| ssh |
       ssh.exec! "tmux send-keys 'changelevel #{map.sigla}' Enter"
     end
     flash[:success] = "Mapa mudou para #{map.nome} - #{map.sigla}!"
+    redirect_to randomizer_url
+  rescue Errno::ECONNREFUSED
+    flash[:warning] = "Conexão recusada com o servidor!"
     redirect_to randomizer_url
   end
 
@@ -40,14 +43,14 @@ class RandomizerController < ApplicationController
     else
       flash[:success] = "Mapa iniciado com sucesso!"
     end
-    Net::SSH.start('127.0.0.1', login_jogo, password: 's3nh4123', port: 19922) do| ssh |
+    Net::SSH.start(current_configuration.server_name_or_ip, current_configuration.server_user, password: current_configuration.server_password, port: current_configuration.server_port) do| ssh |
       ssh.exec! "tmux send-keys 'tv_stoprecord' Enter"
       ssh.exec! "tmux send-keys 'sm plugins unload kento_rankme' Enter"
       ssh.exec! "tmux send-keys 'sm plugins unload rankme' Enter"
     end
     RankmeMysql.delete_all
     RankmeMysqlCsgo.delete_all
-    Net::SSH.start('127.0.0.1', login_jogo, password: 's3nh4123', port: 19922) do| ssh |
+    Net::SSH.start(current_configuration.server_name_or_ip, current_configuration.server_user, password: current_configuration.server_password, port: current_configuration.server_port) do| ssh |
       ssh.exec! "tmux send-keys 'mp_warmup_end' Enter"
       ssh.exec! "tmux send-keys 'mp_restartgame 2' Enter"
       ssh.exec! "tmux send-keys 'sm plugins load rankme' Enter"
@@ -57,14 +60,20 @@ class RandomizerController < ApplicationController
       ssh.exec! "tmux send-keys 'tv_record #{nome_replay}' Enter"
     end
     redirect_to randomizer_url
+  rescue Errno::ECONNREFUSED
+    flash[:warning] = "Conexão recusada com o servidor!"
+    redirect_to randomizer_url
   end
 
   def finish
-    Net::SSH.start('127.0.0.1', login_jogo, password: 's3nh4123', port: 19922) do| ssh |
+    Net::SSH.start(current_configuration.server_name_or_ip, current_configuration.server_user, password: current_configuration.server_password, port: current_configuration.server_port) do| ssh |
       ssh.exec! "tmux send-keys 'tv_stoprecord' Enter"
     end
     finish_csgo if is_csgo?
     finish_css if is_css?
+    redirect_to randomizer_url
+  rescue Errno::ECONNREFUSED
+    flash[:warning] = "Conexão recusada com o servidor!"
     redirect_to randomizer_url
   end
 
@@ -296,10 +305,6 @@ class RandomizerController < ApplicationController
   end
 
   private
-
-  def login_jogo
-    current_game.login
-  end
 
   def is_csgo?
     current_game.sigla == "CSGO"

@@ -18,6 +18,40 @@
 		</div>
 		<div class="column is-third"></div>
 	</div>
+	<div class="columns">
+		<div class="column is-third">
+			<div class="field">
+			  <label class="label">DNS ou IP do servidor</label>
+			  <p class="control">
+			    <%= f.text_field :server_name_or_ip, class: 'input', autocomplete: 'off', placeholder: 'DNS ou IP do servidor' %>
+			  </p>
+			</div>
+		</div>
+		<div class="column is-third">
+			<div class="field">
+			  <label class="label">Usuário do servidor</label>
+			  <p class="control">
+			    <%= f.text_field :server_user, class: 'input', autocomplete: 'off', placeholder: 'Usuário do servidor' %>
+			  </p>
+			</div>
+		</div>
+		<div class="column is-third">
+			<div class="field">
+			  <label class="label">Senha do servidor</label>
+			  <p class="control">
+			    <%= f.text_field :server_password, class: 'input', autocomplete: 'off', placeholder: 'Senha do servidor' %>
+			  </p>
+			</div>
+		</div>
+		<div class="column is-third">
+			<div class="field">
+			  <label class="label">Porta do servidor</label>
+			  <p class="control">
+			    <%= f.text_field :server_port, class: 'input', autocomplete: 'off', placeholder: 'Porta do servidor' %>
+			  </p>
+			</div>
+		</div>
+	</div>
 	<nav class="level">
 		<div class="level-left"></div>
 		<div class="level-right">
