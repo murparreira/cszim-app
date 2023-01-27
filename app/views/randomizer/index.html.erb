@@ -21,7 +21,7 @@
     <%= link_to "Resetar Aplicativo", randomizer_reset_path, class: "button is-danger" %>
   </div>
   <div class="column is-third">
-    <h2 class="title">Fase Escolhida</h2>
+    <h2 class="title">Mapa Escolhido</h2>
     <% last_random_map = RandomMap.last %>
     <% if last_random_map.present? %>
       <% chosen_map = Map.find(last_random_map.map_id) %>

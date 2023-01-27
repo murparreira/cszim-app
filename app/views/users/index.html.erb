@@ -6,7 +6,7 @@
           <%= image_tag avatar_url(user), class: 'img-circle' %>
           <h3><strong><%= user.nome %></strong></h3>
           <div><%= user.email %></div>
-          <div><a target="_blank" href="<%= user.steamid %>">Perfil da Steam</a></div>
+          <div><a target="_blank" href="https://steamcommunity.com/id/<%= user.steamid %>">Perfil da Steam</a></div>
           <div><%= user.steam %></div>
           <div><%= user.login %></div>
         </span>
