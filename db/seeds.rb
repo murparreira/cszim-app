@@ -57,7 +57,7 @@ ActiveRecord::Base.transaction do
     email: 'murparreira@gmail.com',
     admin: true,
     steamid: 'murifoxx',
-    steam: 'STEAM_1:1:204322906'
+    steam: '204322906'
   )
 
   User.create(
@@ -67,7 +67,7 @@ ActiveRecord::Base.transaction do
     email: 'nikael@gmail.com',
     admin: false,
     steamid: '76561198382208296',
-    steam: 'STEAM_1:0:210971284'
+    steam: '210971284'
   )
 
   User.create(
@@ -77,7 +77,7 @@ ActiveRecord::Base.transaction do
     email: 'ismael@gmail.com',
     admin: false,
     steamid: '76561198115661275',
-    steam: 'STEAM_1:1:77697773'
+    steam: '77697773'
   )
 
   User.create(
@@ -87,7 +87,7 @@ ActiveRecord::Base.transaction do
     email: 'yure@gmail.com',
     admin: false,
     steamid: 'yurenery',
-    steam: 'STEAM_1:0:59688084'
+    steam: '59688084'
   )
 
   User.create(
@@ -97,7 +97,7 @@ ActiveRecord::Base.transaction do
     email: 'victor@gmail.com',
     admin: false,
     steamid: 'znexy',
-    steam: 'STEAM_1:1:75095884'
+    steam: '75095884'
   )
 
   User.create(
@@ -107,7 +107,7 @@ ActiveRecord::Base.transaction do
     email: 'naiara@gmail.com',
     admin: false,
     steamid: '76561198158451974',
-    steam: 'STEAM_1:0:99093123'
+    steam: '99093123'
   )
 
   User.create(
@@ -117,7 +117,7 @@ ActiveRecord::Base.transaction do
     email: 'allan@gmail.com',
     admin: false,
     steamid: 'allanmenesesec',
-    steam: 'STEAM_1:1:59095083'
+    steam: '59095083'
   )
 
   User.create(
@@ -127,7 +127,7 @@ ActiveRecord::Base.transaction do
     email: 'joaovictor@gmail.com',
     admin: false,
     steamid: '76561198121539961',
-    steam: 'STEAM_1:1:80637116'
+    steam: '80637116'
   )
 
   User.create(
@@ -137,7 +137,7 @@ ActiveRecord::Base.transaction do
     email: 'franz@gmail.com',
     admin: false,
     steamid: 'strund3r',
-    steam: 'STEAM_1:0:33357487'
+    steam: '33357487'
   )
 
   User.create(
@@ -147,7 +147,7 @@ ActiveRecord::Base.transaction do
     email: 'rick@gmail.com',
     admin: false,
     steamid: '76561198076270581',
-    steam: 'STEAM_1:1:58002426'
+    steam: '58002426'
   )
 
   User.create(
@@ -157,7 +157,7 @@ ActiveRecord::Base.transaction do
     email: 'ricardopulice@gmail.com',
     admin: false,
     steamid: '76561198250892958',
-    steam: 'STEAM_1:0:145313615'
+    steam: '145313615'
   )
 
   User.create(
@@ -167,7 +167,7 @@ ActiveRecord::Base.transaction do
     email: 'maicouel@gmail.com',
     admin: false,
     steamid: 'maicouel',
-    steam: 'STEAM_1:1:43147058'
+    steam: '43147058'
   )
 
   User.create(
@@ -177,7 +177,7 @@ ActiveRecord::Base.transaction do
     email: 'lastzfighter@gmail.com',
     admin: false,
     steamid: 'lastzfighter',
-    steam: 'STEAM_1:1:41454614'
+    steam: '41454614'
   )
 
   User.create(
@@ -187,7 +187,7 @@ ActiveRecord::Base.transaction do
     email: 'dudsz@gmail.com',
     admin: false,
     steamid: '76561198112143102',
-    steam: 'STEAM_1:0:75938687'
+    steam: '75938687'
   )
 
   User.create(
@@ -197,7 +197,7 @@ ActiveRecord::Base.transaction do
     email: 'edilsonfb@gmail.com',
     admin: false,
     steamid: 'edilson',
-    steam: 'STEAM_1:1:42926840'
+    steam: '42926840'
   )
 
   User.create(
@@ -207,7 +207,7 @@ ActiveRecord::Base.transaction do
     email: 'eduardotv@gmail.com',
     admin: false,
     steamid: 'dot22',
-    steam: 'STEAM_1:1:35250772'
+    steam: '35250772'
   )
 
   User.create(
@@ -217,7 +217,7 @@ ActiveRecord::Base.transaction do
     email: 'ramonvs@gmail.com',
     admin: false,
     steamid: 'ramonvs',
-    steam: 'STEAM_1:1:79524414'
+    steam: '79524414'
   )
 
   User.create(
@@ -227,7 +227,7 @@ ActiveRecord::Base.transaction do
     email: 'lupoc@gmail.com',
     admin: false,
     steamid: '76561198116367387',
-    steam: 'STEAM_1:1:78050829'
+    steam: '78050829'
   )
 
   Map.create(

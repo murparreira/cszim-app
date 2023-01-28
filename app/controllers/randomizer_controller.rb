@@ -101,6 +101,7 @@ class RandomizerController < ApplicationController
         end
       end
       jogadores_time_vencedor = RankmeMysqlCsgo.where("id IN (?)", time_vencedor).pluck(:steam).sort
+      jogadores_time_vencedor.map!{|j| j.split(":").last}
       # Pega todos os ids de usuário dos jogadores do time VENCEDOR
       ids_jogadores_time_vencedor = User.where(steam: jogadores_time_vencedor).pluck(:id).sort
       # Verificar quais os times existentes que esses jogadores participam
@@ -143,6 +144,7 @@ class RandomizerController < ApplicationController
       Winner.create(team_id: time_vencedor.id, round_id: round.id, placar: maximo_ganhado)
       ############################################################################################################
       jogadores_time_perdedor = RankmeMysqlCsgo.where("id IN (?)", time_perdedor).pluck(:steam).sort
+      jogadores_time_perdedor.map!{|j| j.split(":").last}
       # Pega todos os ids de usuário dos jogadores do time PERDEDOR
       ids_jogadores_time_perdedor = User.where(steam: jogadores_time_perdedor).pluck(:id).sort
       # Verificar quais os times existentes que esses jogadores participam
