@@ -14,7 +14,9 @@ ActiveRecord::Base.transaction do
   Map.destroy_all
   RandomMap.destroy_all
   Rankme.destroy_all
+  RankmeCsgo.destroy_all
   Tournament.destroy_all
+  Round.destroy_all
   Team.destroy_all
 
   game = Game.create(
@@ -55,7 +57,7 @@ ActiveRecord::Base.transaction do
     email: 'murparreira@gmail.com',
     admin: true,
     steamid: 'murifoxx',
-    steam: 'STEAM_0:1:204322906'
+    steam: 'STEAM_1:1:204322906'
   )
 
   User.create(
@@ -65,7 +67,7 @@ ActiveRecord::Base.transaction do
     email: 'nikael@gmail.com',
     admin: false,
     steamid: '76561198382208296',
-    steam: 'STEAM_0:0:210971284'
+    steam: 'STEAM_1:0:210971284'
   )
 
   User.create(
@@ -75,7 +77,7 @@ ActiveRecord::Base.transaction do
     email: 'ismael@gmail.com',
     admin: false,
     steamid: '76561198115661275',
-    steam: 'STEAM_0:1:77697773'
+    steam: 'STEAM_1:1:77697773'
   )
 
   User.create(
@@ -85,7 +87,7 @@ ActiveRecord::Base.transaction do
     email: 'yure@gmail.com',
     admin: false,
     steamid: 'yurenery',
-    steam: 'STEAM_0:0:59688084'
+    steam: 'STEAM_1:0:59688084'
   )
 
   User.create(
@@ -95,7 +97,7 @@ ActiveRecord::Base.transaction do
     email: 'victor@gmail.com',
     admin: false,
     steamid: 'znexy',
-    steam: 'STEAM_0:1:75095884'
+    steam: 'STEAM_1:1:75095884'
   )
 
   User.create(
@@ -105,7 +107,7 @@ ActiveRecord::Base.transaction do
     email: 'naiara@gmail.com',
     admin: false,
     steamid: '76561198158451974',
-    steam: 'STEAM_0:0:99093123'
+    steam: 'STEAM_1:0:99093123'
   )
 
   User.create(
@@ -115,7 +117,7 @@ ActiveRecord::Base.transaction do
     email: 'allan@gmail.com',
     admin: false,
     steamid: 'allanmenesesec',
-    steam: 'STEAM_0:1:59095083'
+    steam: 'STEAM_1:1:59095083'
   )
 
   User.create(
@@ -125,7 +127,7 @@ ActiveRecord::Base.transaction do
     email: 'joaovictor@gmail.com',
     admin: false,
     steamid: '76561198121539961',
-    steam: 'STEAM_0:1:80637116'
+    steam: 'STEAM_1:1:80637116'
   )
 
   User.create(
@@ -135,7 +137,7 @@ ActiveRecord::Base.transaction do
     email: 'franz@gmail.com',
     admin: false,
     steamid: 'strund3r',
-    steam: 'STEAM_0:0:33357487'
+    steam: 'STEAM_1:0:33357487'
   )
 
   User.create(
@@ -145,7 +147,7 @@ ActiveRecord::Base.transaction do
     email: 'rick@gmail.com',
     admin: false,
     steamid: '76561198076270581',
-    steam: 'STEAM_0:1:58002426'
+    steam: 'STEAM_1:1:58002426'
   )
 
   User.create(
@@ -155,7 +157,7 @@ ActiveRecord::Base.transaction do
     email: 'ricardopulice@gmail.com',
     admin: false,
     steamid: '76561198250892958',
-    steam: 'STEAM_0:0:145313615'
+    steam: 'STEAM_1:0:145313615'
   )
 
   User.create(
@@ -165,7 +167,7 @@ ActiveRecord::Base.transaction do
     email: 'maicouel@gmail.com',
     admin: false,
     steamid: 'maicouel',
-    steam: 'STEAM_0:1:43147058'
+    steam: 'STEAM_1:1:43147058'
   )
 
   User.create(
@@ -175,7 +177,7 @@ ActiveRecord::Base.transaction do
     email: 'lastzfighter@gmail.com',
     admin: false,
     steamid: 'lastzfighter',
-    steam: 'STEAM_0:1:41454614'
+    steam: 'STEAM_1:1:41454614'
   )
 
   User.create(
@@ -185,7 +187,7 @@ ActiveRecord::Base.transaction do
     email: 'dudsz@gmail.com',
     admin: false,
     steamid: '76561198112143102',
-    steam: 'STEAM_0:0:75938687'
+    steam: 'STEAM_1:0:75938687'
   )
 
   User.create(
@@ -195,7 +197,7 @@ ActiveRecord::Base.transaction do
     email: 'edilsonfb@gmail.com',
     admin: false,
     steamid: 'edilson',
-    steam: 'STEAM_0:1:42926840'
+    steam: 'STEAM_1:1:42926840'
   )
 
   User.create(
@@ -205,7 +207,7 @@ ActiveRecord::Base.transaction do
     email: 'eduardotv@gmail.com',
     admin: false,
     steamid: 'dot22',
-    steam: 'STEAM_0:1:35250772'
+    steam: 'STEAM_1:1:35250772'
   )
 
   User.create(
@@ -215,7 +217,7 @@ ActiveRecord::Base.transaction do
     email: 'ramonvs@gmail.com',
     admin: false,
     steamid: 'ramonvs',
-    steam: 'STEAM_0:1:79524414'
+    steam: 'STEAM_1:1:79524414'
   )
 
   User.create(
@@ -225,7 +227,7 @@ ActiveRecord::Base.transaction do
     email: 'lupoc@gmail.com',
     admin: false,
     steamid: '76561198116367387',
-    steam: 'STEAM_0:1:78050829'
+    steam: 'STEAM_1:1:78050829'
   )
 
   Map.create(
