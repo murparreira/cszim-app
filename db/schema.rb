@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20230127211831) do
+ActiveRecord::Schema.define(version: 20230127211931) do
 
   create_table "games", force: :cascade do |t|
     t.string   "nome"
@@ -149,14 +149,25 @@ ActiveRecord::Schema.define(version: 20230127211831) do
     t.integer  "user_id"
     t.integer  "map_id"
     t.integer  "tournament_id"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
     t.integer  "round_id"
     t.integer  "team_id"
     t.integer  "season_id"
     t.integer  "match_win"
     t.integer  "match_draw"
     t.integer  "match_lose"
+    t.integer  "mp5sd"
+    t.integer  "breachcharge"
+    t.integer  "first_blood"
+    t.integer  "no_scope"
+    t.integer  "no_scope_dis"
+    t.integer  "thru_smoke"
+    t.integer  "blind"
+    t.integer  "assist_flash"
+    t.integer  "assist_team_flash"
+    t.integer  "assist_team_kill"
+    t.integer  "wallbang"
   end
 
   create_table "rankmes", force: :cascade do |t|

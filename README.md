@@ -17,6 +17,10 @@
     SERVER_PORT=
     SERVER_USER=
     SERVER_PASSWORD=
+    MYSQL_DATABASE=
+    MYSQL_USER=
+    MYSQL_PASSWORD=
+    MYSQL_PORT=
     ````
 * Use **docker-compose run web rake db:seed** para criar os dados iniciais
 * Logue com o seu usuário (Informações dos usuários podem ser vistas no arquivo db/seeds.rb)

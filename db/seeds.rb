@@ -309,14 +309,6 @@ ActiveRecord::Base.transaction do
   )
 
   Map.create(
-    nome: 'Train',
-    sigla: 'de_train',
-    ativo: true,
-    game_id: game.id,
-    imagem: File.new(Rails.root + 'app/assets/images/de_train.jpg')
-  )
-
-  Map.create(
     nome: 'Canals',
     sigla: 'de_canals',
     ativo: true,
@@ -410,6 +402,22 @@ ActiveRecord::Base.transaction do
     ativo: true,
     game_id: game.id,
     imagem: File.new(Rails.root + 'app/assets/images/de_stmarc.jpg')
+  )
+
+  Map.create(
+    nome: 'Santorini',
+    sigla: 'de_santorini',
+    ativo: true,
+    game_id: game.id,
+    imagem: File.new(Rails.root + 'app/assets/images/de_santorini.jpg')
+  )
+
+  Map.create(
+    nome: 'Bagra',
+    sigla: 'de_bagra',
+    ativo: true,
+    game_id: game.id,
+    imagem: File.new(Rails.root + 'app/assets/images/de_bagra.jpg')
   )
   
 end
