@@ -14,8 +14,6 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require cocoon
-//= require highcharts/highcharts
-//= require highcharts/highcharts-more
 //= require_tree .
 
 Flatpickr.localize(Flatpickr.l10ns.pt);

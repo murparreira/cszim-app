@@ -17,6 +17,7 @@ services:
     # changed a file.
     volumes:
       - .:/code:cached
+      - bundler_gems:/usr/local/bundle/
 
     # The command to be run when we run "docker-compose up".
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
@@ -29,3 +30,6 @@ services:
     # used in this container.
     environment:
       RAILS_ENV: development
+
+volumes:
+  bundler_gems:

@@ -1,8 +1,8 @@
 # Use the Ruby 2.2.6 image from Docker Hub
 # as the base image (https://hub.docker.com/_/ruby)
-FROM ruby:2.2.6-alpine
+FROM ruby:2.7.7-alpine
 
-RUN apk update && apk add --no-cache --virtual build-dependencies build-base gcc wget git mariadb-dev sqlite-dev nodejs bash
+RUN apk update && apk add --no-cache --virtual build-dependencies build-base gcc wget git mariadb-dev sqlite-dev nodejs bash curl
 
 # Use a directory called /code in which to store
 # this application's files. (The directory name
