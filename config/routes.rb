@@ -24,6 +24,14 @@ Rails.application.routes.draw do
   get 'randomizer_open_map' => 'randomizer#open_map'
   get 'randomizer_select' => 'randomizer#select'
 
+  get 'manager' => 'manager#index'
+  get 'manager_raffle' => 'manager#raffle'
+  get 'manager_reset' => 'manager#reset'
+  get 'manager_start' => 'manager#start'
+  get 'manager_finish' => 'manager#finish'
+  get 'manager_open_map' => 'manager#open_map'
+  get 'manager_select' => 'manager#select'
+
   get 'login' => 'sessions#new'
   post 'login' => 'sessions#create'
   get 'logout' => 'sessions#destroy'
