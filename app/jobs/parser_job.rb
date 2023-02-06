@@ -6,7 +6,7 @@ class ParserJob < ApplicationJob
   def perform(demo_id)
     demo = Demo.find(demo_id)
     uri = URI('http://web:5000/parse')
-    res = Net::HTTP.post_form(uri, 'demo_file' => demo.nome)
+    res = Net::HTTP.post_form(uri, 'demo_file' => "#{demo.nome}.dem")
     if res.is_a?(Net::HTTPSuccess)
       json_response = JSON.parse(res.body)
       demo.update(processada: true)

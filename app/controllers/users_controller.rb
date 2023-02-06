@@ -7,15 +7,18 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
-    if params[:tournament_id].present? && params[:map_id].present?
-      @rankme = RankmeCsgo.find_by(user_id: @user.id, tournament_id: params[:tournament_id], map_id: params[:map_id])
-    elsif params[:tournament_id].present?
-      @rankme = RankmeCsgo.find_by(user_id: @user.id, tournament_id: params[:tournament_id])
-    elsif params[:map_id].present?
-      @rankme = RankmeCsgo.find_by(user_id: @user.id, map_id: params[:map_id])
-    else
-     @rankme = RankmeCsgo.find_by(user_id: @user.id)
+    if current_configuration.is_v1?
+      if params[:tournament_id].present? && params[:map_id].present?
+        @rankme = RankmeCsgo.find_by(user_id: @user.id, tournament_id: params[:tournament_id], map_id: params[:map_id])
+      elsif params[:tournament_id].present?
+        @rankme = RankmeCsgo.find_by(user_id: @user.id, tournament_id: params[:tournament_id])
+      elsif params[:map_id].present?
+        @rankme = RankmeCsgo.find_by(user_id: @user.id, map_id: params[:map_id])
+      else
+      @rankme = RankmeCsgo.find_by(user_id: @user.id)
+      end
     end
+    render "#{current_configuration.version}/users/show"
   end
 
   def get_data

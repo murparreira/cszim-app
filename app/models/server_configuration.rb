@@ -8,4 +8,12 @@ class ServerConfiguration < ApplicationRecord
     end
   end
 
+  def is_v1?
+    version.downcase == 'v1'
+  end
+
+  def is_v2?
+    version.downcase == 'v2'
+  end
+
 end

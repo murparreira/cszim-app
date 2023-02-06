@@ -19,16 +19,20 @@ class User < ApplicationRecord
     BCrypt::Password.create(string, cost: cost)
   end
 
-  def total_kills
-    player_statistics.sum :kills
+  def total(statistic)
+    player_statistics.sum(statistic)
   end
 
-  def total_deaths
-    player_statistics.sum :deaths
+  def grouped_total(statistic, percent = false)
+    total = total(statistic)/player_statistics.size
+    total = total * 100 if percent
+    total
   end
 
-  def total_ratio
-    (total_kills.to_f/total_deaths.to_f).nan? ? 0.0 : (total_kills.to_f/total_deaths.to_f)
+  def armas
+    player_kills.pluck(:weapon)
+      .group_by {|weapon| weapon.itself}
+      .transform_values {|weapon| weapon.count}
   end
 
 end

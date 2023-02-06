@@ -54,15 +54,9 @@
   <ul class="menu-list">
     <% if logged_in? %>
       <li>
-        <%= link_to randomizer_path, class: "#{'is-active' if params[:controller] == 'randomizer'}" do %>
-          <span class="icon is-small"><i class="fa fa-random"></i></span>&nbsp;
-          Randomizador
-        <% end %>
-      </li>
-      <li>
         <%= link_to manager_path, class: "#{'is-active' if params[:controller] == 'manager'}" do %>
           <span class="icon is-small"><i class="fa fa-random"></i></span>&nbsp;
-          Manager v2.0
+          Manager
         <% end %>
       </li>
     <% end %>

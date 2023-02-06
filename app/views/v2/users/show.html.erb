@@ -1,0 +1,385 @@
+<div class="columns">
+  <div class="column">
+    <div class="contact-box">
+      <div class="columns">
+        <div class="column is-one-third">
+          <%= image_tag avatar_url(@user), class: 'img-circle' %>
+        </div>
+        <div class="column is-quarter">
+          <%= select_tag :season_id, options_for_select(Season.all.order(created_at: :desc).collect {|s| [s.nome, s.id]}, params[:season_id]), {class: 'input history-detail', include_blank: true} %>
+        </div>
+        <div class="column is-quarter">
+          <%= select_tag :tournament_id, options_for_select(Tournament.all.order(created_at: :desc).collect {|t| [t.nome, t.id]}, params[:tournament_id]), {class: 'input history-detail', include_blank: true} %>
+        </div>
+        <div class="column is-quarter">
+          <%= select_tag :map_id, options_for_select(Map.all.where(ativo: true).order(nome: :asc).collect {|m| [m.nome, m.id]}, params[:map_id]), {class: 'input history-detail', include_blank: true} %>
+        </div>
+      </div>
+      <div id="data" class="columns">
+        <div class="column">
+          <table class="table is-bordered is-striped is-narrow is-fullwidth">
+            <thead>
+              <tr>
+                <th colspan="12">Estatísticas de KDR</th>
+              </tr>
+              <tr>
+                <th>Kills</th>
+                <th>Deaths</th>
+                <th>KDR</th>
+                <th>ADR</th>
+                <th>KAST</th>
+                <th>Suicídos</th>
+                <th>Team Kills</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if @user %>
+                <tr>
+                  <td><%= @user.total(:kills) %></td>
+                  <td><%= @user.total(:deaths) %></td>
+                  <td><%= @user.grouped_total(:kdr) %></td>
+                  <td><%= @user.grouped_total(:adr) %></td>
+                  <td>
+                    <%= @user.grouped_total(:kast) %>%
+                    <br>
+                    <progress class="progress is-info" value="<%= @user.grouped_total(:kast) %>" max="100"><%= @user.grouped_total(:kast) %>%</progress>
+                  </td>
+                  <td><%= @user.total(:suicides) %></td>
+                  <td><%= @user.total(:teamKills) %></td>
+                </tr>
+              <% else %>
+                <tr>
+                  <td colspan="5">Nenhum dado registrado!</td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+          <hr>
+          <table class="table is-bordered is-striped is-narrow is-fullwidth">
+            <thead>
+              <tr>
+                <th colspan="12">Estatísticas Gerais</th>
+              </tr>
+              <tr>
+                <th>Disparos/Acertos/Mira(%)</th>
+                <th>Kills por headshot</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if @user %>
+                <tr>
+                  <td>
+                    <%= @user.total(:totalShots) %>/<%= @user.total(:shotsHit) %>/<%= @user.grouped_total(:accuracy, true) %>%
+                    <br>
+                    <progress class="progress is-info" value="<%= @user.grouped_total(:accuracy, true) %>" max="100"><%= @user.grouped_total(:accuracy, true) %>%</progress>
+                  </td>
+                  <td><%= @user.total(:hs) %> (<%= @user.grouped_total(:hsPercent, true) %>%)</td>
+                </tr>
+              <% else %>
+                <tr>
+                  <td colspan="4">Nenhum dado registrado!</td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+          <hr>
+          <table class="table is-bordered is-striped is-narrow is-fullwidth">
+            <thead>
+              <tr>
+                <th>C4 plantadas</th>
+                <th>C4 defusadas</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if @user %>
+                <tr>
+                  <td><%= @user.total(:plants) %></td>
+                  <td><%= @user.total(:defuses) %></td>
+                </tr>
+              <% else %>
+                <tr>
+                  <td colspan="3">Nenhum dado registrado!</td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+          <hr>
+          <table class="table is-bordered is-striped is-narrow is-fullwidth">
+            <thead>
+              <tr>
+                <th>Flashs</th>
+                <th>Inimigos flashados</th>
+                <th>Molotovs</th>
+                <th>HEs</th>
+                <th>Smokes</th>
+                <th>Dano total de utilidade</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if @user %>
+                <tr>
+                  <td><%= @user.total(:flashesThrown) %></td>
+                  <td><%= @user.total(:enemiesFlashed) %></td>
+                  <td><%= @user.total(:fireThrown) %></td>
+                  <td><%= @user.total(:heThrown) %></td>
+                  <td><%= @user.total(:smokesThrown) %></td>
+                  <td><%= @user.total(:utilityDamage) %></td>
+                </tr>
+              <% else %>
+                <tr>
+                  <td colspan="3">Nenhum dado registrado!</td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+          <hr>
+          <table class="table is-bordered is-striped is-narrow is-fullwidth">
+            <thead>
+              <tr>
+                <th>Arma</th>
+                <th>Kills</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if @user %>
+                <% @user.armas.each do |arma, kills| %>
+                  <tr>
+                    <td><%= arma %></td>
+                    <td><%= kills %></td>
+                  </tr>
+                <% end %>
+              <% else %>
+                <tr>
+                  <td colspan="3">Nenhum dado registrado!</td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+          <hr>
+          <div class="columns">
+            <div class="column">
+              <table class="table is-bordered is-striped is-narrow is-fullwidth">
+                <thead>
+                  <th>Nome da demo</th>
+                  <th>Mapa</th>
+                  <th>Data</th>
+                </thead>
+                <tbody>
+                  <% @user.demos.each do |demo| %>
+                    <tr>
+                      <td><%= demo.nome %></td>
+                      <td><%= demo.map.nome %></td>
+                      <td><%= demo.created_at %></td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr>
+<script type="text/javascript">
+$(function() {
+  $('#season_id').select2({ placeholder: "Selecione a Temporada", allowClear: true });
+  $('#tournament_id').select2({ placeholder: "Selecione o Torneio", allowClear: true });
+  $('#map_id').select2({ placeholder: "Selecione o Mapa", allowClear: true });
+  $('#season_id').on("change", function() {
+    $.ajax({
+      url: "/get_tournaments_from_season",
+      type: "GET",
+      data: {
+        season_id: this.value
+      },
+      success: function(data) {
+        $("#tournament_id").empty();
+        $("<option value=''></option>").appendTo("#tournament_id");
+        $.each(data, function() {
+          $("<option value='"+this.id+"'>"+this.nome+"</option>").appendTo("#tournament_id");
+        });
+      }
+    });
+  });
+  $('#tournament_id').on("change", function() {
+    $.ajax({
+      url: "/get_maps_from_tournament",
+      type: "GET",
+      data: {
+        game_id: "<%= current_game.id %>",
+        tournament_id: this.value
+      },
+      success: function(data) {
+        $("#map_id").empty();
+        $("<option value=''></option>").appendTo("#map_id");
+        $.each(data, function() {
+          $("<option value='"+this.id+"'>"+this.nome+"</option>").appendTo("#map_id");
+        });
+      }
+    });
+  });
+  $('select').on("change", function() {
+    $.ajax({
+      url: "<%= get_data_user_path(@user.id) %>",
+      type: "GET",
+      data: {
+        game_id: "<%= current_game.id %>",
+        season_id: $('#season_id').val(),
+        tournament_id: $('#tournament_id').val(),
+        map_id: $('#map_id').val()
+      },
+      success: function(html) {
+        $("#data").html(html);
+      }
+    });
+  });
+});
+</script>
+
+<style type="text/css">
+.is-card {
+  -webkit-box-flex: 0;
+  -ms-flex: none;
+  flex: none;
+  width: 20%;
+}
+.csperfil {
+
+}
+
+.csbody {
+  position: relative;
+  display: inline-block;
+}
+.csperfil {
+  position: absolute;
+  height: 100%;
+  text-align: center;
+  width: 100%;
+  padding-top: 4px;
+  font-weight: bold;
+  font-size: 10px;
+}
+.csperfil:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: top;
+}
+.cshead {
+  position: absolute;
+  height: 100%;
+  text-align: center;
+  width: 100%;
+  padding-top: 4px;
+  font-weight: bold;
+  font-size: 10px;
+}
+.cshead:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: top;
+}
+.cschest {
+  position: absolute;
+  height: 100%;
+  text-align: center;
+  width: 100%;
+  padding-top: 65px;
+  font-weight: bold;
+  font-size: 10px;
+}
+.cschest:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: top;
+}
+.csstomach {
+  position: absolute;
+  height: 100%;
+  text-align: center;
+  width: 100%;
+  padding-top: 97px;
+  font-weight: bold;
+  font-size: 10px;
+}
+.csstomach:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: top;
+}
+.csleftarm {
+  position: absolute;
+  height: 100%;
+  text-align: left;
+  width: 100%;
+  padding-top: 50px;
+  font-weight: bold;
+  font-size: 10px;
+}
+.csleftarm:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: top;
+}
+.csrightarm {
+  position: absolute;
+  height: 100%;
+  text-align: right;
+  width: 100%;
+  padding-top: 50px;
+  font-weight: bold;
+  font-size: 10px;
+}
+.csrightarm:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: top;
+}
+.csleftleg {
+  position: absolute;
+  height: 100%;
+  text-align: left;
+  width: 100%;
+  padding-top: 210px;
+  padding-left: 40px;
+  font-weight: bold;
+  font-size: 10px;
+}
+.csleftleg:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: top;
+}
+.csrightleg {
+  position: absolute;
+  height: 100%;
+  text-align: right;
+  width: 100%;
+  padding-top: 180px;
+  font-weight: bold;
+  font-size: 10px;
+}
+.csrightleg:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: top;
+}
+.cshead > span {padding: 5px; background-color: #f7f7c8; line-height: 2; border-radius: 25px;}
+.cschest > span {padding: 5px; background-color: #f7f7c8; line-height: 2; border-radius: 25px;}
+.csstomach > span {padding: 5px; background-color: #f7f7c8; line-height: 2; border-radius: 25px;}
+.csleftarm > span {padding: 5px; background-color: #f7f7c8; line-height: 2; border-radius: 25px;}
+.csrightarm > span {padding: 5px; background-color: #f7f7c8; line-height: 2; border-radius: 25px;}
+.csleftleg > span {padding: 5px; background-color: #f7f7c8; line-height: 2; border-radius: 25px;}
+.csrightleg > span {padding: 5px; background-color: #f7f7c8; line-height: 2; border-radius: 25px;}
+</style>
