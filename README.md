@@ -3,26 +3,34 @@
 ### CSZIM-APP ###
 
 * Projeto Rails para apoio aos campeonatos de CS
-* 2.0-alpha
+* 2.1-alpha
 
 ### Como instalar e rodar? ###
 
 * Tenha o **docker** e o **docker-compose** instalado na sua máquina.
 * Use **docker-compose build** para buildar a imagem
 * Use **docker-compose up** para subir o container
-* Use **docker-compose run web rake db:migrate** para rodar as migrations no BD se o build não o fez
 * Crie um arquivo **.env** na raiz do projeto com o seguinte conteúdo
     ````
+    ## Configurações da máquina onde o servidor está rodando ##
     SERVER_NAME_OR_IP=
     SERVER_PORT=
     SERVER_USER=
     SERVER_PASSWORD=
+    ## Configurações do PostgreSQL ##
+    POSTGRESQL_NAME=
+    POSTGRESQL_USER=
+    POSTGRESQL_PASSWORD=
+    POSTGRESQL_HOST=
+    ## Se estiver usando o manager v1, configurações do MySQL do Rankme ##
     MYSQL_DATABASE=
     MYSQL_USER=
     MYSQL_PASSWORD=
     MYSQL_PORT=
     ````
-* Use **docker-compose run web rake db:seed** para criar os dados iniciais
+* Use **docker-compose run --rm web rake db:create** para criar o BD
+* Use **docker-compose run --rm web rake db:migrate** para rodar as migrations
+* Use **docker-compose run --rm web rake db:seed** para popular o BD com algumas configurações iniciais
 * Logue com o seu usuário (Informações dos usuários podem ser vistas no arquivo db/seeds.rb)
 * Fork o projeto e clone para uma pasta no sistema:
 * Navegue para a pasta do projeto:
