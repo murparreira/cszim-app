@@ -8,6 +8,7 @@ class User < ApplicationRecord
   validates :password, presence: true, length: { minimum: 5 }, allow_nil: true
 
   has_many :statistics, dependent: :destroy
+  has_many :player_statistics, dependent: :destroy
 
   SENHA_PADRAO = "123abc"
 
