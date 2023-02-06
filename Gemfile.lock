@@ -91,12 +91,26 @@ GEM
       multi_json (~> 1.0)
       rack (>= 1.3)
     erubi (1.12.0)
+    et-orbi (1.2.7)
+      tzinfo
     execjs (2.8.1)
     faker (3.1.0)
       i18n (>= 1.8.11, < 2)
     ffi (1.15.5)
+    fugit (1.8.1)
+      et-orbi (~> 1, >= 1.2.7)
+      raabro (~> 1.4)
     globalid (1.1.0)
       activesupport (>= 5.0)
+    good_job (2.99.0)
+      activejob (>= 5.2.0)
+      activerecord (>= 5.2.0)
+      concurrent-ruby (>= 1.0.2)
+      fugit (>= 1.1)
+      railties (>= 5.2.0)
+      thor (>= 0.14.1)
+      webrick (>= 1.3)
+      zeitwerk (>= 2.0)
     hash-deep-merge (0.1.1)
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
@@ -123,6 +137,7 @@ GEM
     marcel (1.0.2)
     method_source (1.0.0)
     mini_mime (1.1.2)
+    mini_portile2 (2.8.1)
     minitest (5.17.0)
     multi_json (1.15.0)
     mysql2 (0.4.10)
@@ -139,13 +154,16 @@ GEM
       net-protocol
     net-ssh (7.0.1)
     nio4r (2.5.8)
-    nokogiri (1.14.1-x86_64-linux)
+    nokogiri (1.14.1)
+      mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
+    pg (1.4.5)
     public_suffix (5.0.1)
     puma (6.0.2)
       nio4r (~> 2.0)
     pundit (2.3.0)
       activesupport (>= 3.0.0)
+    raabro (1.4.0)
     racc (1.6.2)
     rack (2.2.6.2)
     rack-test (2.0.2)
@@ -189,9 +207,6 @@ GEM
       sprockets-rails
       tilt
     spring (2.1.1)
-    spring-watcher-listen (2.0.1)
-      listen (>= 2.7, < 4.0)
-      spring (>= 1.2, < 3.0)
     sprockets (4.2.0)
       concurrent-ruby (~> 1.0)
       rack (>= 2.2.4, < 4)
@@ -199,7 +214,8 @@ GEM
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
-    sqlite3 (1.6.0-x86_64-linux)
+    sqlite3 (1.6.0)
+      mini_portile2 (~> 2.8.0)
     sshkit (1.21.3)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
@@ -221,9 +237,11 @@ GEM
       activemodel (>= 5.0)
       bindex (>= 0.4.0)
       railties (>= 5.0)
+    webrick (1.8.1)
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
+    zeitwerk (2.6.6)
 
 PLATFORMS
   ruby
@@ -242,18 +260,19 @@ DEPENDENCIES
   dotenv-rails
   dragonfly
   faker
+  good_job
   jbuilder
   jquery-rails
   lazy_high_charts
   listen (~> 3.0.5)
   mysql2 (~> 0.4.10)
+  pg
   puma
   pundit
   rails (~> 5.2.8.1)
   sass-rails
   sassc (~> 2.2.0)
   spring
-  spring-watcher-listen (~> 2.0.0)
   sqlite3
   turbolinks
   tzinfo-data
