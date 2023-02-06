@@ -7,37 +7,27 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
-    if current_game.sigla == "CSGO"
-      @rankme = RankmeCsgo.select_fields
-    else
-      @rankme = Rankme.select_fields
-    end
     if params[:tournament_id].present? && params[:map_id].present?
-      @rankme = @rankme.by_players([@user.id]).where("tournament_id = ? AND map_id = ?", params[:tournament_id], params[:map_id]).group(:user_id).first
+      @rankme = RankmeCsgo.find_by(user_id: @user.id, tournament_id: params[:tournament_id], map_id: params[:map_id])
     elsif params[:tournament_id].present?
-      @rankme = @rankme.by_players([@user.id]).where("tournament_id = ?", params[:tournament_id]).group(:user_id).first
+      @rankme = RankmeCsgo.find_by(user_id: @user.id, tournament_id: params[:tournament_id])
     elsif params[:map_id].present?
-      @rankme = @rankme.by_players([@user.id]).where("map_id = ?", params[:map_id]).group(:user_id).first
+      @rankme = RankmeCsgo.find_by(user_id: @user.id, map_id: params[:map_id])
     else
-     @rankme = @rankme.by_players([@user.id]).group(:user_id).first
+     @rankme = RankmeCsgo.find_by(user_id: @user.id)
     end
   end
 
   def get_data
     @user = User.find(params[:id])
-    if current_game.sigla == "CSGO"
-      @rankme = RankmeCsgo.select_fields
-    else
-      @rankme = Rankme.select_fields
-    end
     if params[:tournament_id].present? && params[:map_id].present?
-      @rankme = @rankme.by_players([@user.id]).where("tournament_id = ? AND map_id = ?", params[:tournament_id], params[:map_id]).group(:user_id).first
+      @rankme = RankmeCsgo.find_by(user_id: @user.id, tournament_id: params[:tournament_id], map_id: params[:map_id])
     elsif params[:tournament_id].present?
-      @rankme = @rankme.by_players([@user.id]).where("tournament_id = ?", params[:tournament_id]).group(:user_id).first
+      @rankme = RankmeCsgo.find_by(user_id: @user.id, tournament_id: params[:tournament_id])
     elsif params[:map_id].present?
-      @rankme = @rankme.by_players([@user.id]).where("map_id = ?", params[:map_id]).group(:user_id).first
+      @rankme = RankmeCsgo.find_by(user_id: @user.id, map_id: params[:map_id])
     else
-     @rankme = @rankme.by_players([@user.id]).group(:user_id).first
+     @rankme = RankmeCsgo.find_by(user_id: @user.id)
     end
     render layout: false
   end
