@@ -25,5 +25,7 @@ module CszimApp
     config.i18n.default_locale = "pt-BR"
     config.time_zone = 'Brasilia'
     config.action_controller.permit_all_parameters = true
+    config.active_job.queue_adapter = :good_job
+    config.good_job.retry_on_unhandled_error = false
   end
 end
