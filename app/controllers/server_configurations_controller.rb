@@ -48,6 +48,6 @@ class ServerConfigurationsController < ApplicationController
 	private
 
   def configuration_params
-    params.require(:server_configuration).permit(:nome, :numero_partidas)
+    params.require(:server_configuration).permit(:nome, :numero_partidas, :version)
   end
 end

@@ -30,6 +30,7 @@ ActiveRecord::Base.transaction do
 
   ServerConfiguration.create(
     nome: 'Default',
+    version: 'v2',
     numero_partidas: 10,
     server_name_or_ip: ENV['SERVER_NAME_OR_IP'],
     server_port: ENV['SERVER_PORT'],
