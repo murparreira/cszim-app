@@ -103,7 +103,7 @@ class RandomizerController < ApplicationController
       jogadores_time_vencedor = RankmeMysqlCsgo.where("id IN (?)", time_vencedor).pluck(:steam).sort
       jogadores_time_vencedor.map!{|j| j.split(":").last}
       # Pega todos os ids de usuário dos jogadores do time VENCEDOR
-      ids_jogadores_time_vencedor = User.where(steam: jogadores_time_vencedor).pluck(:id).sort
+      ids_jogadores_time_vencedor = User.where(old_steam: jogadores_time_vencedor).pluck(:id).sort
       # Verificar quais os times existentes que esses jogadores participam
       ids_times_ja_criados = Team.joins(:players).where("players.user_id IN (?)", ids_jogadores_time_vencedor).pluck(:id).uniq.sort
       # Para cada time, consultar os jogadores do mesmo e comparar o resultado em forma de array com os ids do time atual
@@ -123,7 +123,7 @@ class RandomizerController < ApplicationController
       Participant.create(team_id: time_vencedor.id, tournament_id: torneio_dia.id)
       jogadores_time_vencedor.each do |steam_jogador|
         # Identifica o jogador na tabela users pelo steam
-        user = User.find_by(steam: steam_jogador)
+        user = User.find_by(old_steam: steam_jogador)
         # Pega todos os dados desse jogador no mysql removendo o id
         unless user.nil?
           dados_mysql = RankmeMysqlCsgo.where("steam LIKE '%#{user.steam}'").last
@@ -146,7 +146,7 @@ class RandomizerController < ApplicationController
       jogadores_time_perdedor = RankmeMysqlCsgo.where("id IN (?)", time_perdedor).pluck(:steam).sort
       jogadores_time_perdedor.map!{|j| j.split(":").last}
       # Pega todos os ids de usuário dos jogadores do time PERDEDOR
-      ids_jogadores_time_perdedor = User.where(steam: jogadores_time_perdedor).pluck(:id).sort
+      ids_jogadores_time_perdedor = User.where(old_steam: jogadores_time_perdedor).pluck(:id).sort
       # Verificar quais os times existentes que esses jogadores participam
       ids_times_ja_criados = Team.joins(:players).where("players.user_id IN (?)", ids_jogadores_time_perdedor).pluck(:id).uniq.sort
       # Para cada time, consultar os jogadores do mesmo e comparar o resultado em forma de array com os ids do time atual
@@ -166,7 +166,7 @@ class RandomizerController < ApplicationController
       Participant.create(team_id: time_perdedor.id, tournament_id: torneio_dia.id)
       jogadores_time_perdedor.each do |steam_jogador|
         # Identifica o jogador na tabela users pelo steam
-        user = User.find_by(steam: steam_jogador)
+        user = User.find_by(old_steam: steam_jogador)
         # Pega todos os dados desse jogador no mysql removendo o id
         unless user.nil?
           dados_mysql = RankmeMysqlCsgo.where("steam LIKE '%#{user.steam}'").last

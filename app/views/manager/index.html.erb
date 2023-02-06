@@ -1,0 +1,61 @@
+<div class="columns" data-turbolinks="false">
+  <div class="column is-third">
+    <h2 class="subtitle">Jogo Ativo: <%= Game.find_by(ativo: true).nome %></h2>
+    <h2 class="subtitle">Configuração Ativa: <%= current_configuration.nome %></h2>
+    <br>
+    <h2 class="title">Mapas Disponíveis</h2>
+    <ul class="ul-mapas-manager">
+      <% (Map.where(game_id: current_game.id).ativos.pluck(:id) - RandomMap.pluck(:map_id)).shuffle.each do |map_id| %>
+        <% map = Map.find(map_id) %>
+        <li>
+          <%= link_to manager_select_path(map_id: map.id), class: "button is-small" do %>
+            <i class="fa fa-forward"></i>
+          <% end %>
+          <%= map.nome %> - <%= map.sigla %>
+        </li>
+      <% end %>
+    </ul>
+    <% if RandomMap.count < Map.ativos.count %>
+      <%= link_to "Sortear Mapa", manager_raffle_path, class: "button" %>
+    <% end %>
+    <%= link_to "Resetar Aplicativo", manager_reset_path, class: "button is-danger" %>
+  </div>
+  <div class="column is-third">
+    <h2 class="title">Mapa Escolhido</h2>
+    <% last_random_map = RandomMap.last %>
+    <% if last_random_map.present? %>
+      <% chosen_map = Map.find(last_random_map.map_id) %>
+      <%= chosen_map.nome %> - <%= chosen_map.sigla %>
+      <br>
+      <%= image_tag(imagem_mapa_url(chosen_map), class: "image is-256x256") %>
+      <br>
+      <%= link_to "Iniciar Mapa", manager_start_path, class: "button is-info" %>
+      <%= link_to "Finalizar Mapa", manager_finish_path, class: "button is-danger" %>
+      <br><br>
+      <%= link_to "Abrir Mapa Automaticamente", manager_open_map_path, class: "button" %>
+    <% end %>
+  </div>
+</div>
+<div class="columns" data-turbolinks="false">
+  <div class="column is-third">
+    <h2 class="title">Mapas Sorteados (<%= RandomMap.count %>)</h2>
+      <% RandomMap.all.each_with_index do |random_map, i| %>
+        <% previous_chosen_map = Map.find(random_map.map_id) %>
+        <% if i == 0 %>
+          <div class="columns">
+        <% end %>
+        <div class="column is-1">
+          <a data-fancybox='gallery' href='<%= imagem_mapa_url(previous_chosen_map) %>' data-caption='<%= previous_chosen_map.nome %> - <%= previous_chosen_map.sigla %>'>
+            <%= image_tag(imagem_mapa_url(previous_chosen_map), class: "image is-64x64") %>
+          </a>
+          <br>
+          <%= previous_chosen_map.nome %>
+        </div>
+        <% if i > 0 && (i + 1) % 11 == 0 %>
+          </div>
+          <div class="columns">
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>
