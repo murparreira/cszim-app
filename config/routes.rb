@@ -12,6 +12,9 @@ Rails.application.routes.draw do
   resources :teams
   root to: 'dashboard#index'
 
+  get 'v1/dashboard' => 'v1/dashboard#index'
+  get 'v2/dashboard' => 'v2/dashboard#index'
+
   get 'compare' => 'compare#index'
   get 'compare_players' => 'compare#compare_players'
   get 'get_maps_from_tournament' => 'compare#get_maps_from_tournament'

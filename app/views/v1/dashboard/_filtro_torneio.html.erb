@@ -1,0 +1,55 @@
+<div class="columns">
+  <div class="column has-text-centered">
+    <h2 class="subtitle">Por Torneio</h2>
+  </div>
+</div>
+
+<% Tournament.all.each do |tournament| %>
+  <div class="columns">
+    <div class="column has-text-centered">
+      <h3 class=""><%= tournament.nome %></h3>
+    </div>
+  </div>
+  <table class="table is-narrow is-striped is-bordered">
+    <thead>
+      <th>Jogador</th>
+      <th width="10%">Kills</th>
+      <th width="10%">Deaths</th>
+      <th width="10%">Ratio</th>
+    </thead>
+    <tbody>
+      <% #data_torneio = Statistic.joins(:round).select("SUM(kills) AS kills, SUM(deaths) AS deaths, user_id").where("rounds.tournament_id = ?", tournament.id).group(:user_id).order("kills DESC, deaths ASC") %>
+      <% data_torneio = Rankme.select("kills, deaths, user_id").where("rankmes.tournament_id = ?", tournament.id).order("kills DESC, deaths ASC") %>
+      <% data_torneio.each do |statistic| %>
+        <% deaths = statistic.deaths.to_i %>
+        <% deaths = 1 if statistic.deaths.to_i == 0%>
+        <tr>
+          <% user = User.find(statistic.user_id) %>
+          <td><%= image_tag avatar_url(user), class: 'img-circle image anti-image-block is-24x24' %> <%= user.nome %></td>
+          <td><%= statistic.kills %></td>
+          <td><%= statistic.deaths %></td>
+          <td><%= (statistic.kills.to_f/deaths.to_f).round(2) %></td>
+        </tr>
+      <% end %>
+      <% if data_torneio.present? %>
+        <tr>
+          <td colspan="4" width="100%">
+            <div class="chart-title"><%= link_to '<i class="fa fa-bar-chart"></i> Gráfico'.html_safe, '#', class: 'button is-info is-small' %>
+              <div class="chart-content">
+                <%= high_chart(tournament.id.to_s, Chart.chart(data_torneio)) %>
+              </div>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
+<script type="text/javascript">
+$('.chart-title').on('click',function(e){
+  e.preventDefault();
+  $(this).children('.chart-content').toggle();
+  id = $(this).children('.chart-content').find('div').attr("id");
+  $("#"+id).highcharts().reflow();
+});
+</script>

@@ -1,0 +1,29 @@
+<table class="table is-narrow is-striped is-bordered">
+  <thead>
+      <th>Jogador</th>
+      <th width="10%">Kills</th>
+      <th width="10%">Deaths</th>
+      <th width="10%">Ratio</th>
+  </thead>
+  <tbody>
+    <% if current_game.sigla == "CSGO" %>
+      <% data_geral = RankmeCsgo.where(season_id: season_id).select("SUM(kills) AS kills, SUM(deaths) AS deaths, user_id").group(:user_id).order("kills DESC, deaths ASC") %>
+    <% else %>
+      <% data_geral = Rankme.where(season_id: season_id).select("SUM(kills) AS kills, SUM(deaths) AS deaths, user_id").group(:user_id).order("kills DESC, deaths ASC") %>
+    <% end %>
+    <% data_geral.each do |statistic| %>
+      <% deaths = statistic.deaths.to_i %>
+      <% deaths = 1 if statistic.deaths.to_i == 0%>
+      <tr>
+        <% user = User.find(statistic.user_id) %>
+        <td><%= image_tag avatar_url(user), class: 'img-circle image anti-image-block is-24x24' %> <%= user.nome %></td>
+        <td><%= statistic.kills %></td>
+        <td><%= statistic.deaths %></td>
+        <td><%= (statistic.kills.to_f/deaths.to_f).round(2) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<% if data_geral.present? %>
+  <%= high_chart("chart", Chart.chart(data_geral)) %>
+<% end %>
