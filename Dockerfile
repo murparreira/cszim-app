@@ -3,7 +3,7 @@
 FROM ruby:2.7.7-alpine
 
 RUN apk update && apk add --no-cache --virtual build-dependencies build-base gcc wget git \
-  mariadb-dev sqlite-dev nodejs bash curl postgresql-dev \
+  mariadb-dev gcompat nodejs bash curl postgresql-dev \
   zlib-dev libxml2-dev libxslt-dev readline-dev tzdata
 
 # Use a directory called /code in which to store
