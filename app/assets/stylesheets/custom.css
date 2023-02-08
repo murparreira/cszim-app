@@ -99,3 +99,6 @@
 }
 table tbody tr td { vertical-align: middle !important; }
 .is-narrow { margin-bottom: 0px !important; }
+.custom_section {
+  padding: 1.5rem 1.5rem;
+}
