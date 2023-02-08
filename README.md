@@ -27,6 +27,8 @@
     MYSQL_USER=
     MYSQL_PASSWORD=
     MYSQL_PORT=
+    ## URL do servidor de parsing das demos ##
+    PARSE_URL=
     ````
 * Use **docker-compose run --rm web rake db:create** para criar o BD
 * Use **docker-compose run --rm web rake db:migrate** para rodar as migrations
