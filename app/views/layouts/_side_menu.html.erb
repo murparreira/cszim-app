@@ -19,30 +19,33 @@
           Mapas
         <% end %>
       </li>
-      <li>
-        <%= link_to teams_path, class: "#{'is-active' if params[:controller] == 'teams'}" do %>
-          <span class="icon is-small"><i class="fa fa-users"></i></span>&nbsp;
-          Times
-        <% end %>
-      </li>
-      <li>
-        <%= link_to tournaments_path, class: "#{'is-active' if params[:controller] == 'tournaments'}" do %>
-          <span class="icon is-small"><i class="fa fa-trophy"></i></span>&nbsp;
-          Torneios
-        <% end %>
-      </li>
-      <li>
-        <%= link_to seasons_path, class: "#{'is-active' if params[:controller] == 'seasons'}" do %>
-          <span class="icon is-small"><i class="fa fa-star"></i></span>&nbsp;
-          Temporadas
-        <% end %>
-      </li>
-      <li>
-        <%= link_to games_path, class: "#{'is-active' if params[:controller] == 'games'}" do %>
-          <span class="icon is-small"><i class="fa fa-book"></i></span>&nbsp;
-          Ativar Jogo
-        <% end %>
-      </li>
+      <% if current_configuration.is_v1? %>
+        <li>
+          <%= link_to teams_path, class: "#{'is-active' if params[:controller] == 'teams'}" do %>
+            <span class="icon is-small"><i class="fa fa-users"></i></span>&nbsp;
+            Times
+          <% end %>
+        </li>
+        <li>
+          <%= link_to tournaments_path, class: "#{'is-active' if params[:controller] == 'tournaments'}" do %>
+            <span class="icon is-small"><i class="fa fa-trophy"></i></span>&nbsp;
+            Torneios
+          <% end %>
+        </li>
+        <li>
+          <%= link_to seasons_path, class: "#{'is-active' if params[:controller] == 'seasons'}" do %>
+            <span class="icon is-small"><i class="fa fa-star"></i></span>&nbsp;
+            Temporadas
+          <% end %>
+        </li>
+      <% else %>
+        <li>
+          <%= link_to demos_path, class: "#{'is-active' if params[:controller] == 'demos'}" do %>
+            <span class="icon is-small"><i class="fa-solid fa-gamepad"></i></i></span>&nbsp;
+            Partidas
+          <% end %>
+        </li>
+      <% end %>
       <li>
         <%= link_to server_configurations_path, class: "#{'is-active' if params[:controller] == 'server_configurations'}" do %>
           <span class="icon is-small"><i class="fa fa-cog"></i></span>&nbsp;

@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   get 'v1/dashboard' => 'v1/dashboard#index'
   get 'v2/dashboard' => 'v2/dashboard#index'
 
-  get 'demos/:id' => 'demos#show', as: 'demo'
+  resources :demos
 
   get 'compare' => 'compare#index'
   get 'compare_players' => 'compare#compare_players'

@@ -102,3 +102,11 @@ table tbody tr td { vertical-align: middle !important; }
 .custom_section {
   padding: 1.5rem 1.5rem;
 }
+.img-scaled-50 {
+  max-width: 100%;
+  width: 50%;
+}
+.img-scaled-70 {
+  max-width: 100%;
+  width: 30%;
+}

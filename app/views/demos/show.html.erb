@@ -95,7 +95,7 @@
     </div>
     <div id="roundtabs-content" class="p-2 tab-content">
       <% @demo.demo_rounds.each do |round| %>
-        <div id="<%= round.roundNum %>-detail" class="tab-content media <%= 'is-hidden' if round.roundNum != 1 %>">
+        <div id="<%= round.roundNum %>-detail" class="tab-content <%= 'is-hidden' if round.roundNum != 1 %>">
           <div class="p-2">
             <% round.demo_round_kills.order(:tick).each do |round_kill| %>
               <% attacker = User.find_by(steam: round_kill.attackerSteamID) %>
@@ -109,7 +109,6 @@
               <span>para matar </span>
               <span class="subtitle mr-3"><%= victim.nome %></span>
               <%= image_tag("#{round_kill.victimSide.downcase}-icon.png", class: "image is-32x32", style: "display: inline") %>
-
             <% end %>
           </div>
         </div>
