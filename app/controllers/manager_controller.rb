@@ -235,9 +235,9 @@ class ManagerController < ApplicationController
 
   def finish_v2
     demo = Demo.last
-    Net::SSH.start(current_configuration.server_name_or_ip, current_configuration.server_user, password: current_configuration.server_password, port: current_configuration.server_port) do| ssh |
-      ssh.exec! "tmux send-keys 'tv_stoprecord' Enter"
-    end
+    # Net::SSH.start(current_configuration.server_name_or_ip, current_configuration.server_user, password: current_configuration.server_password, port: current_configuration.server_port) do| ssh |
+    #   ssh.exec! "tmux send-keys 'tv_stoprecord' Enter"
+    # end
     ParserJob.set(queue: :default, wait: 5.seconds, priority: 10).perform_later(demo.id)
     flash[:success] = "Mapa finalizado com sucesso!"
     redirect_to manager_url

@@ -5,12 +5,12 @@ class ParserJob < ApplicationJob
 
   def perform(demo_id)
     demo = Demo.find(demo_id)
-    uri = URI('http://web:5000/parse')
+    uri = URI(ENV['PARSE_URL'])
     res = Net::HTTP.post_form(uri, 'demo_file' => "#{demo.nome}.dem")
     if res.is_a?(Net::HTTPSuccess)
       json_response = JSON.parse(res.body)
       demo.update(processada: true)
-      json_response.each do |steam, data|
+      json_response['players'].each do |steam, data|
         user = User.find_by(steam: steam)
         if user
           player_statistic = PlayerStatistic.create(
@@ -66,22 +66,49 @@ class ParserJob < ApplicationJob
             tradedDeaths: data['tradedDeaths'],
             utilityDamage: data['utilityDamage']
           )
-          data['player_kills'].each do |inner_data|
+          data['player_kills'].each do |player_kill|
             PlayerKill.create(
               player_statistic_id: player_statistic.id,
-              attackerBlinded: inner_data['attackerBlinded'],
-              attackerSide: inner_data['attackerSide'],
-              victimSteamID: inner_data['victimSteamID'],
-              distance: inner_data['distance'],
-              isFirstKill: inner_data['isFirstKill'],
-              isWallbang: inner_data['isWallbang'],
-              noScope: inner_data['noScope'],
-              thruSmoke: inner_data['thruSmoke'],
-              victimBlinded: inner_data['victimBlinded'],
-              weapon: inner_data['weapon'],
-              weaponClass: inner_data['weaponClass']
+              attackerBlinded: player_kill['attackerBlinded'],
+              attackerSide: player_kill['attackerSide'],
+              victimSteamID: player_kill['victimSteamID'],
+              distance: player_kill['distance'],
+              isFirstKill: player_kill['isFirstKill'],
+              isWallbang: player_kill['isWallbang'],
+              noScope: player_kill['noScope'],
+              thruSmoke: player_kill['thruSmoke'],
+              victimBlinded: player_kill['victimBlinded'],
+              weapon: player_kill['weapon'],
+              weaponClass: player_kill['weaponClass']
             )
           end
+        end
+      end
+      json_response['rounds'].each do |round|
+        demo_round = DemoRound.create(
+          demo_id: demo.id,
+          roundNum: round['roundNum'],
+          winningSide: round['winningSide']
+        )
+        round['kills'].each do |kill|
+          DemoRoundKill.create(
+            demo_round_id: demo_round.id,
+            tick: kill['tick'],
+            attackerSteamID: kill['attackerSteamID'],
+            attackerSide: kill['attackerSide'],
+            assisterSteamID: kill['assisterSteamID'],
+            assisterSide: kill['assisterSide'],
+            victimSteamID: kill['victimSteamID'],
+            victimSide: kill['victimSide'],
+            distance: kill['distance'],
+            isWallbang: kill['isWallbang'],
+            noScope: kill['noScope'],
+            thruSmoke: kill['thruSmoke'],
+            attackerBlinded: kill['attackerBlinded'],
+            victimBlinded: kill['victimBlinded'],
+            weapon: kill['weapon'],
+            weaponClass: kill['weaponClass']
+          )
         end
       end
     end

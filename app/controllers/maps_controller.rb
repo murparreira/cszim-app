@@ -1,5 +1,5 @@
 class MapsController < ApplicationController
-    before_action :authenticate_user
+  before_action :authenticate_user
 
 	def index
     if params[:game_id]
