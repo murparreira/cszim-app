@@ -1,22 +1,28 @@
-<nav class="nav has-shadow">
-  <div class="nav-left">
-    <%= link_to root_path, class: "nav-item" do %>
+<nav class="navbar has-shadow">
+  <div class="navbar-brand">
+    <%= link_to root_path, class: "navbar-item" do %>
       <h1><strong>CSZIM-APP <%= current_configuration.version.upcase %></strong></h1>&nbsp;<%= image_tag(asset_path 'Knife.ico') %>
     <% end %>
   </div>
-  <div class="nav-right nav-menu">
+  <div class="navbar-menu">
     <% if logged_in? %>
-      <%= link_to edit_user_path(current_user), class: "nav-item is-tab" do %>
-        <%= current_user.nome %>
-      <% end %>
-      <%= link_to logout_path, method: "delete", class: "nav-item is-tab" do %>
-        Sair
-      <% end %>
+      <div class="navbar-start">
+        <%= link_to edit_user_path(current_user), class: "navbar-item" do %>
+          <%= current_user.nome %>
+        <% end %>
+      </div>
+      <div class="navbar-end">
+        <%= link_to logout_path, method: "delete", class: "navbar-item" do %>
+          Sair
+        <% end %>
+      </div>
     <% else %>
-      <a href="#" class="nav-item is-tab">Convidado</a>
-      <%= link_to login_path, class: "nav-item is-tab" do %>
-        Logar
-      <% end %>
+      <div class="navbar-end">
+        <a href="#" class="navbar-item">Convidado</a>
+        <%= link_to login_path, class: "navbar-item" do %>
+          Logar
+        <% end %>
+      </div>
     <% end %>
   </div>
 </nav>

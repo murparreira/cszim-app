@@ -167,7 +167,7 @@
                 <tbody>
                   <% @user.demos.each do |demo| %>
                     <tr>
-                      <td><%= demo.nome %></td>
+                      <td><%= link_to demo.nome, demo %></td>
                       <td><%= demo.map.nome %></td>
                       <td><%= demo.created_at %></td>
                     </tr>

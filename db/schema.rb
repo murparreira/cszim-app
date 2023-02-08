@@ -10,11 +10,42 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_02_04_311932) do
+ActiveRecord::Schema.define(version: 2023_02_05_211932) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
+
+  create_table "demo_round_kills", id: :serial, force: :cascade do |t|
+    t.integer "tick"
+    t.string "attackerSteamID"
+    t.string "attackerSide"
+    t.string "assisterSteamID"
+    t.string "assisterSide"
+    t.string "victimSteamID"
+    t.string "victimSide"
+    t.float "distance"
+    t.boolean "isWallbang"
+    t.boolean "noScope"
+    t.boolean "thruSmoke"
+    t.boolean "attackerBlinded"
+    t.boolean "victimBlinded"
+    t.string "weapon"
+    t.string "weaponClass"
+    t.integer "demo_round_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["demo_round_id"], name: "index_demo_round_kills_on_demo_round_id"
+  end
+
+  create_table "demo_rounds", id: :serial, force: :cascade do |t|
+    t.integer "roundNum"
+    t.string "winningSide"
+    t.integer "demo_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["demo_id"], name: "index_demo_rounds_on_demo_id"
+  end
 
   create_table "demos", id: :serial, force: :cascade do |t|
     t.string "nome"

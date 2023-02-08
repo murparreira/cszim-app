@@ -1,0 +1,52 @@
+<div class="contact-box center-version">
+  <span>
+    <span class="icon is-large">
+      <i class="fa fa-trophy"></i>
+    </span>
+    <h3><strong><%= @demo.nome %></strong></h3>
+    <div>
+      <%= @demo.map.nome %><br>
+      <%= @demo.map.sigla %>
+    </div>
+    <hr>
+    <%= image_tag("#{@demo.map.sigla}.jpg", class: "image is-128x128", style: "display: inline") %>
+    <hr>
+    <h3><strong>Rounds jogados: <%= @demo.demo_rounds.count %></strong></h3>
+  </span>
+</div>
+
+<div class="tabs is-toggle is-fullwidth">
+  <ul>
+    <% @demo.demo_rounds.each do |round| %>
+      <li data-target="<%= round.roundNum %>-detail" class="<%= 'is-active' if round.roundNum == 1 %>">
+        <a><%= round.roundNum %></a>
+      </li>
+    <% end %>
+  </ul>
+</div>
+<div class="p-2" id="tab-content">
+  <% @demo.demo_rounds.each do |round| %>
+    <div id="<%= round.roundNum %>-detail" class="media <%= 'is-hidden' if round.roundNum != 1 %>">
+      <div class="media-left">
+        
+      </div>
+      <div class="media-content">
+        <% round.demo_round_kills.order(:tick).each do |round_kill| %>
+          <% attacker = User.find_by(steam: round_kill.attackerSteamID) %>
+          <% victim = User.find_by(steam: round_kill.victimSteamID) %>
+          <% assister = User.find_by(steam: round_kill.assisterSteamID) if round_kill.assisterSteamID %>
+          <div class="is-align-items-center">
+            <%= image_tag("#{round_kill.attackerSide.downcase}-icon.png", class: "image is-32x32", style: "display: inline") %>
+            <span class="subtitle"><%= attacker.nome %></span> 
+            usou 
+            <span class="subtitle"><%= round_kill.weapon %></span> 
+            para matar 
+            <span class="subtitle"><%= victim.nome %></span>
+            <%= image_tag("#{round_kill.victimSide.downcase}-icon.png", class: "image is-32x32", style: "display: inline") %>
+          </div>
+
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

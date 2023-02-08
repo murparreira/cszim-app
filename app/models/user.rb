@@ -26,7 +26,7 @@ class User < ApplicationRecord
   def grouped_total(statistic, percent = false)
     total = total(statistic)/player_statistics.size
     total = total * 100 if percent
-    total
+    total.round(2)
   end
 
   def armas

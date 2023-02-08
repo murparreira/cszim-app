@@ -22,27 +22,38 @@
 <div class="columns is-multiline">
   <% User.all.each do |user| %>
     <div class="column is-one-third">
-      <div class="contact-box">
-        <div class="columns">
-          <div class="column is-one-third">
-            <%= image_tag avatar_url(user), class: 'img-circle' %>
-          </div>
-          <div class="column">
-            <h3 class="subtitle"><strong><%= user.nome %></strong></h3>
-            <%= link_to user, class: 'button' do %>
-              Histórico
-            <% end %>
-          </div>
-        </div>
-        <div class="columns">
-          <div class="column">
-            <table class="table is-narrow">
-              <tr><td>Kills:</td><td><%= user.total_kills %></td></tr>
-              <tr><td>Deaths:</td><td><%= user.total_deaths %></td></tr>
-              <tr><td>Ratio:</td><td><%= user.total_ratio %></td></tr>
-            </table>
+      <div class="card">
+        <div class="card-content">
+          <div class="media">
+            <div class="media-left">
+              <%= image_tag avatar_url(user), class: 'img-circle' %>
+            </div>
+            <div class="media-content">
+              <h3 class="title is-4"><strong><%= user.nome %></strong></h3>
+            </div>
           </div>
         </div>
+        <div class="content p-3">
+          <table class="table is-narrow">
+            <tr><td><strong>Kills</strong></td><td><%= user.total(:kills) %></td></tr>
+            <tr><td><strong>Deaths</strong></td><td><%= user.total(:deaths) %></td></tr>
+            <tr><td><strong>KDR</strong></td><td><%= user.grouped_total(:kdr) %></td></tr>
+            <tr><td><strong>ADR</strong></td><td><%= user.grouped_total(:adr) %></td></tr>
+            <tr>
+              <td><strong>KAST</strong></td>
+              <td>
+                <%= user.grouped_total(:kast) %>%
+                <br>
+                <progress class="progress is-info" value="<%= user.grouped_total(:kast) %>" max="100"><%= user.grouped_total(:kast) %>%</progress>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <footer class="card-footer">
+          <%= link_to user, class: 'card-footer-item button' do %>
+            Histórico
+          <% end %>
+        </footer>
       </div>
     </div>
   <% end %>

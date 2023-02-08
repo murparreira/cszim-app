@@ -84,8 +84,8 @@ ActiveRecord::Base.transaction do
     email: 'ismael@gmail.com',
     admin: false,
     steamid: '76561198115661275',
-    steam: '77697773',
-    old_steam: '77697773'
+    steam: '76561198115661275',
+    old_steam: '76561198115661275'
   )
 
   User.create(
@@ -95,8 +95,8 @@ ActiveRecord::Base.transaction do
     email: 'yure@gmail.com',
     admin: false,
     steamid: 'yurenery',
-    steam: '59688084',
-    old_steam: '59688084'
+    steam: '76561198079641896',
+    old_steam: '76561198079641896'
   )
 
   User.create(
@@ -106,8 +106,8 @@ ActiveRecord::Base.transaction do
     email: 'victor@gmail.com',
     admin: false,
     steamid: 'znexy',
-    steam: '75095884',
-    old_steam: '75095884'
+    steam: '76561198110457497',
+    old_steam: '76561198110457497'
   )
 
   User.create(
@@ -183,8 +183,8 @@ ActiveRecord::Base.transaction do
     email: 'maicouel@gmail.com',
     admin: false,
     steamid: 'maicouel',
-    steam: '43147058',
-    old_steam: '43147058'
+    steam: '76561198046559845',
+    old_steam: '76561198046559845'
   )
 
   User.create(
@@ -194,8 +194,8 @@ ActiveRecord::Base.transaction do
     email: 'lastzfighter@gmail.com',
     admin: false,
     steamid: 'lastzfighter',
-    steam: '41454614',
-    old_steam: '41454614'
+    steam: '76561198043174957',
+    old_steam: '76561198043174957'
   )
 
   User.create(
@@ -227,8 +227,8 @@ ActiveRecord::Base.transaction do
     email: 'eduardotv@gmail.com',
     admin: false,
     steamid: 'dot22',
-    steam: '35250772',
-    old_steam: '35250772'
+    steam: '76561198030767273',
+    old_steam: '76561198030767273'
   )
 
   User.create(
@@ -238,8 +238,8 @@ ActiveRecord::Base.transaction do
     email: 'ramonvs@gmail.com',
     admin: false,
     steamid: 'ramonvs',
-    steam: '79524414',
-    old_steam: '79524414'
+    steam: '76561198119314557',
+    old_steam: '76561198119314557'
   )
 
   User.create(
