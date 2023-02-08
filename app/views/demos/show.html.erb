@@ -50,24 +50,35 @@
         <th>Jogador</th>
         <th>Kills</th>
         <th>Deaths</th>
-        <th>Assists</th>
+        <th><i class="fa-solid fa-handshake"></i> Assists</th>
         <th>ADR</th>
-        <th>KDR</th>
-        <th>UD</th>
-        <th>Mira</th>
+        <th><i class="fa-solid fa-skull"></i> KDR</th>
+        <th><i class="fa-solid fa-bomb"></i> UD</th>
+        <th><i class="fa-solid fa-crosshairs"></i> Mira</th>
       </thead>
       <tbody>
         <% @demo.player_statistics.each do |player_statistic| %>
-        <tr>
-          <td><%= player_statistic.user.nome %></td>
-          <td><%= player_statistic.kills %></td>
-          <td><%= player_statistic.deaths %></td>
-          <td><%= player_statistic.assists %></td>
-          <td><%= player_statistic.adr %></td>
-          <td><%= player_statistic.kdr %></td>
-          <td><%= player_statistic.utilityDamage %></td>
-          <td><%= (player_statistic.accuracy * 100).round %>%</td>
-        </tr>
+          <tr>
+            <td>
+              <div class="media">
+                <div class="media-left">
+                  <figure class="image is-48x48">
+                    <%= image_tag avatar_url(player_statistic.user), class: 'is-rounded' %>
+                  </figure>
+                </div>
+                <div class="media-content" style="align-self: center">
+                  <%= link_to player_statistic.user.nome, player_statistic.user %>
+                </div>
+              </div>
+            </td>
+            <td><%= player_statistic.kills %></td>
+            <td><%= player_statistic.deaths %></td>
+            <td><%= player_statistic.assists %></td>
+            <td><%= player_statistic.adr %></td>
+            <td><%= player_statistic.kdr %></td>
+            <td><%= player_statistic.utilityDamage %></td>
+            <td><%= (player_statistic.accuracy * 100).round %>%</td>
+          </tr>
         <% end %>
       </tbody>
     </table>
