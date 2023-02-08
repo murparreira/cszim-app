@@ -1,30 +1,21 @@
-<table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
-  <thead>
-    <th>Mapa</th>
-    <th>Nome</th>
-    <th>Rounds</th>
-    <th>Placar</th>
-    <th>Opções</th>
-  </thead>
-  <tbody>
-    <% @demos.each do |demo| %>
-      <tr>
-        <td>
-          <%= image_tag("#{demo.map.sigla}.jpg", class: 'img-scaled-70') %>
-        </td>
-        <td>
-          <%= link_to demo.map.nome, demo.map %>
-          <br>
-          <%= demo.nome %>
-        </td>
-        <td><%= demo.demo_rounds.count %></td>
-        <td>16:5</td>
-        <td>
-          <%= link_to demo, class: 'button' do %>
-            Visualizar
+<div class="columns is-multiline">
+  <% @demos.each.each do |demo| %>
+    <div class="column is-one-quarter">
+      <div class="contact-box center-version">
+        <span>
+          <%= image_tag(imagem_mapa_url(demo.map), class: "is-128x128") %>
+          <div><h3><strong><%= demo.map.nome %></strong></h3></div>
+          <div><h3><strong><%= demo.map.sigla %></strong></h3></div>
+          <div><h3><strong>Demo: <%= demo.nome %>.dem</strong></h3></div>
+          <div><%= demo.demo_rounds.count %> rounds</div>
+          <div>Placar: <span class="subtitle">16:5</span></div>
+        </span>
+        <div class="contact-box-footer">
+          <% if current_user.admin %>
+            <%= link_to "Visualizar", demo_path(demo), :class => 'button' %>
           <% end %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
