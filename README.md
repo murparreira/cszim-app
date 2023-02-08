@@ -2,7 +2,7 @@
 
 ### CSZIM-APP ###
 
-* Projeto Rails para apoio aos campeonatos de CS
+* Projeto Rails para apoio aos campeonatos de CS e suas estatísticas
 * 2.1-alpha
 
 ### Como instalar e rodar? ###
@@ -18,10 +18,10 @@
     SERVER_USER=
     SERVER_PASSWORD=
     ## Configurações do PostgreSQL ##
-    POSTGRESQL_NAME=
-    POSTGRESQL_USER=
+    POSTGRESQL_NAME=cszimapp_development
+    POSTGRESQL_USER=postgres
     POSTGRESQL_PASSWORD=
-    POSTGRESQL_HOST=
+    POSTGRESQL_HOST=db
     ## Se estiver usando o manager v1, configurações do MySQL do Rankme ##
     MYSQL_DATABASE=
     MYSQL_USER=
@@ -34,8 +34,6 @@
 * Use **docker-compose run --rm web rake db:migrate** para rodar as migrations
 * Use **docker-compose run --rm web rake db:seed** para popular o BD com algumas configurações iniciais
 * Logue com o seu usuário (Informações dos usuários podem ser vistas no arquivo db/seeds.rb)
-* Fork o projeto e clone para uma pasta no sistema:
-* Navegue para a pasta do projeto:
 
 ### Como contribuir? ###
 
