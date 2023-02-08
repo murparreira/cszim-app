@@ -157,4 +157,8 @@ module ApplicationHelper
     player_names
   end
 
+  def nan(value)
+    value.nan? ? 0 : value
+  end
+
 end

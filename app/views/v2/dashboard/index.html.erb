@@ -37,12 +37,12 @@
           <table class="table is-narrow">
             <tr><td><strong>Kills</strong></td><td><%= user.total(:kills) %></td></tr>
             <tr><td><strong>Deaths</strong></td><td><%= user.total(:deaths) %></td></tr>
-            <tr><td><strong>KDR</strong></td><td><%= user.grouped_total(:kdr) %></td></tr>
-            <tr><td><strong>ADR</strong></td><td><%= user.grouped_total(:adr) %></td></tr>
+            <tr><td><strong>KDR</strong></td><td><%= nan(user.grouped_total(:kdr)) %></td></tr>
+            <tr><td><strong>ADR</strong></td><td><%= nan(user.grouped_total(:adr)) %></td></tr>
             <tr>
               <td><strong>KAST</strong></td>
               <td>
-                <%= user.grouped_total(:kast) %>%
+                <%= nan(user.grouped_total(:kast)) %>%
                 <br>
                 <progress class="progress is-info" value="<%= user.grouped_total(:kast) %>" max="100"><%= user.grouped_total(:kast) %>%</progress>
               </td>
@@ -66,45 +66,24 @@
     <h1 class="title">Estatísticas de Mapas</h1>
   </div>
 </div>
-<table class="table is-narrow is-striped is-bordered">
+<table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
   <thead>
     <th width="5%">#</th>
     <th width="35%">Mapa</th>
-    <th width="20%">Rounds jogados</th>
-    <th width="20%">CT wins</th>
-    <th width="20%">T wins</th>
+    <th width="20%">Qtde de partidas</th>
+    <th width="20%">Rounds CT</th>
+    <th width="20%">Rounds TR</th>
   </thead>
   <tbody>
-    <% total_rounds = 0 %>
-    <% total_ct = 0 %>
-    <% total_tr = 0 %>
     <% current_game.maps.each do |map| %>
       <tr>
-        <% if current_game.sigla == "CSGO" %>
-          <% vitorias_ct = RankmeCsgo.where(season_id: season_id).where(map_id: map.id).pluck(:ct_win).uniq.sum %>
-          <% vitorias_tr = RankmeCsgo.where(season_id: season_id).where(map_id: map.id).pluck(:tr_win).uniq.sum %>
-          <% rounds_jogados = RankmeCsgo.where(season_id: season_id).where(map_id: map.id).pluck(:rounds_ct).uniq.sum %>
-        <% else %>
-          <% vitorias_ct = Rankme.where(season_id: season_id).where(map_id: map.id).group(:user_id).sum(:ct_win).values.uniq.max %>
-          <% vitorias_tr = Rankme.where(season_id: season_id).where(map_id: map.id).group(:user_id).sum(:tr_win).values.uniq.max %>
-          <% rounds_jogados = vitorias_tr _ vitorias_ct %>
-        <% end %>
         <td><%= image_tag imagem_mapa_url(map), class: 'img-circle image anti-image-block is-24x24' %></td>
         <td><%= map.nome %> - <%= map.sigla %></td>
-        <td><%= rounds_jogados %></td>
-        <td><%= vitorias_ct %> (<%= ((vitorias_ct.to_f/rounds_jogados.to_f)*100.00).round(2) %>%)</td>
-        <td><%= vitorias_tr %> (<%= ((vitorias_tr.to_f/rounds_jogados.to_f)*100.00).round(2) %>%)</td>
+        <td><%= map.demos.count %></td>
+        <td>0</td>
+        <td>0</td>
       </tr>
-      <% total_rounds += rounds_jogados %>
-      <% total_ct += vitorias_ct %>
-      <% total_tr += vitorias_tr %>
     <% end %>
-    <tr>
-      <td colspan="2"></td>
-      <td><strong><%= total_rounds %></strong></td>
-      <td><strong><%= total_ct %> (<%= ((total_ct.to_f/total_rounds.to_f)*100.00).round(2) %>%)</strong></td>
-      <td><strong><%= total_tr %> (<%= ((total_tr.to_f/total_rounds.to_f)*100.00).round(2) %>%)</strong></td>
-    </tr>
   </tbody>
 </table>
 
