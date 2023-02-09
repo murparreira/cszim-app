@@ -116,7 +116,7 @@
           </table>
           <hr>
           <div id="data" class="columns">
-            <div class="column">
+            <div class="column is-one-third">
               <table class="table is-bordered is-striped is-narrow is-fullwidth">
                 <thead>
                   <tr>
@@ -140,9 +140,21 @@
                 </tbody>
               </table>
             </div>
-            <div class="column">
-              <% @user.teams %>
+            <div class="column is-one-third">
+              <% if @user.besto_friendo %>
+                <div class="notification is-success" style="display: inline-box; text-align: center">
+                  <strong><i class="fa-solid fa-handshake"></i> MY BESTO FRIENDO</strong>
+                  <br>
+                  <br>
+                  <%= image_tag avatar_url(@user.besto_friendo.first), class: 'img-circle' %>
+                  <br>
+                  <strong><%= @user.besto_friendo.first.nome %></strong>
+                  <br>
+                  <strong><%= (@user.demos.count / @user.besto_friendo.last) * 100 %>% de vitórias juntos</strong>
+                </div>
+              <% end %>
             </div>
+            <div class="column is-one-third"></div>
           </div>
           <hr>
           <div class="columns">

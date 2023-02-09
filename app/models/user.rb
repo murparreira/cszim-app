@@ -37,23 +37,23 @@ class User < ApplicationRecord
       .transform_values {|weapon| weapon.count}
   end
 
-  def besto_friend
-    times_vencedores = Demo.all.map do |demo|
-      demo.time_vencedor.user_ids
-    end
-    h = {}
-    times_vencedores.each do |time|
-      User.where.not(id: id).each do |friendo|
-        if (time - [friendo.id, id]).empty?
-          if h[friendo.id]
-            h[friendo.id] += 1
-          else
-            h[friendo.id] = 1
-          end
-        end
-      end
-    end
-    h
+  def besto_friendo
+    besto_friendo_hash = User.where.not(id: id).to_h do |friendo|
+      vitorias = ActiveRecord::Base.connection.exec_query(
+        "SELECT COUNT(subquery.id) FROM (
+          SELECT d.id FROM demos d
+          INNER JOIN teams tv ON d.time_vencedor_id = tv.id
+          INNER JOIN players ptv ON ptv.team_id = tv.id
+          WHERE ptv.user_id = #{friendo.id}
+          INTERSECT
+          SELECT d.id FROM demos d
+          INNER JOIN teams tv ON d.time_vencedor_id = tv.id
+          INNER JOIN players ptv ON ptv.team_id = tv.id
+          WHERE ptv.user_id = #{id}) AS subquery"
+      ).first['count']
+      [friendo, vitorias]
+    end.max_by{|friendo, vitorias| vitorias}
+    besto_friendo_hash if besto_friendo_hash.last > 0
   end
 
 end

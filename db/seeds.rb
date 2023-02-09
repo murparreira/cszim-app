@@ -10,8 +10,8 @@ ActiveRecord::Base.transaction do
   RankmeCsgo.destroy_all
   Tournament.destroy_all
   Round.destroy_all
-  Team.destroy_all
   Demo.destroy_all
+  Team.destroy_all
   DemoRound.destroy_all
   DemoRoundKill.destroy_all
   PlayerStatistic.destroy_all
