@@ -32,6 +32,14 @@
               <tr>
                 <td colspan="2"><progress class="progress is-info" value="<%= user.grouped_total(:kast) %>" max="100"><%= user.grouped_total(:kast) %>%</progress></td>
               </tr>
+              <tr>
+                <td>Arma<br>Favorita</td>
+                <td>
+                  <%= image_tag Weapon::IMAGE[user.arma_favorita.first], style: "max-width: 30%" %>
+                  <br>
+                  <%= user.arma_favorita.last %> kills
+                </td>
+              </tr>
             </tbody>
           </table>
           <div class="contact-box-footer">

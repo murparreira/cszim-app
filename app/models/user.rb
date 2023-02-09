@@ -35,6 +35,12 @@ class User < ApplicationRecord
     player_kills.pluck(:weapon)
       .group_by {|weapon| weapon.itself}
       .transform_values {|weapon| weapon.count}
+      .sort_by {|weapon, kills| kills}
+      .reverse!
+  end
+
+  def arma_favorita
+    armas.max_by{|arma, kills| kills}
   end
 
   def besto_friendo
