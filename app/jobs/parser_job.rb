@@ -125,11 +125,11 @@ class ParserJob < ApplicationJob
         user = User.find_by(steam: player['steamID'])
         [user, player['steamID'].to_s.last(9)]
       end
-      end_ct_team = Team.safe_find_or_create_by(nome: end_ct_team_name.values.join)
-      end_ct_team.users << end_ct_team_name.keys
+      end_ct_team = Team.find_or_create_by(nome: end_ct_team_name.values.sort.join)
+      end_ct_team.users << end_ct_team_name.keys if end_ct_team.users.empty?
       
-      end_t_team = Team.safe_find_or_create_by(nome: end_t_team_name.values.join)
-      end_t_team.users << end_t_team_name.keys
+      end_t_team = Team.find_or_create_by(nome: end_t_team_name.values.sort.join)
+      end_t_team.users << end_t_team_name.keys if end_t_team.users.empty?
 
       if end_ct_score > end_t_score
         end_ct_team.vitorias += 1

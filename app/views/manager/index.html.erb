@@ -5,7 +5,7 @@
     <br>
     <h2 class="title">Mapas Disponíveis</h2>
     <ul class="ul-mapas-manager">
-      <% (Map.where(game_id: current_game.id).ativos.pluck(:id) - RandomMap.pluck(:map_id)).shuffle.each do |map_id| %>
+      <% (Map.where(game_id: current_game.id).ativos.pluck(:id) - RandomMap.pluck(:map_id)).each do |map_id| %>
         <% map = Map.find(map_id) %>
         <li>
           <%= link_to manager_select_path(map_id: map.id), class: "button is-small" do %>

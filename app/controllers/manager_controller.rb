@@ -235,10 +235,17 @@ class ManagerController < ApplicationController
 
   def finish_v2
     demo = Demo.last
-    # demo = Demo.find_by(nome: '08_2_2023_de_seaside')
     Net::SSH.start(current_configuration.server_name_or_ip, current_configuration.server_user, password: current_configuration.server_password, port: current_configuration.server_port) do| ssh |
       ssh.exec! "tmux send-keys 'tv_stoprecord' Enter"
     end
+    # Demo.create(nome: '06_2_2023_de_inferno', map_id: Map.find_by(sigla: 'de_inferno').id)
+    # Demo.create(nome: '08_2_2023_de_boyard', map_id: Map.find_by(sigla: 'de_boyard').id)
+    # Demo.create(nome: '08_2_2023_de_chalice', map_id: Map.find_by(sigla: 'de_chalice').id)
+    # Demo.create(nome: '08_2_2023_de_seaside', map_id: Map.find_by(sigla: 'de_seaside').id)
+    # Demo.create(nome: '09_2_2023_de_stmarc', map_id: Map.find_by(sigla: 'de_stmarc').id)
+    # Demo.all.each do |demo|
+    #   ParserJob.set(queue: :default, wait: 5.seconds, priority: 10).perform_later(demo.id)
+    # end
     ParserJob.set(queue: :default, wait: 5.seconds, priority: 10).perform_later(demo.id)
     flash[:success] = "Mapa finalizado com sucesso!"
     redirect_to manager_url
