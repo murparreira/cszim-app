@@ -128,6 +128,7 @@ GEM
       timeout
     net-smtp (0.3.3)
       net-protocol
+    net-ssh (7.0.1)
     nio4r (2.5.8)
     nokogiri (1.14.1)
       mini_portile2 (~> 2.8.0)
@@ -230,6 +231,7 @@ DEPENDENCIES
   lazy_high_charts
   listen (~> 3.0.5)
   mysql2 (~> 0.4.10)
+  net-ssh
   pg
   puma
   pundit

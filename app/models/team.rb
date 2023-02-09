@@ -10,4 +10,8 @@ class Team < ApplicationRecord
   rescue ActiveRecord::RecordNotUnique
     retry
   end
+
+  def demos
+    Demo.where("time_vencedor_id = ? OR time_perdedor_id = ?", self.id, self.id)
+  end
 end

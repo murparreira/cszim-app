@@ -33,6 +33,8 @@
   </div>
 </div>
 
+<hr>
+
 <div id="main-tabs" class="tabs is-toggle is-fullwidth">
   <ul>
     <li data-target="overview-detail" class="is-active">
@@ -101,14 +103,17 @@
               <% attacker = User.find_by(steam: round_kill.attackerSteamID) %>
               <% victim = User.find_by(steam: round_kill.victimSteamID) %>
               <% assister = User.find_by(steam: round_kill.assisterSteamID) if round_kill.assisterSteamID %>
-            
-              <%= image_tag("#{round_kill.attackerSide.downcase}-icon.png", class: "image is-32x32", style: "display: inline") %>
-              <span class="subtitle ml-3"><%= attacker.nome %></span> 
-              <span>usou </span>
-              <span class="subtitle"><%= round_kill.weapon %></span> 
-              <span>para matar </span>
-              <span class="subtitle mr-3"><%= victim.nome %></span>
-              <%= image_tag("#{round_kill.victimSide.downcase}-icon.png", class: "image is-32x32", style: "display: inline") %>
+
+              <% if round_kill.attackerSide %>            
+                <%= image_tag("#{round_kill.attackerSide.downcase}-icon.png", class: "image is-32x32", style: "display: inline") %>
+                <span class="subtitle ml-3"><%= attacker.nome %></span> 
+                <span>usou </span>
+                <span class="subtitle"><%= round_kill.weapon %></span> 
+                <span>para matar </span>
+                <span class="subtitle mr-3"><%= victim.nome %></span>
+                <%= image_tag("#{round_kill.victimSide.downcase}-icon.png", class: "image is-32x32", style: "display: inline") %>
+                <br>
+              <% end %>
             <% end %>
           </div>
         </div>

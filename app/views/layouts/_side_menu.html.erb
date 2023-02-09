@@ -21,12 +21,6 @@
       </li>
       <% if current_configuration.is_v1? %>
         <li>
-          <%= link_to teams_path, class: "#{'is-active' if params[:controller] == 'teams'}" do %>
-            <span class="icon is-small"><i class="fa fa-users"></i></span>&nbsp;
-            Times
-          <% end %>
-        </li>
-        <li>
           <%= link_to tournaments_path, class: "#{'is-active' if params[:controller] == 'tournaments'}" do %>
             <span class="icon is-small"><i class="fa fa-trophy"></i></span>&nbsp;
             Torneios
@@ -43,6 +37,12 @@
           <%= link_to demos_path, class: "#{'is-active' if params[:controller] == 'demos'}" do %>
             <span class="icon is-small"><i class="fa-solid fa-gamepad"></i></i></span>&nbsp;
             Partidas
+          <% end %>
+        </li>
+        <li>
+          <%= link_to teams_path, class: "#{'is-active' if params[:controller] == 'teams'}" do %>
+            <span class="icon is-small"><i class="fa fa-users"></i></span>&nbsp;
+            Times
           <% end %>
         </li>
       <% end %>

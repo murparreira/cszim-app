@@ -11,6 +11,8 @@ class User < ApplicationRecord
   has_many :player_statistics, dependent: :destroy
   has_many :player_kills, through: :player_statistics
   has_many :demos, through: :player_statistics
+  has_many :players 
+  has_many :teams, through: :players
 
   SENHA_PADRAO = "123abc"
 
@@ -33,6 +35,25 @@ class User < ApplicationRecord
     player_kills.pluck(:weapon)
       .group_by {|weapon| weapon.itself}
       .transform_values {|weapon| weapon.count}
+  end
+
+  def besto_friend
+    times_vencedores = Demo.all.map do |demo|
+      demo.time_vencedor.user_ids
+    end
+    h = {}
+    times_vencedores.each do |time|
+      User.where.not(id: id).each do |friendo|
+        if (time - [friendo.id, id]).empty?
+          if h[friendo.id]
+            h[friendo.id] += 1
+          else
+            h[friendo.id] = 1
+          end
+        end
+      end
+    end
+    h
   end
 
 end

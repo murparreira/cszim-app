@@ -439,5 +439,21 @@ ActiveRecord::Base.transaction do
     game_id: game.id,
     imagem: File.new(Rails.root + 'app/assets/images/de_bagra.jpg')
   )
+
+  Map.create(
+    nome: 'Boyard',
+    sigla: 'de_boyard',
+    ativo: true,
+    game_id: game.id,
+    imagem: File.new(Rails.root + 'app/assets/images/de_boyard.jpg')
+  )
+
+  Map.create(
+    nome: 'Chalice',
+    sigla: 'de_chalice',
+    ativo: true,
+    game_id: game.id,
+    imagem: File.new(Rails.root + 'app/assets/images/de_chalice.jpg')
+  )
   
 end

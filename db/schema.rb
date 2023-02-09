@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_02_05_211932) do
+ActiveRecord::Schema.define(version: 2023_02_06_311876) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -53,7 +53,12 @@ ActiveRecord::Schema.define(version: 2023_02_05_211932) do
     t.boolean "processada", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "score"
+    t.integer "time_vencedor_id"
+    t.integer "time_perdedor_id"
     t.index ["map_id"], name: "index_demos_on_map_id"
+    t.index ["time_perdedor_id"], name: "index_demos_on_time_perdedor_id"
+    t.index ["time_vencedor_id"], name: "index_demos_on_time_vencedor_id"
   end
 
   create_table "games", id: :serial, force: :cascade do |t|
@@ -444,6 +449,9 @@ ActiveRecord::Schema.define(version: 2023_02_05_211932) do
     t.string "nome"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "vitorias", default: 0
+    t.integer "derrotas", default: 0
+    t.integer "empates", default: 0
   end
 
   create_table "tournaments", id: :serial, force: :cascade do |t|
@@ -479,4 +487,6 @@ ActiveRecord::Schema.define(version: 2023_02_05_211932) do
     t.index ["team_id"], name: "index_winners_on_team_id"
   end
 
+  add_foreign_key "demos", "teams", column: "time_perdedor_id"
+  add_foreign_key "demos", "teams", column: "time_vencedor_id"
 end

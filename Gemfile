@@ -18,6 +18,7 @@ gem 'cocoon'
 gem 'lazy_high_charts'
 gem 'faker'
 gem 'mysql2', '~> 0.4.10'
+gem 'net-ssh'
 
 group :development, :test do
   gem 'byebug', platform: :mri

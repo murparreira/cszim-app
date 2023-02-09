@@ -4,16 +4,35 @@
       <div class="contact-box center-version">
         <span>
           <% team.users.each do |user| %>
-            <%= image_tag avatar_url(user), class: 'img-circle image anti-image-block is-24x24' %>
+            <%= image_tag avatar_url(user), class: 'img-circle image anti-image-block is-48x48' %>
           <% end %>
-          <div><h3><strong><%= team.nome %></strong></h3></div>
-          <div><%= Winner.where(team_id: team.id).count %> vitória(s)</div>
-          <div><%= Loser.where(team_id: team.id).count %> derrota(s)</div>
+          <div>
+            <% team.users.each do |user| %>
+              <strong><%= link_to user.nome, user %></strong>
+              <br>
+            <% end %>
+          </div>
+          <div><%= team.vitorias %> vitória(s)</div>
+          <div><%= team.derrotas %> derrota(s)</div>
+          <div><%= team.empates %> empate(s)</div>
         </span>
         <div class="contact-box-footer">
-          <% if current_user.admin %>
-            <%= link_to "Editar", edit_team_path(team), :class => 'button' %>
-          <% end %>
+          <table class="table is-bordered is-striped is-narrow is-fullwidth">
+            <thead>
+              <th>Nome da demo</th>
+              <th>Mapa</th>
+              <th>Data</th>
+            </thead>
+            <tbody>
+              <% team.demos.each do |demo| %>
+                <tr>
+                  <td><%= link_to demo.nome, demo %></td>
+                  <td><%= demo.map.nome %></td>
+                  <td><%= format_datetime(demo.created_at) %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

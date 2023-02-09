@@ -65,32 +65,6 @@ module ApplicationHelper
     number_to_currency(weight, unit: '', precision: 2).strip + " " + unit
   end
 
-  def format_documento(documento)
-    if documento.size == 11
-      documento =~ /(\d{3})?(\d{3})?(\d{3})(\d{2})/
-      documento = "#{$1}.#{$2}.#{$3}-#{$4}"
-    elsif documento.size == 14
-      documento =~ /(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/
-      documento = "#{$1}.#{$2}.#{$3}/#{$4}-#{$5}"
-    else
-      documento
-    end
-  end
-
-  def format_phone(phone)
-    if phone.present?
-      if phone.size == 10
-        phone =~ /(\d{2})(\d{4})(\d{4})/
-        phone = "(#{$1}) #{$2}-#{$3}"
-      elsif phone.size == 11
-        phone =~ /(\d{2})(\d{1})(\d{4})(\d{4})/
-        phone = "(#{$1}) #{$2} #{$3}-#{$4}"
-      else
-        phone
-      end
-    end
-  end
-
   def custom_bootstrap_flash
     flash_messages = []
     flash.each do |type, message|

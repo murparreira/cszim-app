@@ -8,7 +8,7 @@
           <div><h3><strong><%= demo.map.sigla %></strong></h3></div>
           <div><h3><strong>Demo: <%= demo.nome %>.dem</strong></h3></div>
           <div><%= demo.demo_rounds.count %> rounds</div>
-          <div>Placar: <span class="subtitle">16:5</span></div>
+          <div>Placar: <span class="subtitle"><%= demo.score %></span></div>
         </span>
         <div class="contact-box-footer">
           <% if current_user.admin %>

@@ -111,6 +111,50 @@ class ParserJob < ApplicationJob
           )
         end
       end
+      last_round = json_response['rounds'].last
+      end_ct_score = last_round['endCTScore']
+      end_t_score = last_round['endTScore']
+      demo.update(
+        score: "#{end_ct_score}:#{end_t_score}"
+      )
+      end_ct_team_name = last_round['ctSide']['players'].to_h do |player|
+        user = User.find_by(steam: player['steamID'])
+        [user, player['steamID'].to_s.last(9)]
+      end
+      end_t_team_name = last_round['tSide']['players'].to_h do |player|
+        user = User.find_by(steam: player['steamID'])
+        [user, player['steamID'].to_s.last(9)]
+      end
+      end_ct_team = Team.safe_find_or_create_by(nome: end_ct_team_name.values.join)
+      end_ct_team.users << end_ct_team_name.keys
+      
+      end_t_team = Team.safe_find_or_create_by(nome: end_t_team_name.values.join)
+      end_t_team.users << end_t_team_name.keys
+
+      if end_ct_score > end_t_score
+        end_ct_team.vitorias += 1
+        end_ct_team.save
+        end_t_team.derrotas += 1
+        end_t_team.save
+        demo.update(
+          time_vencedor_id: end_ct_team.id,
+          time_perdedor_id: end_t_team.id
+        )
+      elsif end_t_score > end_ct_score
+        end_t_team.vitorias += 1
+        end_t_team.save
+        end_ct_team.derrotas += 1
+        end_ct_team.save
+        demo.update(
+          time_vencedor_id: end_t_team.id,
+          time_perdedor_id: end_ct_team.id
+        )
+      else
+        end_ct_team.empates += 1
+        end_ct_team.save
+        end_t_team.empates += 1
+        end_t_team.save
+      end
     end
   end
 
