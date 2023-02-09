@@ -26,7 +26,12 @@
             <tbody>
               <% team.demos.each do |demo| %>
                 <tr>
-                  <td><%= link_to demo.nome, demo %></td>
+                  <td>
+                    <% if demo.time_vencedor_id == team.id %>
+                      <i class="fa fa-crown"></i>&nbsp;
+                    <% end %>
+                    <%= link_to demo.nome, demo %>
+                  </td>
                   <td><%= demo.map.nome %></td>
                   <td><%= format_datetime(demo.created_at) %></td>
                 </tr>
