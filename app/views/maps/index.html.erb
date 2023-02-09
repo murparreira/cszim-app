@@ -31,7 +31,7 @@
           <div><h3><strong><%= map.sigla %></strong></h3></div>
           <div><h3><strong>Jogo: <%= map.game.sigla %></strong></h3></div>
           <div><%= label_status map.ativo %></div>
-          <div>Jogado <%= Round.joins(:winner).where(map_id: map.id).count %> vez(es)</div>
+          <div>Jogado <%= Demo.where(map_id: map.id).count %> vez(es)</div>
         </span>
         <div class="contact-box-footer">
           <% if current_user.admin %>
