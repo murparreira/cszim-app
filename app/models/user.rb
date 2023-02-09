@@ -56,4 +56,23 @@ class User < ApplicationRecord
     besto_friendo_hash if besto_friendo_hash.last > 0
   end
 
+  def worsto_friendo
+    worsto_friendo_hash = User.where.not(id: id).to_h do |friendo|
+      derrotas = ActiveRecord::Base.connection.exec_query(
+        "SELECT COUNT(subquery.id) FROM (
+          SELECT d.id FROM demos d
+          INNER JOIN teams tv ON d.time_perdedor_id = tv.id
+          INNER JOIN players ptv ON ptv.team_id = tv.id
+          WHERE ptv.user_id = #{friendo.id}
+          INTERSECT
+          SELECT d.id FROM demos d
+          INNER JOIN teams tv ON d.time_perdedor_id = tv.id
+          INNER JOIN players ptv ON ptv.team_id = tv.id
+          WHERE ptv.user_id = #{id}) AS subquery"
+      ).first['count']
+      [friendo, derrotas]
+    end.max_by{|friendo, derrotas| derrotas}
+    worsto_friendo_hash if worsto_friendo_hash.last > 0
+  end
+
 end

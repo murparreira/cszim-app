@@ -120,7 +120,7 @@
               <table class="table is-bordered is-striped is-narrow is-fullwidth">
                 <thead>
                   <tr>
-                    <th width="20%">Arma</th>
+                    <th colspan="2">Arma</th>
                     <th>Kills</th>
                   </tr>
                 </thead>
@@ -129,6 +129,7 @@
                     <% @user.armas.each do |arma, kills| %>
                       <tr>
                         <td><%= arma %></td>
+                        <td><%= image_tag Weapon::IMAGE[arma] %></td>
                         <td><%= kills %></td>
                       </tr>
                     <% end %>
@@ -142,7 +143,7 @@
             </div>
             <div class="column is-one-third">
               <% if @user.besto_friendo %>
-                <div class="notification is-success" style="display: inline-box; text-align: center">
+                <div class="notification is-link" style="display: inline-box; text-align: center">
                   <strong><i class="fa-solid fa-handshake"></i> MY BESTO FRIENDO</strong>
                   <br>
                   <br>
@@ -151,6 +152,18 @@
                   <strong><%= @user.besto_friendo.first.nome %></strong>
                   <br>
                   <strong><%= (@user.demos.count / @user.besto_friendo.last) * 100 %>% de vitórias juntos</strong>
+                </div>
+              <% end %>
+              <% if @user.worsto_friendo %>
+                <div class="notification is-danger" style="display: inline-box; text-align: center">
+                  <strong><i class="fa-solid fa-handshake"></i> MY WORSTO FRIENDO</strong>
+                  <br>
+                  <br>
+                  <%= image_tag avatar_url(@user.worsto_friendo.first), class: 'img-circle' %>
+                  <br>
+                  <strong><%= @user.worsto_friendo.first.nome %></strong>
+                  <br>
+                  <strong><%= (@user.demos.count / @user.worsto_friendo.last) * 100 %>% de derrotas juntos</strong>
                 </div>
               <% end %>
             </div>
