@@ -9,8 +9,10 @@ class CreateDemoRoundKills < ActiveRecord::Migration[5.0]
       t.string :victimSteamID
       t.string :victimSide
       t.float :distance
+      t.boolean :isSuicide
       t.boolean :isWallbang
       t.boolean :noScope
+      t.boolean :isHeadshot
       t.boolean :thruSmoke
       t.boolean :attackerBlinded
       t.boolean :victimBlinded

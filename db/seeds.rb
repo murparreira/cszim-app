@@ -455,5 +455,69 @@ ActiveRecord::Base.transaction do
     game_id: game.id,
     imagem: File.new(Rails.root + 'app/assets/images/de_chalice.jpg')
   )
+
+  Map.create(
+    nome: 'Elysion',
+    sigla: 'de_elysion',
+    ativo: true,
+    game_id: game.id,
+    imagem: File.new(Rails.root + 'app/assets/images/de_elysion.jpg')
+  )
+
+  Map.create(
+    nome: 'Calavera',
+    sigla: 'de_calavera',
+    ativo: true,
+    game_id: game.id,
+    imagem: File.new(Rails.root + 'app/assets/images/de_calavera.jpg')
+  )
+
+  Map.create(
+    nome: 'Crete',
+    sigla: 'de_crete',
+    ativo: true,
+    game_id: game.id,
+    imagem: File.new(Rails.root + 'app/assets/images/de_crete.jpg')
+  )
+
+  Map.create(
+    nome: 'Hive',
+    sigla: 'de_hive',
+    ativo: true,
+    game_id: game.id,
+    imagem: File.new(Rails.root + 'app/assets/images/de_hive.jpg')
+  )
+
+  Map.create(
+    nome: 'Marine',
+    sigla: 'de_marine',
+    ativo: true,
+    game_id: game.id,
+    imagem: File.new(Rails.root + 'app/assets/images/de_marine.jpg')
+  )
+
+  Map.create(
+    nome: 'Calamari',
+    sigla: 'de_calamari',
+    ativo: true,
+    game_id: game.id,
+    imagem: File.new(Rails.root + 'app/assets/images/de_calamari.jpg')
+  )
+
+  Map.create(
+    nome: 'Jingshen',
+    sigla: 'de_jingshen',
+    ativo: true,
+    game_id: game.id,
+    imagem: File.new(Rails.root + 'app/assets/images/de_jingshen.jpg')
+  )
+
+  Map.create(
+    nome: 'Palais',
+    sigla: 'de_palais',
+    ativo: true,
+    game_id: game.id,
+    imagem: File.new(Rails.root + 'app/assets/images/de_palais.jpg')
+  )
   
 end
