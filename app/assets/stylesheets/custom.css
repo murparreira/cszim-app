@@ -110,3 +110,9 @@ table tbody tr td { vertical-align: middle !important; }
   max-width: 100%;
   width: 30%;
 }
+.ct-color {
+  color: rgb(47, 47, 196) !important;
+}
+.t-color {
+  color: rgb(188, 138, 45) !important;
+}
