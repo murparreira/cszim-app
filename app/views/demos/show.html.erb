@@ -99,22 +99,32 @@
       <% @demo.demo_rounds.each do |round| %>
         <div id="<%= round.roundNum %>-detail" class="tab-content <%= 'is-hidden' if round.roundNum != 1 %>">
           <div class="p-2">
-            <% round.demo_round_kills.order(:tick).each do |round_kill| %>
-              <% attacker = User.find_by(steam: round_kill.attackerSteamID) %>
-              <% victim = User.find_by(steam: round_kill.victimSteamID) %>
-              <% assister = User.find_by(steam: round_kill.assisterSteamID) if round_kill.assisterSteamID %>
-
-              <% if round_kill.attackerSide %>            
-                <%= image_tag("#{round_kill.attackerSide.downcase}-icon.png", class: "image is-32x32", style: "display: inline") %>
-                <span class="subtitle ml-3"><%= attacker.nome %></span> 
-                <span>usou </span>
-                <span class="subtitle"><%= round_kill.weapon %></span> 
-                <span>para matar </span>
-                <span class="subtitle mr-3"><%= victim.nome %></span>
-                <%= image_tag("#{round_kill.victimSide.downcase}-icon.png", class: "image is-32x32", style: "display: inline") %>
-                <br>
+              <% round.demo_round_kills.order(:tick).each do |round_kill| %>
+                <% attacker = User.find_by(steam: round_kill.attackerSteamID) %>
+                <% victim = User.find_by(steam: round_kill.victimSteamID) %>
+                <% assister = User.find_by(steam: round_kill.assisterSteamID) if round_kill.assisterSteamID %>
+                <% if !round_kill.isSuicide %>
+                  <div class="notification is-info is-light">
+                    <%= image_tag("#{round_kill.attackerSide.downcase}-icon.png", class: "image is-32x32 mr-4", style: "display: inline") %>
+                    <span class="subtitle has-text-weight-bold mr-4 <%= round_kill.attackerSide.downcase %>-color"><%= attacker.nome %></span>
+                    <% if assister %>
+                      <span class="subtitle has-text-weight-bold mr-4 <%= round_kill.assisterSide.downcase %>-color">+ <%= assister.nome %></span>
+                    <% end %>
+                    <%= image_tag Weapon::IMAGE[round_kill.weapon], class: 'image anti-image-block is-60x60 mr-4' %>
+                    <% if round_kill.isHeadshot %>
+                      <%= image_tag "hs.png", class: 'image anti-image-block is-32x32 mr-4' %>
+                    <% end %>
+                    <% if round_kill.isWallbang %>
+                    <% end %>
+                    <% if round_kill.noScope %>
+                    <% end %>
+                    <% if round_kill.thruSmoke %>
+                    <% end %>
+                    <span class="subtitle has-text-weight-bold mr-4 <%= round_kill.victimSide.downcase %>-color"><%= victim.nome %></span>
+                    <%= image_tag("#{round_kill.victimSide.downcase}-icon.png", class: "image is-32x32", style: "display: inline") %>
+                  </div>
+                <% end %>
               <% end %>
-            <% end %>
           </div>
         </div>
       <% end %>

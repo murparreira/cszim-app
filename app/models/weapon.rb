@@ -24,5 +24,8 @@ class Weapon
     'Dual Berettas': 'weapon_elite.svg',
     'SSG 08': 'weapon_ssg08.svg',
     'XM1014': 'weapon_xm1014.svg',
+    'Negev': 'weapon_negev.svg',
+    'P250': 'weapon_p250.svg',
+    'Nova': 'weapon_nova.svg',
   )
 end

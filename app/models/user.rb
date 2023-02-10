@@ -33,6 +33,7 @@ class User < ApplicationRecord
 
   def armas
     player_kills.pluck(:weapon)
+      .delete_if {|weapon| weapon == 'World'}
       .group_by {|weapon| weapon.itself}
       .transform_values {|weapon| weapon.count}
       .sort_by {|weapon, kills| kills}
